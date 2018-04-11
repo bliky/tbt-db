@@ -1,19 +1,19 @@
 <template>
   <div id="footer" height="100%">
       <tabbar slot="bottom" style="background-color:#ffffff;">
-        <tabbar-item :link="{path:'/dbd/board'}"  selected>
+        <tabbar-item :link="{path:'/bdc-prd-dbd/board'}"  selected>
           <img slot="icon" src="../../assets/image/icon_bottom_data_gray@2x.png">
           <img slot="icon-active" src="../../assets/image/icon_bottom_data_green@2x.png">
           <span class="label" slot="label">数据看板</span>
         </tabbar-item>
         
-        <!-- <tabbar-item :link="{path:'/dbd/page'}" >
+        <!-- <tabbar-item :link="{path:'/bdc-prd-dbd/page'}" >
           <img slot="icon" src="../../assets/image/icon_bottom_apply_gray@2x.png">
           <img slot="icon-active" src="../../assets/image/icon_bottom_apply_green@2x.png">
           <span class="label" slot="label">指标申请</span>
         </tabbar-item> -->
       
-        <tabbar-item :link="{path:'/dbd/myinds'}" >
+        <tabbar-item :link="{path:'/bdc-prd-dbd/myinds'}" >
           <img slot="icon" src="../../assets/image/icon_bottom_mine_gray@2x.png">
           <img slot="icon-active" src="../../assets/image/icon_bottom_mine_green@2x.png">
           <span class="label" slot="label">指标释义</span>

@@ -28,32 +28,37 @@ window.axios = axios;
 FastClick.attach(document.body)
 
 
-const routes = [{
-  path: '/',
-  redirect: '/dbd/board'
-  },
+const routes = [
   {
-    path: '/dbd/board',
+  path: '/',
+  redirect: '/bdc-prd-dbd/board'
+  },
+  // {
+  //   path: 'bdc-prd-dbd/index.html',
+  //   redirect: '/bdc-prd-dbd/board'
+  // },
+  {
+    path: '/bdc-prd-dbd/board',
     component: Board
   },
   {
-    path: '/dbd/apply',
+    path: '/bdc-prd-dbd/apply',
     component: Apply
   },
   {
-    path: '/dbd/myinds',
+    path: '/bdc-prd-dbd/myinds',
     component: MyInds
   },
   {
-    path: '/dbd/indesc',
+    path: '/bdc-prd-dbd/indesc',
     component: Indesc
   },
   {
-    path: '/dbd/nounDesc',
+    path: '/bdc-prd-dbd/nounDesc',
     component: NounDesc
   },
   {
-    path: '/dbd/page',
+    path: '/bdc-prd-dbd/page',
     component: Page
   }
 ]

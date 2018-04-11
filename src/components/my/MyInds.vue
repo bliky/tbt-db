@@ -4,13 +4,13 @@
     <cell
     :title="('名词释义')"
     is-link
-    :link="{path:'/dbd/nounDesc'}">
+    :link="{path:'/bdc-prd-dbd/nounDesc'}">
     </cell>
 
     <cell
     :title="('指标释义')"
     is-link
-    :link="{path:'/dbd/indesc'}">
+    :link="{path:'/bdc-prd-dbd/indesc'}">
     </cell>
 
   </group>
