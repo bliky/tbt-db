@@ -7,7 +7,7 @@
 </div>
 </template>
 <script>
-import ValSelect from './ValSelect'
+import ValSelect from './valSelect'
 import F2 from "@antv/f2";
 
 export default {
