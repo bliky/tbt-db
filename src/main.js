@@ -30,13 +30,9 @@ FastClick.attach(document.body)
 
 const routes = [
   {
-  path: '/',
+  path: '/dbd',
   redirect: '/bdc-prd-dbd/board'
   },
-  // {
-  //   path: 'bdc-prd-dbd/index.html',
-  //   redirect: '/bdc-prd-dbd/board'
-  // },
   {
     path: '/bdc-prd-dbd/board',
     component: Board
@@ -66,6 +62,7 @@ const routes = [
 
 
 const router = new VueRouter({
+  mode:'history',
   routes
 })
 
