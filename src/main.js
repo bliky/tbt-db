@@ -2,13 +2,11 @@ import Vue from 'vue'
 import F2 from '@antv/f2'
 import FastClick from 'fastclick'
 import VueRouter from 'vue-router'
-import VueResource from 'vue-resource'
 import http from './utils/http.js'
 import Cookie from 'js-cookie'
-import VConsole from 'vconsole'
+// import VConsole from 'vconsole'
 import axios from 'axios'
 import { ConfirmPlugin, LoadingPlugin, ToastPlugin } from 'vux'
-// import router from './router/index.js'
 import App from './App'
 import Home from './components/Home'
 import Apply from './components/apply/Apply'
@@ -20,13 +18,12 @@ import Page from './components/test/testPage'
 
 
 
-new VConsole()
+// new VConsole()
 Vue.prototype.$http = http
-Vue.use(VueRouter,F2,Vue,VueResource,ConfirmPlugin, LoadingPlugin, ToastPlugin)
+Vue.use(VueRouter,F2,Vue,ConfirmPlugin, LoadingPlugin, ToastPlugin)
 window.axios = axios; 
 
 FastClick.attach(document.body)
-
 
 const routes = [
   {
@@ -72,9 +69,10 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title
   }
 
-  if (to.query.ticket && to.query.uid) {
+  if (to.query.ticket && to.query.uid || to.query.uname) {
     Cookie.set('t8t-it-ticket', to.query.ticket)
     Cookie.set('t8t-it-uid', to.query.uid)
+    Cookie.set('t8t-it-uname', to.query.uname)
   }
   next()
 })

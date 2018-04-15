@@ -26,7 +26,7 @@
   </div>
 </template>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
+<style scoped>
 /* @import '~vux/dist/vux.css'; */
   #indate .vux-button-group-current {
    background-color:#09C767;

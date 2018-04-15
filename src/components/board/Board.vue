@@ -1,6 +1,6 @@
 <template>
   <div id="board">
-    <tab :line-width="2"  v-model="index" active-color="#09C767" active-size="15px" :animate=true>
+    <tab :line-width="2" slot="header" v-model="index" active-color="#09C767" active-size="15px" :animate=true>
       <tab-item :selected="tag === item" v-for="item in taglist" :key="item" @click="tag = item">
         {{item}}
       </tab-item>
@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { Tab,TabItem } from 'vux'
+import { ViewBox,Tab,TabItem } from 'vux'
 // import Indate from './Indate'
 import Preview from './Preview'
 import Trend from './Trend'
@@ -27,6 +27,7 @@ import Trend from './Trend'
     components: {
       Tab,
       TabItem,
+      ViewBox,
       // Indate,
       Preview,
       Trend

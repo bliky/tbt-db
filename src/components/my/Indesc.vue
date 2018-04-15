@@ -1,15 +1,13 @@
 <template>
 <div class="indesc">
     <divider>指标释义</divider>
+      <div v-for="(item,index) in listdata" :key="index">
+        <div class="x-title1">{{item.className}}</div>
+        <div class="x-title2">{{item.indName}}</div>  
+        <div class="x-text">{{item.inDesc}}</div>
+        <divider>.</divider>
+      </div>
 
-    <div class="x-title1">流量指标</div>
-    <div class="x-title2">微信小程序</div>  
-    <div class="x-text">对比上个月同期,往回推四周,如本月第一周,对比上月第一周</div>
-   
-    <div class="x-title2">微信小程序</div>  
-    <div class="x-text">对比上个月同期,往回推四周,如本月第一周,对比上月第一周</div>
-    
-  
 </div>
 </template>
 <script>
@@ -19,9 +17,39 @@ export default {
   components: {
     Divider
   },
-  mounted () {
-   
+  data () {
+   return {
+         listdata: []
+      }
   },
+  mounted : function(){
+     this.getList();
+  }, 
+  methods: {
+    getList(){
+      let uid = 6881;
+      let uname = "测试名";
+      let page = 1;
+      let size = 100;
+       let vm = this;
+          vm.$http.fetch('dsa/dataBoard/inDesc/pageList',
+                       {        
+                        "uid":uid,
+                        "uname":uname,
+                        "page":page,
+                        "size":size
+                        })
+                  .then((response) => {
+                    console.log(response.data.result.rows);
+                    if(response.data.status == 200 && response.data.result.total > 0){
+                      vm.listdata = response.data.result.rows;
+                    }
+                 }, (response) => {
+                    console.log('error1');
+                });
+    },
+  },
+
 }
 
 </script>
@@ -35,7 +63,6 @@ export default {
 }
 
 .x-title2 {
-  padding-top:10px;
   padding-left: 4%;
   font-family: PingFangSC-Regular;
   font-size: 15px;

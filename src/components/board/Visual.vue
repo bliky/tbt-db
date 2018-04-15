@@ -10,6 +10,13 @@
 import ValSelect from './valSelect'
 import F2 from "@antv/f2";
 
+// const chart = new F2.Chart({
+//       id: 'mountNode',
+//       width: 500,
+//       height: 500,
+//       padding: 'auto'
+//     });
+
 export default {
   components: {
     F2,
@@ -17,6 +24,8 @@ export default {
   },
   mounted() {
     // 使用 html5 canvas api 创建渐变色对象
+    
+
     const canvas = document.getElementById("mountNode");
     const ctx = canvas.getContext("2d");
     const gradient = ctx.createLinearGradient(0, 0, window.innerWidth, 0);
@@ -25,24 +34,24 @@ export default {
     gradient.addColorStop(1, "#09C767");
 
     const data = [
-      { year: 2000, age: 27.2 },
-      { year: 2001, age: 27.5 },
-      { year: 2002, age: 27.8 },
-      { year: 2003, age: 28 },
-      { year: 2004, age: 28.2 },
-      { year: 2005, age: 28.4 },
-      { year: 2006, age: 28.8 },
-      { year: 2007, age: 28.8 },
-      { year: 2008, age: 28.8 },
-      { year: 2009, age: 28.8 },
-      { year: 2010, age: 28.9 },
-      { year: 2011, age: 29 },
-      { year: 2012, age: 29.3 },
-      { year: 2013, age: 29.4 },
-      { year: 2014, age: 29.5 },
-      { year: 2015, age: 29.7 },
-      { year: 2016, age: 30 },
-      { year: 2017, age: 30.12 }
+      { statis_dt: "1日", age: 27.2 },
+      { statis_dt: "2日", age: 27.5 },
+      { statis_dt: "3日", age: 27.8 },
+      { statis_dt: "4日", age: 28 },
+      { statis_dt: "5日", age: 28.2 },
+      { statis_dt: "6日", age: 28.4 },
+      { statis_dt: "7日", age: 28.8 },
+      { statis_dt: "8日", age: 28.8 },
+      { statis_dt: "9日", age: 28.8 },
+      { statis_dt: "10日", age: 28.8 },
+      { statis_dt: "11日", age: 28.9 },
+      { statis_dt: "12日", age: 29 },
+      { statis_dt: "13日", age: 29.3 },
+      { statis_dt: "14日", age: 29.4 },
+      { statis_dt: "15日", age: 29.5 },
+      { statis_dt: "16日", age: 29.7 },
+      { statis_dt: "17日", age: 30 },
+      { statis_dt: "18日", age: 30.12 }
     ];
     const chart = new F2.Chart({
       id: "mountNode",
@@ -54,7 +63,8 @@ export default {
       pixelRatio: window.devicePixelRatio
     });
     const defs = {
-      year: {
+      statis_dt: {
+        mask: 'DD日',
         range: [0, 1],
         max: 2020
       },
@@ -62,7 +72,7 @@ export default {
         tickCount: 5
       }
     };
-    chart.axis("year", {
+    chart.axis("statis_dt", {
       label(text, index, total) {
         const cfg = {
           textAlign: "center"
@@ -94,12 +104,12 @@ export default {
     });
     chart
       .line()
-      .position("year*age")
+      .position("statis_dt*age")
       .shape("smooth")
       .color(gradient);
     chart
       .area()
-      .position("year*age")
+      .position("statis_dt*age")
       .shape("smooth")
       .color(gradient);
     chart.render();

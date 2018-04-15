@@ -1,11 +1,13 @@
 <template>
   <div id="app" style="height:100%;">
-      <view-box ref="viewBox">
-        <app-header  slot="header"  style="width:100%;position:absolute;left:0;top:0;z-index:100;"></app-header>
+    <!-- <view-box ref="viewBox">
+      <router-view></router-view>
+    </view-box>   -->
+      <view-box>
         <router-view></router-view>
         <app-footer  slot="bottom"></app-footer>
       </view-box>
-
+   
   </div>
 </template>
 

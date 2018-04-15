@@ -1,46 +1,45 @@
 <template>
-  <div>
-    <div>
-      <app-header></app-header>
-    </div> 
-
-    <div>
-     <app-content></app-content>
-    </div>
-    
-    <div>
-      <app-footer></app-footer>
-   </div> 
-  </div>
-</template>
-<style>
-  /* @import '~vux/dist/vux.css'; */
-  html{
-    font-family: PingFangSC-Regular;  
-  }
-
-  body{
-    line-height: 1.2; /* 设置行间距为1.2 ,默认是1.6的太大*/
-  }
+<div>
+   <view-box ref="viewBox">
+        <app-header  slot="header"  style="width:100%;position:absolute;left:0;top:0;z-index:100;">
+        </app-header>
+        <router-view></router-view>
+        <app-footer  slot="bottom"></app-footer>
+      </view-box>
+</div>
+ 
+</template><style lang="less">
+@import '~vux/src/styles/reset';
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  background-color:#ffffff;
+}
+.weui-tab__panel{
+  padding-top: 50px;
+}
 </style>
 <script>
-  import { Tab,TabItem } from 'vux'
-  import AppHeader from './common/Header'
+import AppHeader from '../components/common/Header'
+import AppFooter from '../components/common/Footer'
+import { ViewBox,Tabbar,TabbarItem } from 'vux'
 
-  export default {
-
+  export default{
     components: {
-      Tab,
-      TabItem
+      AppHeader,
+      ViewBox,
+      AppFooter,
+      Tabbar,
+      TabbarItem
     },
-    data () {
-      return {
-        index:0
-      }
-    },
-    ready () {
-    },
-    methods:{
-    }
+    data() {
+        return {
+            "routerAnimate": false,
+            "enterAnimate": "", //页面进入动效
+            "leaveAnimate": "" //页面离开动效
+        }
+    }    
   }
+
 </script>
