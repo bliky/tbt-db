@@ -69,8 +69,8 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title
   }
 
-  if (to.query.ticket && to.query.uid || to.query.uname) {
-    Cookie.set('t8t-it-ticket', to.query.ticket)
+  if (to.query.tickets && to.query.uid || to.query.uname) {
+    Cookie.set('t8t-it-ticket', to.query.tickets)
     Cookie.set('t8t-it-uid', to.query.uid)
     Cookie.set('t8t-it-uname', to.query.uname)
   }
