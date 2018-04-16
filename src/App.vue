@@ -3,10 +3,10 @@
     <!-- <view-box ref="viewBox">
       <router-view></router-view>
     </view-box>   -->
-      <view-box>
+      <!-- <view-box> -->
         <router-view></router-view>
         <app-footer  slot="bottom"></app-footer>
-      </view-box>
+      <!-- </view-box> -->
    
   </div>
 </template>
