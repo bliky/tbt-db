@@ -113,10 +113,10 @@ export default {
       let uname = Cookie.get('t8t-oa-username');
       console.log("uid====="+uid);
       console.log("uname==="+uname);
+      
       let page = 1;
       let size = 100;
       let dataType = "D";
-     
       if (this.index == 0) {
         dataType = "D"
       }else if(this.index == 1){
@@ -149,7 +149,7 @@ export default {
                       
                     }
                  }, (response) => {
-                    console.log('error1');
+                    console.log("error=="+response.data);
                 });
     },
     showMsgFromChild(data){

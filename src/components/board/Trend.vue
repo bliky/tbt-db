@@ -243,7 +243,7 @@ export default {
           },
           response => {
             this.dateShow = false;
-            console.log("error1");
+            console.log("error=="+response.data);
           }
         );
       //分页查询列表
@@ -279,7 +279,7 @@ export default {
             }
           },
           response => {
-            console.log("error1");
+            console.log("error=="+response.data);
           }
         );
     },
@@ -381,7 +381,7 @@ export default {
 
                       }
                    }, (response) => {
-                      console.log('error1');
+                      console.log("error=="+response.data);
                   });
     },
     onChange(val) {

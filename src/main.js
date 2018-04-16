@@ -69,11 +69,11 @@ router.beforeEach((to, from, next) => {
     document.title = to.meta.title
   }
 
-  if (to.query.tickets && to.query.uid || to.query.uname) {
-    Cookie.set('t8t-it-ticket', to.query.tickets)
-    Cookie.set('t8t-it-uid', to.query.uid)
-    Cookie.set('t8t-it-uname', to.query.uname)
-  }
+  
+  Cookie.set('t8t-it-ticket', to.query.tickets == undefined ? "vOVtr_GYRv3f1Y1k9R4PxoqEU6E2YOoh-CBcXHcMmsNR8TPAcl6Gk6WCwSGe-2ChhrBzL_U-Pk97yFw3WmQ1vD3Rv44ODUwYI-adgbR7bgrsGfcybkNX2MEUowvULfHS" : to.query.tickets)
+  Cookie.set('t8t-it-uid', to.query.uid == undefined ? 78273 : to.query.uid  )
+  Cookie.set('t8t-it-uname', to.query.uname)
+  
   next()
 })
 
