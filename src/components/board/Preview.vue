@@ -80,12 +80,17 @@ export default {
   },
   data () {
    return {
-         listdata: [],
-         tag: '日指标',
+        uid: 0,
+        uname: "",
+        listdata: [],
+        tag: '日指标',
         taglist: list(),
-        startDate:0,
-        lupdate:0,
-         index: 0
+        startDate: 0,
+        lupdate: 0,
+        index: 0,
+        page: 1,
+        dataType: "D",
+        size: 100
       }
   },
   mounted : function(){
@@ -97,42 +102,37 @@ export default {
         // do nothing
       } else {
         this.onFetching = true
-        setTimeout(() => {
-          this.indexs += 15
-          this.$nextTick(() => {
-            this.$refs.scrollerBottom.reset()
-          })
-          this.onFetching = false
-        }, 2000)
+        // setTimeout(() => {
+        //   this.indexs += 15
+        //   this.$nextTick(() => {
+        //     this.$refs.scrollerBottom.reset()
+        //   })
+        //   this.onFetching = false
+        // }, 2000)
       }
     },
     getList(item,index){
       this.tag = item;
       this.index = index;
-      let uid = Cookie.get('t8t-it-uid');
-      let uname = Cookie.get('t8t-oa-username');
-      console.log("uid====="+uid);
-      console.log("uname==="+uname);
-      
-      let page = 1;
-      let size = 100;
-      let dataType = "D";
+      this.uid = Cookie.get('t8t-it-uid');
+      this.uname = Cookie.get('t8t-oa-username');
+      this.page = 1;
+      this.size = 100;
+      this.dataType = "D";
       if (this.index == 0) {
-        dataType = "D"
+        this.dataType = "D"
       }else if(this.index == 1){
-        dataType = "W"
+        this.dataType = "W"
       }else if(this.index == 2){
-        dataType = "M"
+        this.dataType = "M"
       }
-      console.log("dataType======"+dataType);
-       let vm = this;
-          vm.$http.fetch('dsa/dataBoard/indPvw/pageList',
+      this.$http.fetch('dsa/dataBoard/indPvw/pageList',
                        {        
-                        "uid":uid,
-                        "uname":uname,
-                        "dataType":dataType,
-                        "page":page,
-                        "size":size
+                        uid: this.uid,
+                        uname: this.uname,
+                        dataType: this.dataType,
+                        page: this.page,
+                        size: this.size
                         })
                   .then((response) => {
                     console.log("success====");
@@ -141,15 +141,15 @@ export default {
                     this.startDate = 0
                     this.lupdate = 0
                     if(response.data.status == 200){
-                      vm.startDate = response.data.result.endate
-                      vm.lupdate = response.data.result.lupdate
+                      this.startDate = response.data.result.endate
+                      this.lupdate = response.data.result.lupdate
                       if(response.data.result.total > 0){
-                        vm.listdata = response.data.result.rows;
+                        this.listdata = response.data.result.rows;
                       }
                       
                     }
                  }, (response) => {
-                    console.log("error=="+response.data);
+                    console.log("error=="+response.error);
                 });
     },
     showMsgFromChild(data){

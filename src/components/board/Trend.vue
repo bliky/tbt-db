@@ -36,7 +36,7 @@
             @on-show="onShow" 
             @on-hide="onHide" 
             @on-change="onChange" 
-            :placeholder="('')">
+            :placeholder="('APP_PV')">
           </popup-picker>
         </group>
       </div>
@@ -49,14 +49,16 @@
     <!-- <visual ></visual> -->
 
     <div style="padding: 20px 10px 20px 10px;">
-      <scroller lock-y :scrollbar-x=false>
-        <div class="box1">
-          <x-table class="box1-item">
+      <!-- <scroller lock-y :scrollbar-x=false> -->
+        <div class="box12">
+          <x-table class="box1-items">
             <thead style="font-size: 15px;color: #333333;text-align: center;" >
               <tr style="background-color: #F7F7F7">
-                <th style="width:80px;" v-if="dateShow == true">日期</th>
-                <th style="width:150px;" v-for="(item,selindex) in selistdate" :key="selindex">
-                  {{item.dim_ind_name}}
+                <th v-if="dateShow == true">日期</th>
+                <!-- <th style="width:150px;" v-for="(item,selindex) in selistdate" :key="selindex"> -->
+                <th>
+                  {{indName}}
+                  <!-- {{item.dim_ind_name}} -->
                 </th>
               </tr>
             </thead>
@@ -64,29 +66,14 @@
               v-for="(item,indexs) in listdata" :key="indexs">
               <!-- <tr style="background: #F4F5FC;" > -->
               <tr>
-                <td>{{item.statis_dt}}</td> 
-                <td>{{item.汇总_GMV}}</td>
-                <td>{{item.汇总_主材订单数}}</td>
-                <td>{{item.汇总_主材订单金额}}</td>
-                <td>{{item.汇总_分派信息数}}</td>
-                <td>{{item.汇总_可售数}}</td>
-                <td>{{item.汇总_平台收入}}</td>
-                <td>{{item.汇总_建材总订单金额}}</td>
-                <td>{{item.汇总_扣款信息数}}</td>
-                <td>{{item.汇总_新增线索可售率}}</td>
-                <td>{{item.汇总_新增线索数}}</td>
-                <td>{{item.汇总_次数浪费率}}</td>
-                <td>{{item.汇总_签约订单金额}}</td>
-                <td>{{item.汇总_辅材订单数}}</td>
-                <td>{{item.汇总_主材订单数}}</td>
-                <td>{{item.汇总_辅材订单数}}</td>
-                <td>{{item.汇总_辅材订单金额}}</td>
+                <td>{{item.statis_dt}}</td>
+                <td>{{item.statis_num}}</td>
               </tr>
 
             </tbody>
           </x-table>
         </div>  
-      </scroller>
+      <!-- </scroller> -->
     </div>  
   
 
@@ -164,14 +151,21 @@ export default {
         "通过率",
         "项目可售"
       ],
-      value: ["汇总_主材订单数"],
-      indName: "汇总_主材订单数",
+      value: ["APP_PV"],
+      indName: "APP_PV",
       showPopupPicker: false,
       index: 0
     };
   },
   mounted: function() {
+    //参数赋值
     this.getList();
+     //分页查询列表
+    this.pageList();
+    //选择列表
+    this.selist();
+    //折线图
+    this.changeValue();
   },
   methods: {
     onScrollBottom() {
@@ -197,7 +191,7 @@ export default {
       this.size = 100;
       this.dataType = "D";
       this.listValue = [];
-      this.indName = "汇总_主材订单数"; //指标名称
+      this.indName = "APP_PV"; //指标名称
       if (this.index == 0) {
         this.dataType = "D";
       } else if (this.index == 1) {
@@ -206,6 +200,141 @@ export default {
         this.dataType = "M";
       }
       //选择列表
+      this.selist();
+      //折线图
+      this.changeValue();
+      //分页查询列表
+      this.pageList();
+      
+      
+    },
+    changeValue(){ //趋势图
+      this.$http.fetch('dsa/dataBoard/indTnd/numList',
+                         {
+                          uid:this.uid,
+                          uname:this.uname,
+                          dataType:this.dataType,
+                          indName:this.indName
+                          })
+        .then((response) => {
+            console.log(response.data);
+          if(response.data.status == 200){
+            console.log("趋势指标=======");
+              console.log(response.data);
+             if(response.data.result.rows.length > 0){
+              // 使用 html5 canvas api 创建渐变色对象
+                const canvas = document.getElementById("mountNode");
+                const ctx = canvas.getContext("2d");
+                const gradient = ctx.createLinearGradient(0, 0, window.innerWidth, 0);
+                      gradient.addColorStop(0, "#09C767");
+                      gradient.addColorStop(0.5, "#09C767");
+                      gradient.addColorStop(1, "#09C767");
+
+                let maxDate = response.data.result.maxDate//'7日'
+                let maxValues = response.data.result.maxValues//98.88
+                let position = [maxDate,maxValues]
+                let content = '最大值：'+maxValues
+                console.log(position)
+                console.log(content)
+                
+                const data = response.data.result.rows
+                const chart = new F2.Chart({
+                  id: "mountNode",
+                  width: window.innerWidth,
+                  height:
+                    window.innerWidth > window.innerHeight
+                      ? window.innerHeight - 54
+                      : window.innerWidth * 0.707,
+                  pixelRatio: window.devicePixelRatio
+                });
+                const defs = {
+                  日期: {
+                    //mask: 'DD日',
+                    range: [0, 1],
+                    max: '30日',
+                    tickCount: 10
+                  },
+                  该指标值: {
+                    tickCount: 5
+                  }
+                };
+                chart.axis("日期", {
+                  label(text, index, total) {
+                    const cfg = {
+                      textAlign: "center"
+                    };
+                    if (index === 0) {
+                      cfg.textAlign = "start";
+                    }
+                    if (index > 0 && index === total - 1) {
+                      cfg.textAlign = "end";
+                    }
+                    return cfg;
+                  }
+                });
+                chart.source(data, defs);
+                chart.tooltip({
+                  showCrosshairs: true
+                });
+                chart.guide().tag({
+                  position: position,
+                  content: content,
+                  direct: "tl",
+                  offsetY: -5,
+                  background: {
+                    fill: "#09C767"
+                  },
+                  pointStyle: {
+                    fill: "#09C767"
+                  }
+                });
+                chart
+                  .line()
+                  .position("日期*该指标值")
+                  .shape("smooth")
+                  .color(gradient);
+                chart
+                  .area()
+                  .position("日期*该指标值")
+                  .shape("smooth")
+                  .color(gradient);
+                chart.render();
+            }
+
+          }
+        }, (response) => {
+          console.log("error=="+response.data);
+      });
+    },
+    pageList(){//分页列表
+      this.$http
+        .fetch("dsa/dataBoard/indTnd/pageList", {
+          uid: this.uid,
+          uname: this.uname,
+          dataType: this.dataType,
+          indName: this.indName,
+          page: this.page,
+          size: this.size
+        })
+        .then(
+          response => {
+            console.log(response.data);
+            this.dateShow = false;
+            this.listdata = [];
+            if (response.data.status == 200) {
+              if(response.data.result.rows.length > 0){
+                this.dateShow = true;
+                this.listdata = response.data.result.rows;
+              }
+                
+            }
+          },
+          response => {
+            console.log("error=="+response.error);
+          }
+        );
+    },
+    selist(){//选择列表
       this.$http
         .fetch("dsa/dataBoard/indTnd/seList", {
           uid: this.uid,
@@ -216,18 +345,22 @@ export default {
           response => {
             console.log("success=1===");
             console.log(response.data);
-            this.dateShow = false;
-            this.visualShow = false;
+            this.endate = 0;
+            this.lupdate = 0;
             this.selistdate = [];
             this.values = [];
             this.list = [];
             this.value = [];
+            this.visualShow = false;
             if (response.data.status == 200) {
-              if (response.data.result.rows.length > 0) {
-                this.visualShow = true;
-                this.dateShow = true;
-                this.selistdate = response.data.result.rows;
-                this.value = ["汇总_主材订单数"];
+                this.endate = response.data.result.endate;
+                this.lupdate = response.data.result.lupdate;
+                if(response.data.result.rows.length > 0){
+                  this.visualShow = true;
+                  this.selistdate = response.data.result.rows;
+                }
+                this.indName = "APP_PV"; //指标名称
+                this.value = ["APP_PV"];
                 //  this.selistdate.forEach((value,i)=>{   //数组循环
                 //     for(var pl in value){  //数组对象遍历
                 //         console.log("p1"+pl);   //获取key
@@ -238,44 +371,6 @@ export default {
                   this.values.push(arr.dim_ind_name);
                 }
                 this.list.push(this.values);
-              }
-            }
-          },
-          response => {
-            this.dateShow = false;
-            console.log("error=="+response.data);
-          }
-        );
-      //分页查询列表
-      this.pageList();
-      //折线图
-      this.changeValue();
-    },
-    pageList(){
-      this.$http
-        .fetch("dsa/dataBoard/indTnd/pageList", {
-          uid: this.uid,
-          uname: this.uname,
-          dataType: this.dataType,
-          page: this.page,
-          size: this.size
-        })
-        .then(
-          response => {
-            console.log(response.data);
-            this.listdata = [];
-            this.endate = 0;
-            this.lupdate = 0;
-            this.value = [];
-            this.visualShow = false;
-            if (response.data.status == 200) {
-              this.endate = response.data.result.endate;
-              this.lupdate = response.data.result.lupdate;
-              if (response.data.result.total > 0) {
-                this.visualShow = true;
-                this.value = ["汇总_主材订单数"];
-                this.listdata = response.data.result.rows;
-              }
             }
           },
           response => {
@@ -283,112 +378,13 @@ export default {
           }
         );
     },
-    changeValue(){ 
-      this.$http.fetch('dsa/dataBoard/indTnd/numList',
-                         {
-                          uid:this.uid,
-                          uname:this.uname,
-                          dataType:this.dataType,
-                          indName:this.indName
-                          })
-                    .then((response) => {
-                       console.log(response.data);
-                      if(response.data.status == 200){
-                        console.log("趋势指标=======");
-                         console.log(response.data);
-                        if(response.data.result.rows.length > 0){
-                          // 使用 html5 canvas api 创建渐变色对象
-                            const canvas = document.getElementById("mountNode");
-                            const ctx = canvas.getContext("2d");
-                            const gradient = ctx.createLinearGradient(0, 0, window.innerWidth, 0);
-                            gradient.addColorStop(0, "#09C767");
-                            gradient.addColorStop(0.5, "#09C767");
-                            gradient.addColorStop(1, "#09C767");
-
-                            let maxDate = response.data.result.maxDate//'7日'
-                            let maxValues = response.data.result.maxValues//98.88
-                            console.log("maxDate====="+maxDate)
-                            console.log("maxValues======"+maxValues)
-                            let position = [maxDate,maxValues]
-                            let content = '最大值：'+maxValues
-                            console.log("position=========")
-                            console.log(position)
-                            console.log("content=========")
-                            console.log(content)
-                            const data = response.data.result.rows
-                            const chart = new F2.Chart({
-                              id: "mountNode",
-                              width: window.innerWidth,
-                              height:
-                                window.innerWidth > window.innerHeight
-                                  ? window.innerHeight - 54
-                                  : window.innerWidth * 0.707,
-                              pixelRatio: window.devicePixelRatio
-                            });
-                            const defs = {
-                              日期: {
-                                //mask: 'DD日',
-                                range: [0, 1],
-                                max: '30日',
-                                tickCount: 10
-                              },
-                              该指标值: {
-                                tickCount: 5
-                              }
-                            };
-                            chart.axis("日期", {
-                              label(text, index, total) {
-                                const cfg = {
-                                  textAlign: "center"
-                                };
-                                if (index === 0) {
-                                  cfg.textAlign = "start";
-                                }
-                                if (index > 0 && index === total - 1) {
-                                  cfg.textAlign = "end";
-                                }
-                                return cfg;
-                              }
-                            });
-                            chart.source(data, defs);
-                            chart.tooltip({
-                              showCrosshairs: true
-                            });
-                            chart.guide().tag({
-                              position: position,
-                              content: content,
-                              direct: "tl",
-                              offsetY: -5,
-                              background: {
-                                fill: "#09C767"
-                              },
-                              pointStyle: {
-                                fill: "#09C767"
-                              }
-                            });
-                            chart
-                              .line()
-                              .position("日期*该指标值")
-                              .shape("smooth")
-                              .color(gradient);
-                            chart
-                              .area()
-                              .position("日期*该指标值")
-                              .shape("smooth")
-                              .color(gradient);
-                            chart.render();
-                        }
-
-                      }
-                   }, (response) => {
-                      console.log("error=="+response.data);
-                  });
-    },
+    
+    
     onChange(val) {
       this.indName = val.join(",");
-
-      console.log("val change indName===",this.indName, val);
       this.changeValue();
+      this.pageList();
+      console.log("val change indName===",this.indName, val);
     },
     showMsgFromChild(data) {
       this.index = data;

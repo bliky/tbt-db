@@ -4,7 +4,7 @@ import FastClick from 'fastclick'
 import VueRouter from 'vue-router'
 import http from './utils/http.js'
 import Cookie from 'js-cookie'
-import VConsole from 'vconsole'
+// import VConsole from 'vconsole'
 import axios from 'axios'
 import { ConfirmPlugin, LoadingPlugin, ToastPlugin } from 'vux'
 import App from './App'
@@ -18,7 +18,7 @@ import Page from './components/test/testPage'
 
 
 
-new VConsole()
+// new VConsole()
 Vue.prototype.$http = http
 Vue.use(VueRouter,F2,Vue,ConfirmPlugin, LoadingPlugin, ToastPlugin)
 window.axios = axios; 

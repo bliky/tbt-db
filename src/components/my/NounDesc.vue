@@ -1,16 +1,18 @@
 <template>
 <div class="nounDesc">
-  <divider >名词释义</divider>
+  <!-- <divider >名词释义</divider> -->
   <!-- <div class="x-title1">周环比</div> -->
   <div v-for="(item,index) in listdata" :key="index">
     <div class="x-title2">{{item.noun_name}}</div>  
     <div class="x-text">{{item.noun_desc}}</div>
-    <divider>.</divider>
+    <br>
+    <!-- <divider>.</divider> -->
   </div>
 </div>
 </template>
 <script>
 import { Divider } from 'vux'
+import Cookie from 'js-cookie'
 
 export default {
   components: {
@@ -18,7 +20,11 @@ export default {
   },
   data () {
    return {
-         listdata: []
+         listdata: [],
+         uid: 0,
+         uname: " ",
+         page: 1,
+         size: 100
       }
   },
   mounted : function(){
@@ -26,25 +32,24 @@ export default {
   }, 
   methods: {
     getList(){
-      let uid = 6881;
-      let uname = "测试名";
-      let page = 1;
-      let size = 100;
-       let vm = this;
-          vm.$http.fetch('dsa/dataBoard/nounDesc/pageList',
+      this.uid = Cookie.get('t8t-it-uid');
+      this.uname = Cookie.get('t8t-oa-username');
+      this.page = 1;
+      this.size = 100;
+      this.$http.fetch('dsa/dataBoard/nounDesc/pageList',
                        {        
-                        "uid":uid,
-                        "uname":uname,
-                        "page":page,
-                        "size":size
+                        uid: this.uid,
+                        uname: this.uname,
+                        page: this.page,
+                        size: this.size
                         })
                   .then((response) => {
                     console.log(response.data.result.rows);
                     if(response.data.status == 200 && response.data.result.total > 0){
-                      vm.listdata = response.data.result.rows;
+                      this.listdata = response.data.result.rows;
                     }
                  }, (response) => {
-                    console.log('error1');
+                    console.log('error===='+response.error);
                 });
     },
   }

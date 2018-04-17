@@ -1,6 +1,6 @@
 <template>
 <div class="myinds">
-  <group>
+  <!-- <group> -->
     <cell
     :title="('名词释义')"
     is-link
@@ -13,7 +13,7 @@
     :link="{path:'/bdc-prd-dbd/indesc'}">
     </cell>
 
-  </group>
+  <!-- </group> -->
   
 </div>
 </template>
