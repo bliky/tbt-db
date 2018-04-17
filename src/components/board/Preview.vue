@@ -26,7 +26,10 @@
     </div>
 
     <div  class="div-table">
-      <x-table >
+      <scroller scrollbar-y  :bounce="true" height="446px" 
+        @on-scroll-bottom="onScrollBottom" > 
+
+      <x-table class="table">
         <thead>
           <tr style="background-color: #F7F7F7">
             <th style="width:40%;">指标</th>
@@ -35,26 +38,21 @@
             <th  v-if="index === 0">环比</th>
           </tr>
         </thead>
-        <!-- <scroller lock-x @on-scroll-bottom="onScrollBottom" 
-            height="200px"
-            ref="scrollerBottom" :scroll-bottom-offst="200"> -->
-
-         <!-- <p v-for="i in indexs">placeholder {{i}}</p> -->
-            <tbody class="box2" style="font-size: 14px;color: #666666;" 
-                    v-for="(item,indexs) in listdata" :key="indexs">
-              <tr >
-                <td style="width:40%;">{{item.dim_ind_name}}</td>
+        
+            <tbody style="font-size: 14px;color: #666666;">
+              <tr v-for="(item,indexs) in listdata" :key="indexs">
+                <td>{{item.dim_ind_name}}</td>
                 <td>{{item.statis_num}}</td>
                 <td v-if="index === 0">{{item.dtd}}</td>
                 <td v-if="index === 0">{{item.dtw}}</td>
               </tr>
               <!-- <tr style="background: #F4F5FC;"> -->
-            </tbody>
+            </tbody>  
             <!-- <load-more tip="loading"></load-more> -->
-        <!-- </scroller>   -->
+        
       </x-table>
+      </scroller>  
     </div>
-    
 
   </div>
 </template>
@@ -88,36 +86,38 @@ export default {
         startDate: 0,
         lupdate: 0,
         index: 0,
+        indexs: 0,
         page: 1,
         dataType: "D",
-        size: 100
+        scrollTop: 0,
+        onFetching: false,
+        bottomCount: 15,
+        size: 150
       }
   },
   mounted : function(){
      this.getList();
+     this.addTrColor();
   }, 
   methods: {
-    onScrollBottom () {
-      if (this.onFetching) {
-        // do nothing
-      } else {
-        this.onFetching = true
-        // setTimeout(() => {
-        //   this.indexs += 15
-        //   this.$nextTick(() => {
-        //     this.$refs.scrollerBottom.reset()
-        //   })
-        //   this.onFetching = false
-        // }, 2000)
-      }
+    addTrColor() {
+      console.log("==================");
+        var tbodyTrList = document.getElementsByTagName("tr");
+        console.log("进入添加颜色");
+        for (var i = 0; i < tbodyTrList.length; i++) {
+            if (i % 2 == 0) {
+              console.log("添加颜色");
+               tbodyTrList[i].setAttribute("className", "backColor");//隔行变色
+            }
+        }
     },
     getList(item,index){
       this.tag = item;
       this.index = index;
       this.uid = Cookie.get('t8t-it-uid');
       this.uname = Cookie.get('t8t-oa-username');
-      this.page = 1;
-      this.size = 100;
+      // this.page = 1;
+      // this.size = 100;
       this.dataType = "D";
       if (this.index == 0) {
         this.dataType = "D"
@@ -144,6 +144,7 @@ export default {
                       this.startDate = response.data.result.endate
                       this.lupdate = response.data.result.lupdate
                       if(response.data.result.total > 0){
+                        this.addTrColor();
                         this.listdata = response.data.result.rows;
                       }
                       
@@ -152,20 +153,26 @@ export default {
                     console.log("error=="+response.error);
                 });
     },
-    showMsgFromChild(data){
-      this.index = data
-    },
-    onShow() {
-      console.log("on show");
-    },
-    onHide() {
-      console.log("on hide");
+    onScrollBottom () {
+      if (this.onFetching) { 
+        // do nothing
+      } else {//分页
+        this.onFetching = true
+        // this.page += 1;
+          // this.getList();
+        setTimeout(() => {
+        //  this.bottomCount += 15
+          // this.$nextTick(() => {
+          //   this.$refs.scrollerBottom.reset()
+          // })
+          this.onFetching = false
+        }, 2000)
+      }
     },
     onScroll (pos) {
       this.scrollTop = pos.top
     },
     changeList () {
-      this.showList1 = false
       this.$nextTick(() => {
         this.$refs.scroller.reset({
           top: 0
@@ -176,6 +183,9 @@ export default {
 };
 </script>
 <style scoped>
+.backColor{
+  background: #F4F5FC;
+}
 #preview .vux-button-group-current {
    background-color:#09C767;
 }
@@ -201,8 +211,5 @@ x-table {
   border: 1px solid #EEEEEE;
 }
 thead {font-size: 15px;color: #333333;text-align: center;}
-.box2-wrap {
-   height: 500px;
-  overflow: hidden;
-}
+
 </style>

@@ -36,7 +36,7 @@
             @on-show="onShow" 
             @on-hide="onHide" 
             @on-change="onChange" 
-            :placeholder="('APP_PV')">
+            :placeholder="('(小)合作装修公司_UV')">
           </popup-picker>
         </group>
       </div>
@@ -54,7 +54,8 @@
           <x-table class="box1-items">
             <thead style="font-size: 15px;color: #333333;text-align: center;" >
               <tr style="background-color: #F7F7F7">
-                <th v-if="dateShow == true">日期</th>
+                <th>日期</th>
+                <!-- <th v-if="dateShow == true">日期</th> -->
                 <!-- <th style="width:150px;" v-for="(item,selindex) in selistdate" :key="selindex"> -->
                 <th>
                   {{indName}}
@@ -151,8 +152,8 @@ export default {
         "通过率",
         "项目可售"
       ],
-      value: ["APP_PV"],
-      indName: "APP_PV",
+      value: ["(小)合作装修公司_UV"],
+      indName: "(小)合作装修公司_UV",
       showPopupPicker: false,
       index: 0
     };
@@ -191,7 +192,7 @@ export default {
       this.size = 100;
       this.dataType = "D";
       this.listValue = [];
-      this.indName = "APP_PV"; //指标名称
+      this.indName = "(小)合作装修公司_UV"; //指标名称
       if (this.index == 0) {
         this.dataType = "D";
       } else if (this.index == 1) {
@@ -254,7 +255,7 @@ export default {
                     max: '30日',
                     tickCount: 10
                   },
-                  该指标值: {
+                  值: {
                     tickCount: 5
                   }
                 };
@@ -290,12 +291,12 @@ export default {
                 });
                 chart
                   .line()
-                  .position("日期*该指标值")
+                  .position("日期*值")
                   .shape("smooth")
                   .color(gradient);
                 chart
                   .area()
-                  .position("日期*该指标值")
+                  .position("日期*值")
                   .shape("smooth")
                   .color(gradient);
                 chart.render();
@@ -359,12 +360,12 @@ export default {
                   this.visualShow = true;
                   this.selistdate = response.data.result.rows;
                 }
-                this.indName = "APP_PV"; //指标名称
-                this.value = ["APP_PV"];
+                this.indName = "(小)合作装修公司_UV"; //指标名称
+                this.value = ["(小)合作装修公司_UV"];
                 //  this.selistdate.forEach((value,i)=>{   //数组循环
                 //     for(var pl in value){  //数组对象遍历
                 //         console.log("p1"+pl);   //获取key
-                //         console.log("v1"+value[pl])  //获取key的该指标值
+                //         console.log("v1"+value[pl])  //获取key的值
                 //     }
                 //   })
                 for (let arr of this.selistdate) {
@@ -455,16 +456,10 @@ x-table {
 
 <!--template>
   <div>
-    <scroller lock-y :scrollbar-x=false>
-      <div class="box1">
-        <div class="box1-item" v-for="i in 7">
+    
 
-        </div>
-      </div>
-    </scroller>
-
-
-    <scroller lock-x height="200px" @on-scroll-bottom="onScrollBottom" ref="scrollerBottom" :scroll-bottom-offst="200">
+    <scroller lock-x height="200px" @on-scroll-bottom="onScrollBottom" 
+    ref="scrollerBottom" :scroll-bottom-offst="200">
       <div class="box2">
         <p v-for="i in bottomCount">placeholder {{i}}</p>
         <load-more tip="loading"></load-more>
