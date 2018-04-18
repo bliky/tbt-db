@@ -18,7 +18,7 @@
              - 2月11日
           </span> 
         </p>
-        <p style="font-size: 12px;color: #999999;letter-spacing: 0;">上次更新时间：
+        <p style="font-size: 12px;color: #999999;letter-spacing: 0;">更新时间：
           03/04 09:00
         </p>
       </div>

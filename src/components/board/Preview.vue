@@ -26,32 +26,32 @@
     </div>
 
     <div  class="div-table">
-      <scroller scrollbar-y  :bounce="true" height="446px" 
-        @on-scroll-bottom="onScrollBottom" > 
+      <!-- <scroller scrollbar-y  :bounce="true" height="446px" 
+        @on-scroll-bottom="onScrollBottom" >  -->
 
       <x-table class="table">
         <thead>
           <tr style="background-color: #F7F7F7">
-            <th style="width:40%;">指标</th>
-            <th >数值</th>
-            <th  v-if="index === 0">同比</th>
-            <th  v-if="index === 0">环比</th>
+            <th style="text-align: left;">指标</th>
+            <th style="text-align: right;">数值</th>
+            <th  style="text-align: right;" v-if="index === 0">同比</th>
+            <th style="text-align: right;">环比</th>
           </tr>
         </thead>
         
             <tbody style="font-size: 14px;color: #666666;">
-              <tr v-for="(item,indexs) in listdata" :key="indexs">
-                <td>{{item.dim_ind_name}}</td>
-                <td>{{item.statis_num}}</td>
-                <td v-if="index === 0">{{item.dtd}}</td>
-                <td v-if="index === 0">{{item.dtw}}</td>
+              <tr  id="backcolor" v-for="(item,indexs) in listdata" :key="indexs">
+                <td style="text-align: right;">{{item.dim_ind_name}}</td>
+                <td style="text-align: right;">{{item.statis_num}}</td>
+                <td style="text-align: right;" v-if="index === 0">{{item.dtd}}</td>
+                <td style="text-align: right;">{{item.dtw}}</td>
               </tr>
               <!-- <tr style="background: #F4F5FC;"> -->
             </tbody>  
             <!-- <load-more tip="loading"></load-more> -->
         
       </x-table>
-      </scroller>  
+      <!-- </scroller>   -->
     </div>
 
   </div>
@@ -102,11 +102,12 @@ export default {
   methods: {
     addTrColor() {
       console.log("==================");
-        var tbodyTrList = document.getElementsByTagName("tr");
+        var tbodyTrList = document.getElementsByTagName("tbody");
         console.log("进入添加颜色");
         for (var i = 0; i < tbodyTrList.length; i++) {
             if (i % 2 == 0) {
               console.log("添加颜色");
+              console.log(tbodyTrList[i]);
                tbodyTrList[i].setAttribute("className", "backColor");//隔行变色
             }
         }

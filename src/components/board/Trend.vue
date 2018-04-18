@@ -54,24 +54,25 @@
           <x-table class="box1-items">
             <thead style="font-size: 15px;color: #333333;text-align: center;" >
               <tr style="background-color: #F7F7F7">
-                <th>日期</th>
+                <th style="text-align: left;">日期</th>
                 <!-- <th v-if="dateShow == true">日期</th> -->
                 <!-- <th style="width:150px;" v-for="(item,selindex) in selistdate" :key="selindex"> -->
-                <th>
+                <th style="text-align: right;">
                   {{indName}}
                   <!-- {{item.dim_ind_name}} -->
                 </th>
               </tr>
             </thead>
             <tbody style="font-size: 14px;color: #666666;" 
-              v-for="(item,indexs) in listdata" :key="indexs">
+              v-for="(item,index) in listdata" :key="index">
               <!-- <tr style="background: #F4F5FC;" > -->
               <tr>
-                <td>{{item.statis_dt}}</td>
-                <td>{{item.statis_num}}</td>
+                <td style="text-align: left;">{{item.statis_dt}}</td>
+                <td style="text-align: right;">{{item.statis_num}}</td>
               </tr>
 
             </tbody>
+            <br>
           </x-table>
         </div>  
       <!-- </scroller> -->
@@ -124,6 +125,7 @@ export default {
   },
   data() {
     return {
+      datav: [],
       page:1,
       size:100,
       visualShow: false,
@@ -218,6 +220,7 @@ export default {
                           indName:this.indName
                           })
         .then((response) => {
+          this.datav = []
             console.log(response.data);
           if(response.data.status == 200){
             console.log("趋势指标=======");
@@ -238,7 +241,7 @@ export default {
                 console.log(position)
                 console.log(content)
                 
-                const data = response.data.result.rows
+                this.datav = response.data.result.rows
                 const chart = new F2.Chart({
                   id: "mountNode",
                   width: window.innerWidth,
@@ -252,8 +255,8 @@ export default {
                   日期: {
                     //mask: 'DD日',
                     range: [0, 1],
-                    max: '30日',
-                    tickCount: 10
+                   // max: '30日',
+                    tickCount: 6
                   },
                   值: {
                     tickCount: 5
@@ -273,7 +276,7 @@ export default {
                     return cfg;
                   }
                 });
-                chart.source(data, defs);
+                chart.source(this.datav, defs);
                 chart.tooltip({
                   showCrosshairs: true
                 });
@@ -320,11 +323,9 @@ export default {
         .then(
           response => {
             console.log(response.data);
-            this.dateShow = false;
             this.listdata = [];
             if (response.data.status == 200) {
-              if(response.data.result.rows.length > 0){
-                this.dateShow = true;
+              if(response.data.result.total > 0){
                 this.listdata = response.data.result.rows;
               }
                 
@@ -359,19 +360,20 @@ export default {
                 if(response.data.result.rows.length > 0){
                   this.visualShow = true;
                   this.selistdate = response.data.result.rows;
-                }
-                this.indName = "(小)合作装修公司_UV"; //指标名称
-                this.value = ["(小)合作装修公司_UV"];
-                //  this.selistdate.forEach((value,i)=>{   //数组循环
-                //     for(var pl in value){  //数组对象遍历
-                //         console.log("p1"+pl);   //获取key
-                //         console.log("v1"+value[pl])  //获取key的值
-                //     }
-                //   })
-                for (let arr of this.selistdate) {
-                  this.values.push(arr.dim_ind_name);
-                }
-                this.list.push(this.values);
+                
+                  this.indName = "(小)合作装修公司_UV"; //指标名称
+                  this.value = ["(小)合作装修公司_UV"];
+                  //  this.selistdate.forEach((value,i)=>{   //数组循环
+                  //     for(var pl in value){  //数组对象遍历
+                  //         console.log("p1"+pl);   //获取key
+                  //         console.log("v1"+value[pl])  //获取key的值
+                  //     }
+                  //   })
+                  for (let arr of this.selistdate) {
+                    this.values.push(arr.dim_ind_name);
+                  }
+                  this.list.push(this.values);
+                }  
             }
           },
           response => {
@@ -424,7 +426,6 @@ th {
   font-family: PingFangSC-Medium;
   font-size: 15px;
   color: #333333;
-  text-align: center;
 }
 td {
   font-family: PingFangSC-Regular;
@@ -444,8 +445,6 @@ x-table {
   float: left;
   display: inline-block;
   margin-left: 15px;
-  text-align: center;
-  text-align: center;
 }
 
 .box2-wrap {

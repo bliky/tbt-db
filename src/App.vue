@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="height:100%;">
+  <div id="app" style="-webkit-overflow-scrolling: touch;height:100%;">
     <!-- <view-box ref="viewBox">
       <router-view></router-view>
     </view-box>   -->
@@ -13,11 +13,20 @@
 
 <style lang="less">
 @import '~vux/src/styles/reset';
+
 html, body {
   height: 100%;
   width: 100%;
   overflow-x: hidden;
   background-color:#ffffff;
+}
+.vux-table td, .vux-table th {
+    border-left: 0!important;
+    border-right:0!important;
+}
+.vux-table td:after, .vux-table th:after {
+    border-left: 0!important;
+    border-right:0!important;
 }
 .weui-tab__panel{
   padding-top: 50px;

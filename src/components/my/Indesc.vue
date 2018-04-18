@@ -3,12 +3,15 @@
     <!-- <divider>指标释义</divider> -->
       <div v-for="(item,index) in listdata" :key="index">
         <div class="x-title1">{{item.className}}</div>
-        <div class="x-title2">{{item.indName}}</div>  
-        <div class="x-text">{{item.inDesc}}</div>
+        <div v-for="(item,indexs) in item.childNode" :key="indexs">
+          <div class="x-title2">{{item.indName}}</div>  
+          <div class="x-text">{{item.inDesc}}</div>
+        </div>
         <br>
         <!-- <divider>.</divider> -->
       </div>
-
+    <br>
+    <br>
 </div>
 </template>
 <script>
@@ -20,7 +23,9 @@ export default {
   },
   data () {
    return {
+        classList:[],
          listdata: [],
+        classNames:'流量',
          uid: 0,
          uname: "",
          page: 1,
@@ -28,7 +33,7 @@ export default {
       }
   },
   mounted : function(){
-     this.getList();
+    this.getList();
   }, 
   methods: {
     getList(){
@@ -39,15 +44,11 @@ export default {
       this.$http.fetch('dsa/dataBoard/inDesc/pageList',
                        {        
                         uid: this.uid,
-                        uname: this.uname,
-                        page: this.page,
-                        size: this.size
+                        uname: this.uname
                         })
                   .then((response) => {
-                    console.log(response.data.result.rows);
-                    if(response.data.status == 200 && response.data.result.total > 0){
-                      this.listdata = response.data.result.rows;
-                    }
+                    console.log(response.data.result.list);
+                      this.listdata = response.data.result.list;
                  }, (response) => {
                     console.log('error====='+response.error);
                 });
