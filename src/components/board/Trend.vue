@@ -36,7 +36,7 @@
             @on-show="onShow" 
             @on-hide="onHide" 
             @on-change="onChange" 
-            :placeholder="('(小)合作装修公司_UV')">
+            :placeholder="('GMV(万元)')">
           </popup-picker>
         </group>
       </div>
@@ -45,27 +45,19 @@
         <canvas id="mountNode"></canvas>
       </div>
     </div>
-
-    <!-- <visual ></visual> -->
-
     <div style="padding: 20px 10px 20px 10px;">
-      <!-- <scroller lock-y :scrollbar-x=false> -->
         <div class="box12">
           <x-table class="box1-items">
             <thead style="font-size: 15px;color: #333333;text-align: center;" >
               <tr style="background-color: #F7F7F7">
                 <th style="text-align: left;">日期</th>
-                <!-- <th v-if="dateShow == true">日期</th> -->
-                <!-- <th style="width:150px;" v-for="(item,selindex) in selistdate" :key="selindex"> -->
                 <th style="text-align: right;">
                   {{indName}}
-                  <!-- {{item.dim_ind_name}} -->
                 </th>
               </tr>
             </thead>
             <tbody style="font-size: 14px;color: #666666;" 
               v-for="(item,index) in listdata" :key="index">
-              <!-- <tr style="background: #F4F5FC;" > -->
               <tr>
                 <td style="text-align: left;">{{item.statis_dt}}</td>
                 <td style="text-align: right;">{{item.statis_num}}</td>
@@ -82,6 +74,34 @@
     
   </div>
 </template>
+
+
+<style scoped>
+.backColor{
+  background: #F4F5FC!important;
+}
+#trend .vux-button-group-current {
+  background-color: #09c767;
+}
+th {
+  font-family: PingFangSC-Medium;
+  font-size: 15px;
+  color: #333333;
+}
+td {
+  font-family: PingFangSC-Regular;
+  font-size: 14px;
+  color: #666666;
+}
+
+x-table {
+  background: #ffffff;
+  border: 1px solid #eeeeee;
+}
+
+
+</style>
+
 
 <script>
 import F2 from "@antv/f2";
@@ -154,8 +174,8 @@ export default {
         "通过率",
         "项目可售"
       ],
-      value: ["(小)合作装修公司_UV"],
-      indName: "(小)合作装修公司_UV",
+      value: ["GMV(万元)"],
+      indName: "GMV(万元)",
       showPopupPicker: false,
       index: 0
     };
@@ -169,12 +189,23 @@ export default {
     this.selist();
     //折线图
     this.changeValue();
+    this.addTrColor();
   },
   methods: {
+     addTrColor() {
+        var tbodyTrLists = document.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
+        console.log("进入添加颜色");
+        for (var i = 0; i < tbodyTrLists.length; i++) {
+            if (i % 2 != 0) {
+               tbodyTrLists[i].setAttribute("class", "backColor");//隔行变色
+            }
+        }
+    },
     onScrollBottom() {
       if (this.onFetching) {
         // do nothing
       } else {
+        this.addTrColor();
         this.onFetching = true;
         setTimeout(() => {
           this.bottomCount += 10;
@@ -194,7 +225,7 @@ export default {
       this.size = 100;
       this.dataType = "D";
       this.listValue = [];
-      this.indName = "(小)合作装修公司_UV"; //指标名称
+      this.indName = "GMV(万元)"; //指标名称
       if (this.index == 0) {
         this.dataType = "D";
       } else if (this.index == 1) {
@@ -209,7 +240,6 @@ export default {
       //分页查询列表
       this.pageList();
       
-      
     },
     changeValue(){ //趋势图
       this.$http.fetch('dsa/dataBoard/indTnd/numList',
@@ -221,10 +251,7 @@ export default {
                           })
         .then((response) => {
           this.datav = []
-            console.log(response.data);
           if(response.data.status == 200){
-            console.log("趋势指标=======");
-              console.log(response.data);
              if(response.data.result.rows.length > 0){
               // 使用 html5 canvas api 创建渐变色对象
                 const canvas = document.getElementById("mountNode");
@@ -236,11 +263,8 @@ export default {
 
                 let maxDate = response.data.result.maxDate//'7日'
                 let maxValues = response.data.result.maxValues//98.88
-                let position = [maxDate,maxValues]
-                let content = '最大值：'+maxValues
-                console.log(position)
-                console.log(content)
-                
+               let position = [maxDate,maxValues]
+               let content = '最大值：'+maxValues
                 this.datav = response.data.result.rows
                 const chart = new F2.Chart({
                   id: "mountNode",
@@ -256,10 +280,11 @@ export default {
                     //mask: 'DD日',
                     range: [0, 1],
                    // max: '30日',
-                    tickCount: 6
+                    tickCount: 5
                   },
                   值: {
-                    tickCount: 5
+                    tickCount: 5,
+                    min: 0
                   }
                 };
                 chart.axis("日期", {
@@ -327,6 +352,7 @@ export default {
             if (response.data.status == 200) {
               if(response.data.result.total > 0){
                 this.listdata = response.data.result.rows;
+                this.addTrColor();
               }
                 
             }
@@ -361,8 +387,8 @@ export default {
                   this.visualShow = true;
                   this.selistdate = response.data.result.rows;
                 
-                  this.indName = "(小)合作装修公司_UV"; //指标名称
-                  this.value = ["(小)合作装修公司_UV"];
+                  this.indName = "GMV(万元)"; //指标名称
+                  this.value = ["GMV(万元)"];
                   //  this.selistdate.forEach((value,i)=>{   //数组循环
                   //     for(var pl in value){  //数组对象遍历
                   //         console.log("p1"+pl);   //获取key
@@ -381,7 +407,6 @@ export default {
           }
         );
     },
-    
     
     onChange(val) {
       this.indName = val.join(",");
@@ -418,126 +443,3 @@ export default {
   }
 };
 </script>
-<style scoped>
-#trend .vux-button-group-current {
-  background-color: #09c767;
-}
-th {
-  font-family: PingFangSC-Medium;
-  font-size: 15px;
-  color: #333333;
-}
-td {
-  font-family: PingFangSC-Regular;
-  font-size: 14px;
-  color: #666666;
-}
-
-x-table {
-  background: #ffffff;
-  border: 1px solid #eeeeee;
-}
-
-.box1 {
-  width: 5000px;
-}
-.box1-item {
-  float: left;
-  display: inline-block;
-  margin-left: 15px;
-}
-
-.box2-wrap {
-  height: 300px;
-  overflow: hidden;
-}
-</style>
-
-<!--template>
-  <div>
-    
-
-    <scroller lock-x height="200px" @on-scroll-bottom="onScrollBottom" 
-    ref="scrollerBottom" :scroll-bottom-offst="200">
-      <div class="box2">
-        <p v-for="i in bottomCount">placeholder {{i}}</p>
-        <load-more tip="loading"></load-more>
-      </div>
-    </scroller>
-
-  </div>
-</template>
-
-<script>
-import { Scroller, Spinner,LoadMore } from 'vux'
-
-export default {
-  components: {
-    Scroller,
-    Spinner,
-    LoadMore
-  },
-  data () {
-    return {
-      scrollTop: 0,
-      onFetching: false,
-      bottomCount: 15
-    }
-  },
-  mounted () {
-    
-  },
-  methods: {
-    onScrollBottom () {
-      if (this.onFetching) {
-        // do nothing
-      } else {
-        this.onFetching = true
-        setTimeout(() => {
-          this.bottomCount += 15
-          this.$nextTick(() => {
-            this.$refs.scrollerBottom.reset()
-          })
-          this.onFetching = false
-        }, 2000)
-      }
-    },
-    onScroll (pos) {
-      this.scrollTop = pos.top
-    },
-    changeList () {
-      this.showList1 = false
-      this.$nextTick(() => {
-        this.$refs.scroller.reset({
-          top: 0
-        })
-      })
-    }
-  }
-}
-</script>
-
-<style scoped>
-.box1 {
-  height: 100px;
-  position: relative;
-  width: 1490px;
-}
-.box1-item {
-  width: 200px;
-  height: 100px;
-  background-color: #ccc;
-  display:inline-block;
-  margin-left: 15px;
-  float: left;
-  text-align: center;
-  line-height: 100px;
-}
-.box1-item:first-child {
-  margin-left: 0;
-}
-.box2-wrap {
-  height: 300px;
-  overflow: hidden;
-}
-</style -->

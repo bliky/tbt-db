@@ -41,7 +41,7 @@
         
             <tbody style="font-size: 14px;color: #666666;">
               <tr  id="backcolor" v-for="(item,indexs) in listdata" :key="indexs">
-                <td style="text-align: right;">{{item.dim_ind_name}}</td>
+                <td style="text-align: left;">{{item.dim_ind_name}}</td>
                 <td style="text-align: right;">{{item.statis_num}}</td>
                 <td style="text-align: right;" v-if="index === 0">{{item.dtd}}</td>
                 <td style="text-align: right;">{{item.dtw}}</td>
@@ -96,19 +96,19 @@ export default {
       }
   },
   mounted : function(){
-     this.getList();
      this.addTrColor();
+     this.getList();
+    
   }, 
   methods: {
     addTrColor() {
-      console.log("==================");
-        var tbodyTrList = document.getElementsByTagName("tbody");
+        var tbodyTrList = document.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
         console.log("进入添加颜色");
         for (var i = 0; i < tbodyTrList.length; i++) {
-            if (i % 2 == 0) {
+            if (i % 2 != 0) {
               console.log("添加颜色");
               console.log(tbodyTrList[i]);
-               tbodyTrList[i].setAttribute("className", "backColor");//隔行变色
+               tbodyTrList[i].setAttribute("class", "backColor");//隔行变色
             }
         }
     },
@@ -142,6 +142,7 @@ export default {
                     this.startDate = 0
                     this.lupdate = 0
                     if(response.data.status == 200){
+                       this.addTrColor();
                       this.startDate = response.data.result.endate
                       this.lupdate = response.data.result.lupdate
                       if(response.data.result.total > 0){
