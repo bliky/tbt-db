@@ -1,21 +1,21 @@
 <template>
-<div class="myinds">
-  <!-- <group> -->
-    <cell
-    :title="('名词释义')"
-    is-link
-    :link="{path:'/bdc-prd-dbd/nounDesc'}">
-    </cell>
+  <div class="myinds" style="-webkit-overflow-scrolling:touch;">
+    <!-- <group> -->
+      <cell
+      :title="('名词释义')"
+      is-link
+      :link="{path:'/bdc-prd-dbd/nounDesc'}">
+      </cell>
 
-    <cell
-    :title="('指标释义')"
-    is-link
-    :link="{path:'/bdc-prd-dbd/indesc'}">
-    </cell>
+      <cell
+      :title="('指标释义')"
+      is-link
+      :link="{path:'/bdc-prd-dbd/indesc'}">
+      </cell>
 
-  <!-- </group> -->
-  
-</div>
+    <!-- </group> -->
+    
+ </div> 
 </template>
 <script>
 import { Cell, CellBox, CellFormPreview, Group, Badge } from 'vux'

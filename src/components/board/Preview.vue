@@ -1,9 +1,9 @@
 <template>
 
-  <div id="preview">
+  <div id="preview" style=" -webkit-overflow-scrolling:touch;">
     <!-- <indate @listenToIndateEvent="showMsgFromChild"></indate> -->
     <div slot="hearder">
-      <div style="padding: 15px 20% 15px 20%;">
+      <div style="padding: 20px 20% 0px 20%;">
         <button-tab v-model="index">
           <button-tab-item :selected="tag === item" v-for="item in taglist" 
             :key="item" @on-item-click="getList(item,index)">
@@ -13,38 +13,39 @@
       </div> 
 
       <div style="text-align: center;">
-          <p style="font-size: 15px;color: #333333;letter-spacing: 0;">
+          <p style="margin-top:10px;font-size: 15px;color: #333333;letter-spacing: 0;">
             <span v-if="index === 0 || index === 1 || index === 2">
                 {{startDate}}
             </span>
           
           </p>
-          <p style="font-size: 12px;color: #999999;letter-spacing: 0;">
+          <p style="margin-top:5px;font-size: 12px;color: #999999;letter-spacing: 0;">
             更新时间：{{lupdate}}
           </p>
         </div>
     </div>
 
-    <div  class="div-table" style="padding: 20px 10px 200px 10px;">
+    <div  class="div-table" style="padding: 18px 10px 80px 10px;">
       <!-- <scroller scrollbar-y  :bounce="true" height="446px" 
         @on-scroll-bottom="onScrollBottom" >  -->
-      <x-table class="table" >
+      <x-table class="table" style="padding-left:6px;padding-right:6px;">
         <thead>
           <tr class="backColor">
-            <th style="text-align: left;">指标</th>
-            <th style="text-align: right;">数值</th>
-            <th  style="text-align: right;" v-if="index === 0">同比</th>
-            <th style="text-align: right;">环比</th>
+            <th style="padding-left:9px;text-align: left;">指标</th>
+            <th style="padding-right:11px;text-align: right;">数值</th>
+            <th style="padding-right:11px;text-align: right;">环比</th>
+            <th  style="padding-right:11px;text-align: right;" v-if="index === 0">同比</th>
+            
           </tr>
         </thead>
         
             <tbody style="font-size: 14px;color: #666666;">
               <tr  id="backcolor" v-for="(item,indexs) in listdata" :key="indexs" 
                    :class="{'backColor': indexs % 2 != 0} ">
-                <td style="text-align: left;">{{item.dim_ind_name}}</td>
-                <td style="text-align: right;">{{item.statis_num}}</td>
-                <td style="text-align: right;" v-if="index === 0">{{item.dtd}}</td>
-                <td style="text-align: right;">{{item.dtw}}</td>
+                <td style="padding-left:9px;text-align: left;">{{item.dim_ind_name}}</td>
+                <td style="padding-right:11px;text-align: right;">{{item.statis_num}}</td>
+                <td style="padding-right:11px;text-align: right;" v-if="index === 0">{{item.dtd}}</td>
+                <td style="padding-right:11px;text-align: right;">{{item.dtw}}</td>
               </tr>
             </tbody>  
             <!-- <load-more tip="loading"></load-more> -->
@@ -74,18 +75,21 @@
 .div-table {padding: 20px 10px 20px 10px;} 
 
 th{
+  height:36px;
   font-family: PingFangSC-Medium;
-  font-size: 12px;
+  font-size: 15px;
   color: #333333;
-  text-align: center;
 }
 td{
+  height: 40px;
   font-family: PingFangSC-Regular;
-  font-size: 13px;
+  font-size: 14px;
   color: #666666;
 }
 x-table {
   background: #FFFFFF;
+  margin-left:6px;
+  margin-right: 6px; 
 }
 thead {font-size: 15px;color: #333333;text-align: center;}
 

@@ -1,5 +1,5 @@
 <template>
-  <div id="footer" height="100%">
+  <div id="footer" height="50px;">
       <tabbar slot="bottom" style="background-color:#ffffff;">
         <tabbar-item :link="{path:'/bdc-prd-dbd/board'}"  selected>
           <img slot="icon" src="../../assets/image/icon_bottom_data_gray@2x.png">

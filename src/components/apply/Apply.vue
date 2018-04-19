@@ -1,5 +1,5 @@
 <template>
-  <div class="apply">
+  <div class="apply" style="-webkit-overflow-scrolling:touch;">
       申请指标
     <!--swiper :list="imgs" auto style="width:100%;margin:0 auto;" height="120px" dots-class="custom-bottom" dots-position="center"></swiper-->
     <!--div>

@@ -1,7 +1,7 @@
 <template>
-  <div id="trend">
+  <div id="trend" style=" -webkit-overflow-scrolling:touch;">
     <div calss="indate">
-      <div style="padding: 15px 20% 15px 20%;">
+      <div style="padding: 20px 20% 15px 20%;">
         <button-tab v-model="index">
           <button-tab-item :selected="tag === item" v-for="item in taglist" 
             :key="item" @on-item-click="getList(item,index)">
@@ -17,26 +17,24 @@
             </span>
           
           </p>
-          <p style="font-size: 12px;color: #999999;letter-spacing: 0;">
+          <p style="margin-top:5px;font-size: 12px;color: #999999;letter-spacing: 0;">
             更新时间：{{lupdate}}
           </p>
         </div>
     </div>
     
     <div class="visual" v-if="visualShow == true">
-      <div id="valSelect">
-        <group>  
+      <div id="valSelect"> 
+        <group>
           <popup-picker 
-            :popup-title="('指标趋势图')" 
             :title="title" 
             :data="list"
-             v-model="value" 
             @on-show="onShow" 
             @on-hide="onHide" 
             @on-change="onChange" 
             :placeholder="('GMV(万元)')">
           </popup-picker>
-        </group>
+        </group>  
       </div>
 
       <div class="chart-wrapper">
@@ -44,13 +42,14 @@
       </div>
     </div>
 
-    <div style="padding: 20px 10px 200px 10px;">
-        <div class="box12">
-          <x-table class="box1-items">
+    <div style="padding: 10px 10px 200px 10px;">
+      <div style="padding-left: 5px;font-size:14px;color:#333333;">指标详情</div>
+        <div class="box12" style="padding-top:9px;">
+          <x-table class="box1-items" style="padding-left:6px;padding-right:6px;">
             <thead>
               <tr class="backColor">
-                <th style="text-align: left;">日期</th>
-                <th style="text-align: right;">
+                <th style="font-size:15px;color:#333333;padding-left:9px;text-align: left;">日期</th>
+                <th style="font-size:15px;color:#333333;padding-right:11px;text-align: right;">
                   {{indName}}
                 </th>
               </tr>
@@ -58,8 +57,8 @@
             <tbody style="font-size: 14px;color: #666666;" 
               v-for="(item,index) in listdata" :key="index">
               <tr :class="{'backColor': index % 2 != 0} ">
-                <td style="text-align: left;">{{item.statis_dt}}</td>
-                <td style="text-align: right;">{{item.statis_num}}</td>
+                <td style="padding-left:9px;text-align: left;">{{item.statis_dt}}</td>
+                <td style="padding-right:11px;text-align: right;">{{item.statis_num}}</td>
               </tr>
 
             </tbody>
@@ -73,13 +72,33 @@
 
 </template>
 
+<style>
+#valSelect .weui-label {
+  border:0;
+  font-size: 14px;
+ }
+#valSelect .weui-cells {
+   margin-top: 10px;
+ }
+ #valSelect .weui-cells:before {
+  border-top:none;
+ }
+ #valSelect .weui-cells:after {
+  border-bottom:none;
+ }
+ #valSelect .vux-popup-picker-placeholder {
+  font-size: 14px;
+}
+</style>
 
 <style scoped>
+
+
 .backColor{
   background: #F4F5FC!important;
 }
 #trend{
-  -webkit-overflow-scrolling: touch!important;
+ -webkit-overflow-scrolling:touch;
 }
 #trend .vux-button-group-current {
   background-color: #09c767;
@@ -233,7 +252,6 @@ export default {
         .then((response) => {
           this.datav = []
           if(response.data.status == 200){
-            //  if(response.data.result.rows.length > 0){
               // 使用 html5 canvas api 创建渐变色对象
                 const canvas = document.getElementById("mountNode");
                 const ctx = canvas.getContext("2d");
@@ -307,7 +325,6 @@ export default {
                   .shape("smooth")
                   .color(gradient);
                 chart.render();
-            // }
 
           }
         }, (response) => {

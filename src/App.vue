@@ -11,13 +11,15 @@
 @import '~vux/src/styles/reset';
 
 html, body {
+  font-family: PingFangSC-Medium;
   width:100%;
   height:100%;
   overflow-x: hidden;
   background-color:#ffffff;
 }
 #app{
-  -webkit-overflow-scrolling: touch!important;
+  overflow-y: auto; z-index: 999; 
+  -webkit-overflow-scrolling : touch;
 }
 .vux-table td:before, .vux-table th:before {
   border-top: 0!important;

@@ -1,6 +1,6 @@
 <template>
-  <div id="board">
-    <tab :line-width="2" slot="header" v-model="index" active-color="#09C767" active-size="15px">
+  <div id="board" style="-webkit-overflow-scrolling:touch;">
+    <tab :line-width="2" height="44px;" slot="header" v-model="index" active-color="#09C767" active-size="15px">
       <tab-item :selected="tag === item" v-for="item in taglist" :key="item" @click="tag = item">
         {{item}}
       </tab-item>

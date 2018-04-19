@@ -1,5 +1,5 @@
 <template>
-<div class="nounDesc" style="padding: 10px 10px 200px 10px;">
+<div class="nounDesc" style="padding: 10px 10px 80px 10px;-webkit-overflow-scrolling:touch;">
   <div  v-for="(item,index) in listdata" :key="index">
     <div class="x-title2">{{item.noun_name}}</div>  
     <div class="x-text">{{item.noun_desc}}</div>

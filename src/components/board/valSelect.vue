@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 import { PopupPicker, Group, Cell, Picker, XButton, Divider, XSwitch } from 'vux'
 
 export default {
