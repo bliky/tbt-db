@@ -20,18 +20,17 @@
           
           </p>
           <p style="font-size: 12px;color: #999999;letter-spacing: 0;">
-            上次更新时间：{{lupdate}}
+            更新时间：{{lupdate}}
           </p>
         </div>
     </div>
 
-    <div  class="div-table">
+    <div  class="div-table" style="padding: 20px 10px 200px 10px;">
       <!-- <scroller scrollbar-y  :bounce="true" height="446px" 
         @on-scroll-bottom="onScrollBottom" >  -->
-
-      <x-table class="table">
+      <x-table class="table" >
         <thead>
-          <tr style="background-color: #F7F7F7">
+          <tr class="backColor">
             <th style="text-align: left;">指标</th>
             <th style="text-align: right;">数值</th>
             <th  style="text-align: right;" v-if="index === 0">同比</th>
@@ -40,13 +39,13 @@
         </thead>
         
             <tbody style="font-size: 14px;color: #666666;">
-              <tr  id="backcolor" v-for="(item,indexs) in listdata" :key="indexs">
+              <tr  id="backcolor" v-for="(item,indexs) in listdata" :key="indexs" 
+                   :class="{'backColor': indexs % 2 != 0} ">
                 <td style="text-align: left;">{{item.dim_ind_name}}</td>
                 <td style="text-align: right;">{{item.statis_num}}</td>
                 <td style="text-align: right;" v-if="index === 0">{{item.dtd}}</td>
                 <td style="text-align: right;">{{item.dtw}}</td>
               </tr>
-              <!-- <tr style="background: #F4F5FC;"> -->
             </tbody>  
             <!-- <load-more tip="loading"></load-more> -->
         
@@ -58,10 +57,42 @@
 </template>
 
 
+<style scoped>
+.backColor{
+  background: #F4F5FC;
+}
+#preview{
+  -webkit-overflow-scrolling: touch!important;
+}
+#preview .vux-button-group-current {
+   background-color:#09C767;
+}
+
+.popover-demo-content {
+  padding: 5px 10px;
+}
+.div-table {padding: 20px 10px 20px 10px;} 
+
+th{
+  font-family: PingFangSC-Medium;
+  font-size: 12px;
+  color: #333333;
+  text-align: center;
+}
+td{
+  font-family: PingFangSC-Regular;
+  font-size: 13px;
+  color: #666666;
+}
+x-table {
+  background: #FFFFFF;
+}
+thead {font-size: 15px;color: #333333;text-align: center;}
+
+</style>
 <script>
 import Cookie from 'js-cookie'
-import { Scroller, Spinner,LoadMore,ViewBox,ButtonTab, ButtonTabItem, Divider,XTable} from "vux";
-// import Indate from './Indate'
+import { Scroller, Spinner,ButtonTab, ButtonTabItem, XTable} from "vux";
 
 const list = () => ['日指标', '周指标','月指标']
 
@@ -69,12 +100,9 @@ export default {
   components: {
     Scroller, 
     Spinner,
-    LoadMore,
     XTable,
     ButtonTab,
-    ButtonTabItem,
-    Divider
-    // Indate
+    ButtonTabItem
   },
   data () {
    return {
@@ -96,22 +124,10 @@ export default {
       }
   },
   mounted : function(){
-     this.addTrColor();
      this.getList();
     
   }, 
   methods: {
-    addTrColor() {
-        var tbodyTrList = document.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-        console.log("进入添加颜色");
-        for (var i = 0; i < tbodyTrList.length; i++) {
-            if (i % 2 != 0) {
-              console.log("添加颜色");
-              console.log(tbodyTrList[i]);
-               tbodyTrList[i].setAttribute("class", "backColor");//隔行变色
-            }
-        }
-    },
     getList(item,index){
       this.tag = item;
       this.index = index;
@@ -136,23 +152,18 @@ export default {
                         size: this.size
                         })
                   .then((response) => {
-                    console.log("success====");
-                    console.log(response.data);
                     this.listdata = []
                     this.startDate = 0
                     this.lupdate = 0
                     if(response.data.status == 200){
-                       this.addTrColor();
                       this.startDate = response.data.result.endate
                       this.lupdate = response.data.result.lupdate
                       if(response.data.result.total > 0){
-                        this.addTrColor();
                         this.listdata = response.data.result.rows;
                       }
                       
                     }
                  }, (response) => {
-                    console.log("error=="+response.error);
                 });
     },
     onScrollBottom () {
@@ -175,43 +186,12 @@ export default {
       this.scrollTop = pos.top
     },
     changeList () {
-      this.$nextTick(() => {
-        this.$refs.scroller.reset({
-          top: 0
-        })
-      })
+      // this.$nextTick(() => {
+      //   this.$refs.scroller.reset({
+      //     top: 0
+      //   })
+      // })
     },
   }
 };
 </script>
-<style scoped>
-.backColor{
-  background: #F4F5FC;
-}
-#preview .vux-button-group-current {
-   background-color:#09C767;
-}
-
-.popover-demo-content {
-  padding: 5px 10px;
-}
-.div-table {padding: 20px 10px 20px 10px;} 
-
-th{
-  font-family: PingFangSC-Medium;
-  font-size: 15px;
-  color: #333333;
-  text-align: center;
-}
-td{
-  font-family: PingFangSC-Regular;
-  font-size: 14px;
-  color: #666666;
-}
-x-table {
-  background: #FFFFFF;
-  border: 1px solid #EEEEEE;
-}
-thead {font-size: 15px;color: #333333;text-align: center;}
-
-</style>

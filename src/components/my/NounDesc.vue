@@ -1,22 +1,33 @@
 <template>
-<div class="nounDesc">
-  <!-- <divider >名词释义</divider> -->
-  <!-- <div class="x-title1">周环比</div> -->
-  <div v-for="(item,index) in listdata" :key="index">
+<div class="nounDesc" style="padding: 10px 10px 200px 10px;">
+  <div  v-for="(item,index) in listdata" :key="index">
     <div class="x-title2">{{item.noun_name}}</div>  
     <div class="x-text">{{item.noun_desc}}</div>
     <br>
-    <!-- <divider>.</divider> -->
   </div>
 </div>
 </template>
+<style scoped>
+.x-title2 {
+  padding-left: 4%;
+  font-family: PingFangSC-Regular;
+  font-size: 15px;
+  color: #333333;
+}
+
+.x-text {
+  padding-left: 4%;
+  padding-right: 4%;
+  font-family: PingFangSC-Regular;
+  font-size: 15px;
+  color: #999999;
+}
+</style>
 <script>
-import { Divider } from 'vux'
 import Cookie from 'js-cookie'
 
 export default {
   components: {
-    Divider
   },
   data () {
    return {
@@ -44,12 +55,10 @@ export default {
                         size: this.size
                         })
                   .then((response) => {
-                    console.log(response.data.result.rows);
                     if(response.data.status == 200 && response.data.result.total > 0){
                       this.listdata = response.data.result.rows;
                     }
                  }, (response) => {
-                    console.log('error===='+response.error);
                 });
     },
   }
@@ -57,26 +66,3 @@ export default {
 
 </script>
 
-<style scoped>
-.x-title1 {
-  padding-left: 4%;
-  font-family: PingFangSC-Medium;
-  font-size: 17px;
-  color: black;
-}
-
-.x-title2 {
-  padding-left: 4%;
-  font-family: PingFangSC-Regular;
-  font-size: 15px;
-  color: #333333;
-}
-
-.x-text {
-  padding-left: 4%;
-  padding-right: 4%;
-  font-family: PingFangSC-Regular;
-  font-size: 15px;
-  color: #999999;
-}
-</style>

@@ -1,6 +1,5 @@
 <template>
   <div id="trend">
-    <!-- indate></indate -->
     <div calss="indate">
       <div style="padding: 15px 20% 15px 20%;">
         <button-tab v-model="index">
@@ -19,10 +18,9 @@
           
           </p>
           <p style="font-size: 12px;color: #999999;letter-spacing: 0;">
-            上次更新时间：{{lupdate}}
+            更新时间：{{lupdate}}
           </p>
         </div>
-
     </div>
     
     <div class="visual" v-if="visualShow == true">
@@ -45,11 +43,12 @@
         <canvas id="mountNode"></canvas>
       </div>
     </div>
-    <div style="padding: 20px 10px 20px 10px;">
+
+    <div style="padding: 20px 10px 200px 10px;">
         <div class="box12">
           <x-table class="box1-items">
-            <thead style="font-size: 15px;color: #333333;text-align: center;" >
-              <tr style="background-color: #F7F7F7">
+            <thead>
+              <tr class="backColor">
                 <th style="text-align: left;">日期</th>
                 <th style="text-align: right;">
                   {{indName}}
@@ -58,21 +57,20 @@
             </thead>
             <tbody style="font-size: 14px;color: #666666;" 
               v-for="(item,index) in listdata" :key="index">
-              <tr>
+              <tr :class="{'backColor': index % 2 != 0} ">
                 <td style="text-align: left;">{{item.statis_dt}}</td>
                 <td style="text-align: right;">{{item.statis_num}}</td>
               </tr>
 
             </tbody>
-            <br>
+             
           </x-table>
         </div>  
       <!-- </scroller> -->
     </div>  
-  
-
-    
+     
   </div>
+
 </template>
 
 
@@ -80,23 +78,25 @@
 .backColor{
   background: #F4F5FC!important;
 }
+#trend{
+  -webkit-overflow-scrolling: touch!important;
+}
 #trend .vux-button-group-current {
   background-color: #09c767;
 }
 th {
   font-family: PingFangSC-Medium;
-  font-size: 15px;
+  font-size: 12px;
   color: #333333;
 }
 td {
   font-family: PingFangSC-Regular;
-  font-size: 14px;
+  font-size: 13px;
   color: #666666;
 }
 
 x-table {
   background: #ffffff;
-  border: 1px solid #eeeeee;
 }
 
 
@@ -120,16 +120,12 @@ import {
   XButton
 } from "vux";
 
-// import Indate from './Indate'
-// import Visual from './Visual'
-
 const list = () => ["日指标", "周指标", "月指标"];
 
 export default {
   components: {
     F2,
     Cookie,
-    Scroller,
     ButtonTab,
     ButtonTabItem,
     XTable,
@@ -137,11 +133,7 @@ export default {
     Group,
     Cell,
     Picker,
-    XButton,
-    Spinner,
-    LoadMore
-    //Indate,
-    // Visual
+    XButton
   },
   data() {
     return {
@@ -189,23 +181,12 @@ export default {
     this.selist();
     //折线图
     this.changeValue();
-    this.addTrColor();
   },
   methods: {
-     addTrColor() {
-        var tbodyTrLists = document.getElementsByTagName("tbody")[0].getElementsByTagName("tr");
-        console.log("进入添加颜色");
-        for (var i = 0; i < tbodyTrLists.length; i++) {
-            if (i % 2 != 0) {
-               tbodyTrLists[i].setAttribute("class", "backColor");//隔行变色
-            }
-        }
-    },
     onScrollBottom() {
       if (this.onFetching) {
         // do nothing
       } else {
-        this.addTrColor();
         this.onFetching = true;
         setTimeout(() => {
           this.bottomCount += 10;
@@ -252,7 +233,7 @@ export default {
         .then((response) => {
           this.datav = []
           if(response.data.status == 200){
-             if(response.data.result.rows.length > 0){
+            //  if(response.data.result.rows.length > 0){
               // 使用 html5 canvas api 创建渐变色对象
                 const canvas = document.getElementById("mountNode");
                 const ctx = canvas.getContext("2d");
@@ -263,8 +244,8 @@ export default {
 
                 let maxDate = response.data.result.maxDate//'7日'
                 let maxValues = response.data.result.maxValues//98.88
-               let position = [maxDate,maxValues]
-               let content = '最大值：'+maxValues
+              //  let position = [maxDate,maxValues]
+              //  let content = '最大值：'+maxValues
                 this.datav = response.data.result.rows
                 const chart = new F2.Chart({
                   id: "mountNode",
@@ -277,9 +258,7 @@ export default {
                 });
                 const defs = {
                   日期: {
-                    //mask: 'DD日',
                     range: [0, 1],
-                   // max: '30日',
                     tickCount: 5
                   },
                   值: {
@@ -305,18 +284,18 @@ export default {
                 chart.tooltip({
                   showCrosshairs: true
                 });
-                chart.guide().tag({
-                  position: position,
-                  content: content,
-                  direct: "tl",
-                  offsetY: -5,
-                  background: {
-                    fill: "#09C767"
-                  },
-                  pointStyle: {
-                    fill: "#09C767"
-                  }
-                });
+                // chart.guide().tag({
+                //   position: position,
+                //   content: content,
+                //   direct: "tl",
+                //   offsetY: -5,
+                //   background: {
+                //     fill: "#09C767"
+                //   },
+                //   pointStyle: {
+                //     fill: "#09C767"
+                //   }
+                // });
                 chart
                   .line()
                   .position("日期*值")
@@ -328,11 +307,10 @@ export default {
                   .shape("smooth")
                   .color(gradient);
                 chart.render();
-            }
+            // }
 
           }
         }, (response) => {
-          console.log("error=="+response.data);
       });
     },
     pageList(){//分页列表
@@ -347,18 +325,15 @@ export default {
         })
         .then(
           response => {
-            console.log(response.data);
             this.listdata = [];
             if (response.data.status == 200) {
               if(response.data.result.total > 0){
                 this.listdata = response.data.result.rows;
-                this.addTrColor();
               }
                 
             }
           },
           response => {
-            console.log("error=="+response.error);
           }
         );
     },
@@ -371,8 +346,6 @@ export default {
         })
         .then(
           response => {
-            console.log("success=1===");
-            console.log(response.data);
             this.endate = 0;
             this.lupdate = 0;
             this.selistdate = [];
@@ -389,12 +362,6 @@ export default {
                 
                   this.indName = "GMV(万元)"; //指标名称
                   this.value = ["GMV(万元)"];
-                  //  this.selistdate.forEach((value,i)=>{   //数组循环
-                  //     for(var pl in value){  //数组对象遍历
-                  //         console.log("p1"+pl);   //获取key
-                  //         console.log("v1"+value[pl])  //获取key的值
-                  //     }
-                  //   })
                   for (let arr of this.selistdate) {
                     this.values.push(arr.dim_ind_name);
                   }
@@ -403,7 +370,6 @@ export default {
             }
           },
           response => {
-            console.log("error=="+response.data);
           }
         );
     },
@@ -412,33 +378,32 @@ export default {
       this.indName = val.join(",");
       this.changeValue();
       this.pageList();
-      console.log("val change indName===",this.indName, val);
     },
     showMsgFromChild(data) {
       this.index = data;
     },
     onShow() {
-      console.log("on show");
+      // console.log("on show");
     },
     onHide() {
-      console.log("on hide");
+      // console.log("on hide");
     },
     onScroll(pos) {
-      this.scrollTop = pos.top;
+      // this.scrollTop = pos.top;
     },
     onCellClick() {
-      window.alert("cell click");
+      // window.alert("cell click");
     },
     onClickButton() {
-      window.alert("click");
+      // window.alert("click");
     },
     changeList() {
-      this.showList1 = false;
-      this.$nextTick(() => {
-        this.$refs.scroller.reset({
-          top: 0
-        });
-      });
+      // this.showList1 = false;
+      // this.$nextTick(() => {
+      //   this.$refs.scroller.reset({
+      //     top: 0
+      //   });
+      // });
     }
   }
 };

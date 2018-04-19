@@ -1,6 +1,7 @@
 <template>
 <div class="indesc">
     <!-- <divider>指标释义</divider> -->
+    <div  class="div-table" style="padding: 10px 10px 200px 10px;">
       <div v-for="(item,index) in listdata" :key="index">
         <div class="x-title1">{{item.className}}</div>
         <div v-for="(item,indexs) in item.childNode" :key="indexs">
@@ -10,8 +11,8 @@
         <br>
         <!-- <divider>.</divider> -->
       </div>
-    <br>
-    <br>
+    </div>  
+   
 </div>
 </template>
 <script>

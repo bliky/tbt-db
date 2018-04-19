@@ -1,6 +1,6 @@
 <template>
   <div id="board">
-    <tab :line-width="2" slot="header" v-model="index" active-color="#09C767" active-size="15px" :animate=true>
+    <tab :line-width="2" v-model="index" active-color="#09C767" active-size="15px">
       <tab-item :selected="tag === item" v-for="item in taglist" :key="item" @click="tag = item">
         {{item}}
       </tab-item>
@@ -48,7 +48,3 @@ import Trend from './Trend'
   }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-  
-</style>

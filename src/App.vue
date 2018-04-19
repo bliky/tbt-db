@@ -1,13 +1,8 @@
 <template>
-  <div id="app" style="-webkit-overflow-scrolling: touch;height:100%;">
-    <!-- <view-box ref="viewBox">
-      <router-view></router-view>
-    </view-box>   -->
-      <!-- <view-box> -->
+  <div id="app">
         <router-view></router-view>
         <app-footer  slot="bottom"></app-footer>
-      <!-- </view-box> -->
-   
+
   </div>
 </template>
 
@@ -15,18 +10,33 @@
 @import '~vux/src/styles/reset';
 
 html, body {
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch!important;
   background-color:#ffffff;
 }
+#app{
+  -webkit-overflow-scrolling: touch!important;
+}
+.vux-table td:before, .vux-table th:before {
+  border-top: 0!important;
+  border-bottom:0!important;
+  border-left: 0!important;
+  border-right:0!important;
+}
+.vux-table:after {
+  border-top: 0!important; 
+}
+ 
 .vux-table td, .vux-table th {
-    border-left: 0!important;
-    border-right:0!important;
+  border-top: 0!important;
+  border-bottom:0!important;
+  border-left: 0!important;
+  border-right:0!important;
 }
 .vux-table td:after, .vux-table th:after {
-    border-left: 0!important;
-    border-right:0!important;
+  border-top: 0!important;
+  border-bottom:0!important;
+  border-left: 0!important;
+  border-right:0!important;
 }
 .weui-tab__panel{
   padding-top: 50px;
@@ -47,9 +57,7 @@ import { ViewBox,Tabbar,TabbarItem } from 'vux'
     },
     data() {
         return {
-            "routerAnimate": false,
-            "enterAnimate": "", //页面进入动效
-            "leaveAnimate": "" //页面离开动效
+            "routerAnimate": false
         }
     }    
   }
