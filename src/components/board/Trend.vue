@@ -29,6 +29,7 @@
           <popup-picker 
             :title="title" 
             :data="list"
+             v-model="value"
             @on-show="onShow" 
             @on-hide="onHide" 
             @on-change="onChange" 
@@ -392,6 +393,7 @@ export default {
     },
     
     onChange(val) {
+      console.log("dkasd");
       this.indName = val.join(",");
       this.changeValue();
       this.pageList();
