@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="-webkit-overflow-scrolling: touch!important;" height="100%">
+  <div id="app" style="-webkit-overflow-scrolling: touch;" height="100%">
       
       <router-view></router-view>
       <app-footer  slot="bottom"></app-footer>
@@ -15,6 +15,7 @@ html, body {
   width:100%;
   height:100%;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
   background-color:#ffffff;
 }
 #app{

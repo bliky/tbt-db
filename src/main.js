@@ -76,7 +76,7 @@ router.beforeEach((to, from, next) => {
   
   next()
 })
-
+console.log('nihao')
 /* eslint-disable no-new */
 new Vue({
   router,
