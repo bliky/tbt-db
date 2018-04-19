@@ -22,6 +22,9 @@
   </div>
 </template>
 <style>
+.weui-tabbar{
+  position: fixed;
+}
   tabbar__item.weui-bar__item_on .weui-tabbar__icon, .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon > i, .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label {
     font-family: PingFangSC-Regular;
     font-size: 9px;
