@@ -92,13 +92,15 @@ thead {font-size: 15px;color: #333333;text-align: center;}
 </style>
 <script>
 import Cookie from 'js-cookie'
-import { Scroller, Spinner,ButtonTab, ButtonTabItem, XTable} from "vux";
+import { Scroller, LoadMore,ViewBox,Spinner,ButtonTab, ButtonTabItem, XTable} from "vux";
 
 const list = () => ['日指标', '周指标','月指标']
 
 export default {
   components: {
     Scroller, 
+    LoadMore,
+    ViewBox,
     Spinner,
     XTable,
     ButtonTab,
