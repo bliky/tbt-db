@@ -45,7 +45,10 @@
                 <td style="padding-left:9px;text-align: left;">{{item.dim_ind_name}}</td>
                 <td style="padding-right:11px;text-align: right;">{{item.statis_num}}</td>
                 <td style="padding-right:11px;text-align: right;" v-if="index === 0">{{item.dtd}}</td>
-                <td style="padding-right:11px;text-align: right;">{{item.dtw}}</td>
+                <td style="padding-right:11px;text-align: right;" v-if="index === 1">{{item.wtw}}</td>
+                <td style="padding-right:11px;text-align: right;" v-if="index === 2">{{item.mtm}}</td>
+                
+                <td style="padding-right:11px;text-align: right;" v-if="index === 0">{{item.dtw}}</td>
               </tr>
             </tbody>  
             <!-- <load-more tip="loading"></load-more> -->
