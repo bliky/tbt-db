@@ -25,9 +25,17 @@
 /* .weui-tabbar{
   position: fixed;
 } */
+.weui-tabbar__label {
+    font-family: PingFangSC-Regular;
+    font-size: 10px;
+    color: #999999;
+    letter-spacing: 0;
+    text-align: center;
+}
+
   tabbar__item.weui-bar__item_on .weui-tabbar__icon, .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon > i, .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label {
     font-family: PingFangSC-Regular;
-    font-size: 9px;
+    font-size: 10px;
     color: #09C767;
     letter-spacing: 0;
     text-align: center;

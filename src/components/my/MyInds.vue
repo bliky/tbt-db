@@ -1,6 +1,8 @@
 <template>
   <div class="myinds" style="-webkit-overflow-scrolling:touch;">
-    <!-- <group> -->
+    <div style="padding-top:20px;background-color:#F6F6F6;">
+    </div>
+    <!-- <group>  -->
       <cell
       :title="('名词释义')"
       is-link
@@ -12,11 +14,11 @@
       is-link
       :link="{path:'/bdc-prd-dbd/indesc'}">
       </cell>
-
+      <hr color="#E3E3E3" size="1px">
     <!-- </group> -->
-    
  </div> 
 </template>
+
 <script>
 import { Cell, CellBox, CellFormPreview, Group, Badge } from 'vux'
 export default {

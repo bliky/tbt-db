@@ -3,6 +3,7 @@
   <div  v-for="(item,index) in listdata" :key="index">
     <div class="x-title2">{{item.noun_name}}</div>  
     <div class="x-text">{{item.noun_desc}}</div>
+    <hr color="#E3E3E3" size="1px">
     <br>
   </div>
 </div>
@@ -18,8 +19,10 @@
 .x-text {
   padding-left: 4%;
   padding-right: 4%;
+  padding-bottom:6%;
   font-family: PingFangSC-Regular;
   font-size: 15px;
+  text-align: justify;
   color: #999999;
 }
 </style>

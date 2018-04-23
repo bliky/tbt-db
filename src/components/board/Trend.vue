@@ -24,18 +24,18 @@
     </div>
     
     <div class="visual" v-if="visualShow == true">
-      <div id="valSelect"> 
-        <group>
-          <popup-picker 
-            :title="title" 
-            :data="list"
-             v-model="value"
-            @on-show="onShow" 
-            @on-hide="onHide" 
-            @on-change="onChange" 
-            :placeholder="('GMV(万元)')">
-          </popup-picker>
-        </group>  
+      <div id="valSelect">
+         <group>
+            <popup-picker 
+              :title="title" 
+              :data="list"
+              v-model="value"
+              @on-show="onShow" 
+              @on-hide="onHide" 
+              @on-change="onChange" 
+              :placeholder="('GMV(万元)')">
+            </popup-picker>
+         </group> 
       </div>
 
       <div class="chart-wrapper">
@@ -43,8 +43,8 @@
       </div>
     </div>
 
-    <div style="padding: 10px 10px 200px 10px;">
-      <div style="padding-left: 5px;font-size:14px;color:#333333;">指标详情</div>
+    <div style="padding: 10px 10px 30px 10px;">
+      <div style="padding-left: 5px;font-family: PingFangSC-Regular;font-size:14px;color:#333333;">指标详情</div>
         <div class="box12" style="padding-top:9px;">
           <x-table class="box1-items" style="padding-left:6px;padding-right:6px;">
             <thead>
@@ -76,7 +76,9 @@
 <style>
 #valSelect .weui-label {
   border:0;
+  font-family: PingFangSC-Regular;
   font-size: 14px;
+  color: #333333;
  }
 #valSelect .weui-cells {
    margin-top: 10px;
@@ -88,7 +90,9 @@
   border-bottom:none;
  }
  #valSelect .vux-popup-picker-placeholder {
-  font-size: 14px;
+   font-family: PingFangSC-Regular;
+   font-size: 14px;
+   color: #333333;
 }
 </style>
 
@@ -300,8 +304,15 @@ export default {
                   }
                 });
                 chart.source(this.datav, defs);
+
                 chart.tooltip({
-                  showCrosshairs: true
+                 // showItemMarker: false,
+                  showCrosshairs: true,
+                  onShow(ev) {
+                  const { items } = ev;
+                  items[0].name = items[0].title;
+                }
+                 
                 });
                 // chart.guide().tag({
                 //   position: position,

@@ -1,6 +1,6 @@
 <template>
   <div id="board" style="-webkit-overflow-scrolling:touch;">
-    <tab :line-width="2" height="44px;" slot="header" v-model="index" active-color="#09C767" active-size="15px">
+    <tab :line-width="2" height="44px;" slot="header" v-model="index" active-color="#09C767" active-size="17px">
       <tab-item :selected="tag === item" v-for="item in taglist" :key="item" @click="tag = item">
         {{item}}
       </tab-item>
@@ -13,6 +13,18 @@
     </div>
   </div>
 </template>
+
+<style>
+#board element.style {
+    height: 1px;
+}
+#board .vux-tab .vux-tab-item{
+  font-family: PingFangSC-Medium;
+  font-size: 17px;
+  color: #666666;
+  text-align: center;
+}
+</style>
 
 <script>
 import { ViewBox,Tab,TabItem } from 'vux'
