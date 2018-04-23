@@ -6,9 +6,8 @@
         <div class="x-title1">{{item.className}}</div>
         <div v-for="(item,indexs) in item.childNode" :key="indexs">
           <div class="x-title2">{{item.indName}}</div>  
-          <div class="x-text">{{item.inDesc}}
-            <hr color="#E3E3E3" size="1px" padding-left="50px;">
-          </div>
+          <div class="x-text">{{item.inDesc}}</div>
+          <hr color="#E3E3E3" size="1px" padding-left="50px;">
         </div>
         
         <br>
@@ -66,7 +65,7 @@ export default {
 <style scoped>
 .x-title1 {
  font-weight:bold;
- padding-left: 4%;
+ /* padding-left: 4%; */
  font-family: PingFangSC-Medium;
  font-size: 17px;
  color: #333333;
@@ -74,15 +73,15 @@ export default {
 
 .x-title2 {
   padding-top: 2.7%;
-  padding-left: 4%;
+  /* padding-left: 4%; */
   font-family: PingFangSC-Regular;
   font-size: 15px;
   color: #333333;
 }
 
 .x-text {
-  padding-left: 4%;
-  padding-right: 4%;
+  /* padding-left: 4%; */
+  /* padding-right: 4%; */
   padding-bottom:6%;
   font-family: PingFangSC-Regular;
   font-size: 15px;

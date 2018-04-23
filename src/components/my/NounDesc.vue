@@ -2,25 +2,23 @@
 <div class="nounDesc" style="padding: 0px 10px 80px 10px;-webkit-overflow-scrolling:touch;">
   <div  v-for="(item,index) in listdata" :key="index">
     <div class="x-title2">{{item.noun_name}}</div>  
-    <div class="x-text">{{item.noun_desc}}
-       <hr color="#E3E3E3" size="1px">
-    </div>
-     
+    <div class="x-text">{{item.noun_desc}}</div>
+     <hr color="#E3E3E3" size="1px">
     <br>
   </div>
 </div>
 </template>
 <style scoped>
 .x-title2 {
-  padding-left: 4%;
+  /* padding-left: 4%; */
   font-family: PingFangSC-Regular;
   font-size: 15px;
   color: #333333;
 }
 
 .x-text {
-  padding-left: 4%;
-  padding-right: 4%;
+  /* padding-left: 4%; */
+  /* padding-right: 4%; */
   padding-bottom:6%;
   font-family: PingFangSC-Regular;
   font-size: 15px;
