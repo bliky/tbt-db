@@ -1,9 +1,11 @@
 <template>
-<div class="nounDesc" style="padding: 10px 10px 80px 10px;-webkit-overflow-scrolling:touch;">
+<div class="nounDesc" style="padding: 0px 10px 80px 10px;-webkit-overflow-scrolling:touch;">
   <div  v-for="(item,index) in listdata" :key="index">
     <div class="x-title2">{{item.noun_name}}</div>  
-    <div class="x-text">{{item.noun_desc}}</div>
-    <hr color="#E3E3E3" size="1px">
+    <div class="x-text">{{item.noun_desc}}
+       <hr color="#E3E3E3" size="1px">
+    </div>
+     
     <br>
   </div>
 </div>

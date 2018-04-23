@@ -63,7 +63,7 @@
 
 <style scoped>
 .backColor{
-  background: #F4F5FC 100%;
+  background: #F8F9FF;
 }
 #preview{
   -webkit-overflow-scrolling: touch!important;

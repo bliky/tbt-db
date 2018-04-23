@@ -74,6 +74,18 @@
 </template>
 
 <style>
+.vux-button-group > a {
+    color: #09C767;
+}
+
+.vux-button-group > a.vux-button-tab-item-last:after {
+    border-right: 1px solid #09C767;
+    border-top: 1px solid #09C767;
+    border-bottom: 1px solid #09C767;
+    border-left: none;
+    color: #09C767;
+}
+
 #valSelect .weui-label {
   border:0;
   font-family: PingFangSC-Regular;
@@ -81,6 +93,10 @@
   color: #333333;
  }
 #valSelect .weui-cells {
+   border:0;
+   font-family: PingFangSC-Regular;
+   font-size: 14px;
+   color: #333333;
    margin-top: 10px;
  }
  #valSelect .weui-cells:before {
@@ -100,7 +116,7 @@
 
 
 .backColor{
-  background: #F4F5FC!important;
+  background: #F8F9FF!important;
 }
 #trend{
  -webkit-overflow-scrolling:touch;
