@@ -1,13 +1,13 @@
 <template>
 <div class="indesc" style="-webkit-overflow-scrolling:touch;">
     <!-- <divider>指标释义</divider> -->
-    <div  class="div-table" style="padding: 20px 10px 80px 10px;">
+    <div  class="div-table" style="padding: 20px 15px 80px 15px;">
       <div v-for="(item,index) in listdata" :key="index">
         <div class="x-title1">{{item.className}}</div>
         <div v-for="(item,indexs) in item.childNode" :key="indexs">
           <div class="x-title2">{{item.indName}}</div>  
           <div class="x-text">{{item.inDesc}}</div>
-          <hr color="#E3E3E3" size="1px" padding-left="50px;">
+          <hr color="#eee" size="1px" padding-left="50px;">
         </div>
         
         <br>
@@ -64,6 +64,7 @@ export default {
 
 <style scoped>
 .x-title1 {
+  padding-top: 20px;
  font-weight:bold;
  /* padding-left: 4%; */
  font-family: PingFangSC-Medium;
@@ -72,16 +73,14 @@ export default {
 }
 
 .x-title2 {
-  padding-top: 2.7%;
-  /* padding-left: 4%; */
+  padding-top: 20px;
   font-family: PingFangSC-Regular;
   font-size: 15px;
   color: #333333;
 }
 
 .x-text {
-  /* padding-left: 4%; */
-  /* padding-right: 4%; */
+  padding-top: 20px;
   padding-bottom:6%;
   font-family: PingFangSC-Regular;
   font-size: 15px;
