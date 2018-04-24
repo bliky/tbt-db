@@ -168,7 +168,47 @@ export default {
                       this.startDate = response.data.result.endate
                       this.lupdate = response.data.result.lupdate
                       if(response.data.result.total > 0){
-                        this.listdata = response.data.result.rows;
+                        let arrs = response.data.result.rows;
+                        arrs = arrs.map((item) => {
+                          let arr = new Array(); 
+                          let xiaoshu = "";  //用来记录参数小数数值包括小数点
+                          let zhengshu ="";  //用来记录参数录整数数值
+                          let t = "";
+                          if(item.statis_num < 1000){    //当参数小于1000的时候直接返回参数
+                              return item.statis_num;
+                          }else{
+                              t = item.statis_num.toString();   //将整数转换成字符串
+                              if(t.indexOf('.')>0){   //如果参数存在小数，则记录小数部分与整数部分
+                                  var index = t.indexOf('.');
+                                  xiaoshu = t.slice(index,t.length);
+                                  zhengshu = t.slice(0,index);
+                              }else{   //否则整数部分的值就等于参数的字符类型
+                                  zhengshu = t;
+                              }
+                              var num = parseInt(zhengshu.length/3);   //判断需要插入千位分割符的个数
+
+                              //将整数1234567890部分拆分为2部分，变量head:1   变量body:123456789
+                              var head = zhengshu.slice(0,zhengshu.length-num*3);  
+                              if(head.length>0){  //如果head存在，则在head后面加个千位分隔符，
+                                  head += ',';
+                              }
+                              var body = zhengshu.slice(zhengshu.length-num*3,zhengshu.length);
+
+                              //将body字符串123456789转换成一个字符数组arr2 = ['123','456','789']
+                              var arr2 = new Array();   
+                              for(var i=0;i<num;i++){
+                                  arr2.push(body.slice(i*3,i*3+3));
+                              }
+                              body = arr2.join(',');   //将数组arr2通过join(',')   方法，拼接成一个以逗号为间隔的字符串
+
+                              zhengshu = head + body;  //拼接整数部分
+                              item.statis_num = zhengshu + xiaoshu;   //最后拼接整数和小数部分
+                              return item;   //返回结果
+
+                          }
+                          //item.statis_num = (item.statis_num || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
+                        });
+                        this.listdata = arrs;
                       }
                       
                     }

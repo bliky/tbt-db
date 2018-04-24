@@ -2,8 +2,8 @@
   <div id="footer" height="50px;">
       <tabbar slot="bottom" style="background-color:#ffffff;">
         <tabbar-item :link="{path:'/bdc-prd-dbd/board'}"  selected>
-          <img slot="icon" src="../../assets/image/icon_bottom_data_gray@2x.png">
-          <img slot="icon-active" src="../../assets/image/icon_bottom_data_green@2x.png">
+          <img slot="icon" src="../../assets/image/dataBoardGray@2x.png">
+          <img slot="icon-active" src="../../assets/image/dataBoardGreen@2x.png">
           <span class="label" slot="label">数据看板</span>
         </tabbar-item>
         
@@ -14,8 +14,8 @@
         </tabbar-item> -->
       
         <tabbar-item :link="{path:'/bdc-prd-dbd/myinds'}" >
-          <img slot="icon" src="../../assets/image/icon_bottom_mine_gray@2x.png">
-          <img slot="icon-active" src="../../assets/image/icon_bottom_mine_green@2x.png">
+          <img slot="icon" src="../../assets/image/indDescGray@2x.png">
+          <img slot="icon-active" src="../../assets/image/indDescGreen@2x.png">
           <span class="label" slot="label">指标释义</span>
         </tabbar-item>
       </tabbar>
