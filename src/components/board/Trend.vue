@@ -380,7 +380,7 @@ export default {
                   let zhengshu ="";  //用来记录参数录整数数值
                   let t = "";
                   if(item.statis_num < 1000){    //当参数小于1000的时候直接返回参数
-                      return item.statis_num;
+                      return item;
                   }else{
                       t = item.statis_num.toString();   //将整数转换成字符串
                       if(t.indexOf('.')>0){   //如果参数存在小数，则记录小数部分与整数部分
