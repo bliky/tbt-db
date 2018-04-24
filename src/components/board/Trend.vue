@@ -18,7 +18,7 @@
           
           </p>
           <p style="margin-top:5px;font-size: 12px;color: #999999;letter-spacing: 0;">
-            更新时间：{{lupdate}}
+            {{lupdate}}
           </p>
         </div>
     </div>
@@ -190,8 +190,8 @@ export default {
       selistdate: [],
       tag: "日指标",
       taglist: list(),
-      endate: 0,
-      lupdate: 0,
+      endate: '',
+      lupdate: '',
       title: "趋势图",
       dataType: "D",
       uid:0,
@@ -429,8 +429,8 @@ export default {
         })
         .then(
           response => {
-            this.endate = 0;
-            this.lupdate = 0;
+            this.endate = '';
+            this.lupdate = '';
             this.selistdate = [];
             this.values = [];
             this.list = [];
@@ -438,7 +438,7 @@ export default {
             this.visualShow = false;
             if (response.data.status == 200) {
                 this.endate = response.data.result.endate;
-                this.lupdate = response.data.result.lupdate;
+                this.lupdate = '更新时间：'+response.data.result.lupdate;
                 if(response.data.result.rows.length > 0){
                   this.visualShow = true;
                   this.selistdate = response.data.result.rows;

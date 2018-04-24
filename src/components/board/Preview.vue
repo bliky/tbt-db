@@ -20,7 +20,7 @@
           
           </p>
           <p style="margin-top:5px;font-size: 12px;color: #999999;letter-spacing: 0;">
-            更新时间：{{lupdate}}
+            {{lupdate}}
           </p>
         </div>
     </div>
@@ -120,8 +120,8 @@ export default {
         listdata: [],
         tag: '日指标',
         taglist: list(),
-        startDate: 0,
-        lupdate: 0,
+        startDate: '',
+        lupdate: '',
         index: 0,
         indexs: 0,
         page: 1,
@@ -162,11 +162,11 @@ export default {
                         })
                   .then((response) => {
                     this.listdata = []
-                    this.startDate = 0
-                    this.lupdate = 0
+                    this.startDate = ''
+                    this.lupdate = ''
                     if(response.data.status == 200){
                       this.startDate = response.data.result.endate
-                      this.lupdate = response.data.result.lupdate
+                      this.lupdate = '更新时间：'+response.data.result.lupdate
                       if(response.data.result.total > 0){
                         let arrs = response.data.result.rows;
                         arrs = arrs.map((item) => {
