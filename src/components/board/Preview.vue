@@ -28,13 +28,13 @@
     <div  class="div-table" style="padding: 18px 10px 80px 10px;">
       <!-- <scroller scrollbar-y  :bounce="true" height="446px" 
         @on-scroll-bottom="onScrollBottom" >  -->
-      <x-table class="table" style="padding-left:6px;padding-right:6px;">
-        <thead v-if=" dataShow == true" >
+      <x-table class="table" style="padding-left:6px;padding-right:6px;" v-if=" dataShow == true">
+        <thead>
           <tr class="backColor">
-            <th style="text-align: left;padding-left:9px;">指标</th>
-            <th style="text-align: right;padding-right:11px;">数值</th>
-            <th style="text-align: right;padding-right:11px;">环比</th>
-            <th  style="text-align: right;padding-right:11px;" v-if="index === 0">同比</th>
+            <th style="width:38%;text-align: left;padding-left:9px;" >指标</th>
+            <th style="width:22%;text-align: right;padding-right:11px;">数值</th>
+            <th style="width:20%;text-align: right;padding-right:11px;">环比</th>
+            <th  style="width:20%;text-align: right;padding-right:11px;" v-if="index === 0">同比</th>
             
           </tr>
         </thead>
@@ -208,9 +208,9 @@ export default {
                           //item.statis_num = (item.statis_num || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
                         });
                         this.listdata = arrs;
-                        setTimeout(() => {
+                        // setTimeout(() => {  
                            this.dataShow = true;
-                        }, 110);
+                        // }, 80);
                       }
                       
                     }
