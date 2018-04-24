@@ -7,7 +7,7 @@
         <div v-for="(item,indexs) in item.childNode" :key="indexs">
           <div class="x-title2">{{item.indName}}</div>  
           <div class="x-text">{{item.inDesc}}</div>
-          <hr color="#eee" size="1px" padding-left="50px;">
+          <hr color="#eee" size="1px">
         </div>
         
         <br>
@@ -66,7 +66,6 @@ export default {
 .x-title1 {
   padding-top: 20px;
  font-weight:bold;
- /* padding-left: 4%; */
  font-family: PingFangSC-Medium;
  font-size: 17px;
  color: #333333;
@@ -80,11 +79,12 @@ export default {
 }
 
 .x-text {
-  padding-top: 20px;
-  padding-bottom:6%;
+  padding-top: 5px;
+  padding-bottom:20px;
   font-family: PingFangSC-Regular;
   font-size: 15px;
   text-align: justify;
   color: #999999;
 }
+
 </style>

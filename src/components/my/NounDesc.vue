@@ -10,16 +10,15 @@
 </template>
 <style scoped>
 .x-title2 {
-  padding-top: 20px;
-  /* padding-left: 4%; */
+  padding-top: 0px;
   font-family: PingFangSC-Regular;
   font-size: 15px;
   color: #333333;
 }
 
 .x-text {
-  padding-top: 20px;
-  padding-bottom:6%;
+  padding-top: 5px;
+  padding-bottom:20px;
   font-family: PingFangSC-Regular;
   font-size: 15px;
   text-align: justify;
