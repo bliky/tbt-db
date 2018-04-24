@@ -29,12 +29,12 @@
       <!-- <scroller scrollbar-y  :bounce="true" height="446px" 
         @on-scroll-bottom="onScrollBottom" >  -->
       <x-table class="table" style="padding-left:6px;padding-right:6px;">
-        <thead>
+        <thead v-if=" dataShow == true" >
           <tr class="backColor">
-            <th style="padding-left:9px;text-align: left;">指标</th>
-            <th style="padding-right:11px;text-align: right;">数值</th>
-            <th style="padding-right:11px;text-align: right;">环比</th>
-            <th  style="padding-right:11px;text-align: right;" v-if="index === 0">同比</th>
+            <th style="text-align: left;padding-left:9px;">指标</th>
+            <th style="text-align: right;padding-right:11px;">数值</th>
+            <th style="text-align: right;padding-right:11px;">环比</th>
+            <th  style="text-align: right;padding-right:11px;" v-if="index === 0">同比</th>
             
           </tr>
         </thead>
@@ -42,13 +42,13 @@
             <tbody style="font-size: 14px;color: #666666;">
               <tr  id="backcolor" v-for="(item,indexs) in listdata" :key="indexs" 
                    :class="{'backColor': indexs % 2 != 0} ">
-                <td style="padding-left:9px;text-align: left;">{{item.dim_ind_name}}</td>
-                <td style="padding-right:11px;text-align: right;">{{item.statis_num}}</td>
-                <td style="padding-right:11px;text-align: right;" v-if="index === 0">{{item.dtd}}</td>
-                <td style="padding-right:11px;text-align: right;" v-if="index === 1">{{item.wtw}}</td>
-                <td style="padding-right:11px;text-align: right;" v-if="index === 2">{{item.mtm}}</td>
+                <td style="text-align: left;padding-left:9px;">{{item.dim_ind_name}}</td>
+                <td style="text-align: right;padding-right:11px;">{{item.statis_num}}</td>
+                <td style="text-align: right;padding-right:11px;" v-if="index === 0">{{item.dtd}}</td>
+                <td style="text-align: right;padding-right:11px;" v-if="index === 1">{{item.wtw}}</td>
+                <td style="text-align: right;padding-right:11px;" v-if="index === 2">{{item.mtm}}</td>
                 
-                <td style="padding-right:11px;text-align: right;" v-if="index === 0">{{item.dtw}}</td>
+                <td style="text-align: right;padding-right:11px;" v-if="index === 0">{{item.dtw}}</td>
               </tr>
             </tbody>  
             <!-- <load-more tip="loading"></load-more> -->
@@ -94,7 +94,7 @@ x-table {
   margin-left:6px;
   margin-right: 6px; 
 }
-thead {font-size: 15px;color: #333333;text-align: center;}
+thead {font-size: 15px;color: #333333;}
 
 </style>
 <script>
@@ -115,6 +115,7 @@ export default {
   },
   data () {
    return {
+        dataShow: false,
         uid: 0,
         uname: "",
         listdata: [],
@@ -161,9 +162,7 @@ export default {
                         size: this.size
                         })
                   .then((response) => {
-                    this.listdata = []
-                    this.startDate = ''
-                    this.lupdate = ''
+                     this.dataShow = false;
                     if(response.data.status == 200){
                       this.startDate = response.data.result.endate
                       this.lupdate = '更新时间：'+response.data.result.lupdate
@@ -209,6 +208,9 @@ export default {
                           //item.statis_num = (item.statis_num || 0).toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,');
                         });
                         this.listdata = arrs;
+                        setTimeout(() => {
+                           this.dataShow = true;
+                        }, 200);
                       }
                       
                     }

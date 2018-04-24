@@ -22,7 +22,6 @@
   font-family: PingFangSC-Medium;
   font-size: 17px;
   color: #666666;
-  text-align: center;
 }
 </style>
 
