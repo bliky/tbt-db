@@ -210,7 +210,7 @@ export default {
                         this.listdata = arrs;
                         setTimeout(() => {
                            this.dataShow = true;
-                        }, 200);
+                        }, 110);
                       }
                       
                     }
