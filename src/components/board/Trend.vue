@@ -1,6 +1,5 @@
 <template>
   <div id="trend" style=" -webkit-overflow-scrolling:touch;">
-    <div calss="indate">
       <div style="padding: 20px 20% 15px 20%;">
         <button-tab v-model="index">
           <button-tab-item :selected="tag === item" v-for="item in taglist" 
@@ -9,21 +8,21 @@
           </button-tab-item>  
         </button-tab>
       </div> 
-
-      <div class="lupdate" style="text-align: center;">
-          <p style="font-size: 15px;color: #333333;letter-spacing: 0;">
-            <span v-if="index === 0 || index === 1 || index === 2">
-                {{endate}} 
-            </span>
-          
-          </p>
-          <p style="margin-top:5px;font-size: 12px;color: #999999;letter-spacing: 0;">
-            {{lupdate}}
-          </p>
-        </div>
-    </div>
     
     <div class="visual" v-if="visualShow == true">
+      <div class="lupdate" style="text-align: center;">
+        <p style="font-size: 15px;color: #333333;letter-spacing: 0;">
+          <span v-if="index === 0 || index === 1 || index === 2">
+              {{endate}} 
+          </span>
+        
+        </p>
+        <p style="margin-top:5px;font-size: 12px;color: #999999;letter-spacing: 0;">
+          {{lupdate}}
+        </p>
+      </div>
+    
+    
       <div id="valSelect">
          <group>
             <popup-picker 
@@ -41,34 +40,33 @@
       <div class="chart-wrapper">
         <canvas id="mountNode"></canvas>
       </div>
-    </div>
 
-    <div style="padding: 10px 10px 30px 10px;">
-      <div style="padding-left: 5px;font-family: PingFangSC-Regular;font-size:14px;color:#333333;">详细数据</div>
-        <div class="box12" style="padding-top:9px;">
-          <x-table class="box1-items" style="padding-left:6px;padding-right:6px;">
-            <thead>
-              <tr class="backColor">
-                <th style="font-size:15px;color:#333333;padding-left:9px;text-align: left;">日期</th>
-                <th style="font-size:15px;color:#333333;padding-right:11px;text-align: right;">
-                  {{indName}}
-                </th>
-              </tr>
-            </thead>
-            <tbody style="font-size: 14px;color: #666666;" 
-              v-for="(item,index) in listdata" :key="index">
-              <tr :class="{'backColor': index % 2 != 0} ">
-                <td style="padding-left:9px;text-align: left;">{{item.statis_dt}}</td>
-                <td style="padding-right:11px;text-align: right;">{{item.statis_num}}</td>
-              </tr>
+      <div style="padding: 10px 10px 30px 10px;">
+        <div style="padding-left: 5px;font-family: PingFangSC-Regular;font-size:14px;color:#333333;">详细数据</div>
+          <div class="box12" style="padding-top:9px;">
+            <x-table class="box1-items" style="padding-left:6px;padding-right:6px;">
+              <thead>
+                <tr class="backColor">
+                  <th style="font-size:15px;color:#333333;padding-left:9px;text-align: left;">日期</th>
+                  <th style="font-size:15px;color:#333333;padding-right:11px;text-align: right;">
+                    {{indName}}
+                  </th>
+                </tr>
+              </thead>
+              <tbody style="font-size: 14px;color: #666666;" 
+                v-for="(item,index) in listdata" :key="index">
+                <tr :class="{'backColor': index % 2 != 0} ">
+                  <td style="padding-left:9px;text-align: left;">{{item.statis_dt}}</td>
+                  <td style="padding-right:11px;text-align: right;">{{item.statis_num}}</td>
+                </tr>
 
-            </tbody>
-             
-          </x-table>
-        </div>  
-      <!-- </scroller> -->
-    </div>  
-     
+              </tbody>
+              
+            </x-table>
+          </div>  
+        <!-- </scroller> -->
+      </div>  
+    </div> 
   </div>
 
 </template>
@@ -177,6 +175,7 @@ export default {
   },
   data() {
     return {
+      dataShow: false,
       datav: [],
       page:1,
       size:100,
@@ -272,7 +271,10 @@ export default {
                           })
         .then((response) => {
           this.datav = []
+          this.visualShow = false;
           if(response.data.status == 200){
+            if(response.data.result.rows.length > 0){
+              this.visualShow = true;
               // 使用 html5 canvas api 创建渐变色对象
                 const canvas = document.getElementById("mountNode");
                 const ctx = canvas.getContext("2d");
@@ -353,7 +355,7 @@ export default {
                   .shape("smooth")
                   .color(gradient);
                 chart.render();
-
+            }
           }
         }, (response) => {
       });
@@ -435,12 +437,10 @@ export default {
             this.values = [];
             this.list = [];
             this.value = [];
-            this.visualShow = false;
             if (response.data.status == 200) {
                 this.endate = response.data.result.endate;
                 this.lupdate = '更新时间：'+response.data.result.lupdate;
                 if(response.data.result.rows.length > 0){
-                  this.visualShow = true;
                   this.selistdate = response.data.result.rows;
                 
                   this.indName = "GMV(万元)"; //指标名称
