@@ -32,7 +32,7 @@
               @on-show="onShow" 
               @on-hide="onHide" 
               @on-change="onChange" 
-              :placeholder="('GMV(万元)')">
+              :placeholder="('')">
             </popup-picker>
          </group> 
       </div>
@@ -205,8 +205,8 @@ export default {
         "通过率",
         "项目可售"
       ],
-      value: ["GMV(万元)"],
-      indName: "GMV(万元)",
+      value: [""],
+      indName: "",
       showPopupPicker: false,
       index: 0
     };
@@ -241,11 +241,7 @@ export default {
       this.index = index;
       this.uid = Cookie.get("t8t-it-uid");
       this.uname = Cookie.get("t8t-oa-username");
-      this.page = 1;
-      this.size = 100;
       this.dataType = "D";
-      this.listValue = [];
-      this.indName = "GMV(万元)"; //指标名称
       if (this.index == 0) {
         this.dataType = "D";
       } else if (this.index == 1) {
@@ -253,13 +249,11 @@ export default {
       } else if (this.index == 2) {
         this.dataType = "M";
       }
+
       //选择列表
       this.selist();
-      //折线图
-      this.changeValue();
-      //分页查询列表
-      this.pageList();
-      
+      this.page = 1;
+      this.size = 100;
     },
     changeValue(){ //趋势图
       this.$http.fetch('dsa/dataBoard/indTnd/numList',
@@ -422,7 +416,7 @@ export default {
           }
         );
     },
-    selist(){//选择列表
+    selist(){//选择列
       this.$http
         .fetch("dsa/dataBoard/indTnd/seList", {
           uid: this.uid,
@@ -442,13 +436,20 @@ export default {
                 this.lupdate = '更新时间：'+response.data.result.lupdate;
                 if(response.data.result.rows.length > 0){
                   this.selistdate = response.data.result.rows;
-                
-                  this.indName = "GMV(万元)"; //指标名称
-                  this.value = ["GMV(万元)"];
+                  
                   for (let arr of this.selistdate) {
                     this.values.push(arr.dim_ind_name);
                   }
                   this.list.push(this.values);
+
+                  let  a = this.selistdate.shift();
+                  this.indName = a.dim_ind_name; //指标名称
+                  this.value = [a.dim_ind_name];
+
+                  //折线图
+                  this.changeValue();
+                  //分页查询列表
+                  this.pageList();
                 }  
             }
           },
@@ -458,7 +459,6 @@ export default {
     },
     
     onChange(val) {
-      console.log("dkasd");
       this.indName = val.join(",");
       this.changeValue();
       this.pageList();
