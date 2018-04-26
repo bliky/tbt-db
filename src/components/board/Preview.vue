@@ -41,7 +41,8 @@
         
             <tbody style="font-size: 14px;color: #666666;">
               <tr  id="backcolor" v-for="(item,indexs) in listdata" :key="indexs" 
-                   :class="{'backColor': indexs % 2 != 0} ">
+                   :class="{'backColor': indexs % 2 != 0} " 
+                   @click="sendMsgToParent(item.dim_ind_name)">
                 <td style="text-align: left;padding-left:9px;">{{item.dim_ind_name}}</td>
                 <td style="text-align: right;padding-right:11px;">{{item.statis_num}}</td>
                 <td style="text-align: right;padding-right:11px;" v-if="index === 0">{{item.dtd}}</td>
@@ -98,6 +99,7 @@ thead {font-size: 15px;color: #333333;}
 
 </style>
 <script>
+import Trend from './Trend'
 import Cookie from 'js-cookie'
 import { Scroller, LoadMore,ViewBox,Spinner,ButtonTab, ButtonTabItem, XTable} from "vux";
 
@@ -115,6 +117,7 @@ export default {
   },
   data () {
    return {
+        Trend,
         dataShow: false,
         uid: 0,
         uname: "",
@@ -138,6 +141,9 @@ export default {
     
   }, 
   methods: {
+    sendMsgToParent:function(indName){
+     this.$emit("listenToPreiew",indName,1);
+    },
     getList(item,index){
       this.tag = item;
       this.index = index;
@@ -163,10 +169,12 @@ export default {
                         })
                   .then((response) => {
                      this.dataShow = false;
+                     this.startDate = ''
+                     this.lupdate = ''
                     if(response.data.status == 200){
-                      this.startDate = response.data.result.endate
-                      this.lupdate = '更新时间：'+response.data.result.lupdate
                       if(response.data.result.total > 0){
+                        this.startDate = response.data.result.endate
+                        this.lupdate = '更新时间：'+response.data.result.lupdate
                         let arrs = response.data.result.rows;
                         arrs = arrs.map((item) => {
                           let arr = new Array(); 

@@ -6,10 +6,11 @@
       </tab-item>
     </tab>
     <div v-if="index === 0">
-      <preview></preview>
+      <preview @listenToPreiew="showMsgFromChild"></preview>
     </div>
     <div v-if="index === 1">
-      <trend></trend>
+      <!-- <input  v-model="indName">  -->
+      <trend v-bind:indNames="indName"></trend>
     </div>
   </div>
 </template>
@@ -47,13 +48,17 @@ import Trend from './Trend'
       return {
         tag: '指标总览',
         taglist: list(),
+        indName: '',
         index:0
       }
     },
     ready () {
     },
     methods:{
-     
+     showMsgFromChild: function (indName,index){
+       this.indName = indName
+      //  this.index = index
+      }
        
     }
   }

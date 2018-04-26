@@ -1,5 +1,5 @@
 <template>
-  <div id="trend" style=" -webkit-overflow-scrolling:touch;">
+  <div id="trend" style=" -webkit-overflow-scrolling:touch;" :indName="indName">
       <div style="padding: 20px 20% 15px 20%;">
         <button-tab v-model="index">
           <button-tab-item :selected="tag === item" v-for="item in taglist" 
@@ -32,7 +32,7 @@
               @on-show="onShow" 
               @on-hide="onHide" 
               @on-change="onChange" 
-              :placeholder="('')">
+              :placeholder="(indName)">
             </popup-picker>
          </group> 
       </div>
@@ -175,6 +175,7 @@ export default {
   },
   data() {
     return {
+      test: '测试',
       dataShow: false,
       datav: [],
       page:1,
@@ -237,6 +238,7 @@ export default {
       }
     },
     getList(item, index) {
+      // console.log("indNames============"+indNames);
       this.tag = item;
       this.index = index;
       this.uid = Cookie.get("t8t-it-uid");
@@ -489,6 +491,7 @@ export default {
       //   });
       // });
     }
-  }
+  },
+  // props: ['indName']
 };
 </script>
