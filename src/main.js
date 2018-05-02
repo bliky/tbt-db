@@ -14,8 +14,8 @@ import Board from './components/board/Board'
 import MyInds from './components/my/MyInds'
 import Indesc from './components/my/Indesc'
 import NounDesc from './components/my/NounDesc'
+import selInd from './components/apply/selInd'
 import Page from './components/test/testPage'
-
 
 
 // new VConsole()
@@ -51,6 +51,10 @@ const routes = [
     component: NounDesc
   },
   {
+    path: '/bdc-prd-dbd/selInd',
+    component: selInd
+  },
+  {
     path: '/bdc-prd-dbd/page',
     component: Page
   }
@@ -74,7 +78,8 @@ router.beforeEach((to, from, next) => {
 
 let rel = router.beforeEach((to, from, next) => {
   // 从路由的元信息中获取 title 属性
-  Cookie.set('t8t-it-ticket', to.query.tickets)
+  // Cookie.set('t8t-it-ticket', to.query.tickets)
+  Cookie.set('t8t-it-ticket', to.query.ticket)
   Cookie.set('t8t-it-uid', to.query.uid)
   Cookie.set('t8t-it-uname', to.query.uname)
   rel()

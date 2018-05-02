@@ -1,8 +1,8 @@
 <template>
-  <div id="trend" style=" -webkit-overflow-scrolling:touch;" :indName="indName">
+  <div id="trend" style=" -webkit-overflow-scrolling:touch;">
       <div style="padding: 20px 20% 15px 20%;">
         <button-tab v-model="index">
-          <button-tab-item :selected="tag === item" v-for="item in taglist" 
+          <button-tab-item :selected="tag === item" v-for="item in taglist"  
             :key="item" @on-item-click="getList(item,index)">
             {{item}}
           </button-tab-item>  
@@ -22,7 +22,6 @@
         </p>
       </div>
     
-    
       <div id="valSelect">
          <group>
             <popup-picker 
@@ -32,7 +31,7 @@
               @on-show="onShow" 
               @on-hide="onHide" 
               @on-change="onChange" 
-              :placeholder="(indName)">
+              :placeholder="('')">
             </popup-picker>
          </group> 
       </div>
@@ -158,8 +157,7 @@ import {
   XButton
 } from "vux";
 
-const list = () => ["日指标", "周指标", "月指标"];
-
+const list = () => ["日指标", "周指标", "月指标"];  
 export default {
   components: {
     F2,
@@ -175,7 +173,6 @@ export default {
   },
   data() {
     return {
-      test: '测试',
       dataShow: false,
       datav: [],
       page:1,
@@ -188,7 +185,7 @@ export default {
       bottomCount: 20,
       listdata: [],
       selistdate: [],
-      tag: "日指标",
+      tag: '',
       taglist: list(),
       endate: '',
       lupdate: '',
@@ -196,31 +193,24 @@ export default {
       dataType: "D",
       uid:0,
       uname:"",
-      list: [
-        "登记率",
-        "可售",
-        "通过率",
-        "项目可售",
-        "登记率",
-        "可售",
-        "通过率",
-        "项目可售"
-      ],
+      list: [],
       value: [""],
-      indName: "",
+      indName: '',
       showPopupPicker: false,
-      index: 0
+      isClick: false,
+      isSel: false,
+      index: this.indextotrend,
     };
   },
   mounted: function() {
     //参数赋值
     this.getList();
      //分页查询列表
-    this.pageList();
+    // this.pageList();
     //选择列表
     this.selist();
     //折线图
-    this.changeValue();
+  //  this.changeValue();
   },
   methods: {
     onScrollBottom() {
@@ -238,7 +228,11 @@ export default {
       }
     },
     getList(item, index) {
-      // console.log("indNames============"+indNames);
+      if(typeof(item) == "undefined"){
+        this.isClick = false;
+      }else{
+        this.isClick = true;
+      }
       this.tag = item;
       this.index = index;
       this.uid = Cookie.get("t8t-it-uid");
@@ -433,9 +427,12 @@ export default {
             this.values = [];
             this.list = [];
             this.value = [];
+            this.indName = ''; //指标名称
+            this.value = [];
             if (response.data.status == 200) {
                 this.endate = response.data.result.endate;
                 this.lupdate = '更新时间：'+response.data.result.lupdate;
+                this.isSel = false;
                 if(response.data.result.rows.length > 0){
                   this.selistdate = response.data.result.rows;
                   
@@ -445,9 +442,26 @@ export default {
                   this.list.push(this.values);
 
                   let  a = this.selistdate.shift();
-                  this.indName = a.dim_ind_name; //指标名称
-                  this.value = [a.dim_ind_name];
-
+                  // console.log("isClick==>>>="+this.isClick);
+                  // console.log("isSel==>>>="+this.isSel);
+                  //  console.log("this.inametotrend.length==>>>="+this.inametotrend.length);
+                  if(!this.isClick && this.inametotrend.length > 0 && !this.isSel){
+                    // console.log("113");
+                   this.indName = this.inametotrend; //指标名称
+                   this.value = [this.inametotrend];
+                   this.index = this.indextotrend;
+                  }else if(this.isClick && this.inametotrend.length > 0 && !this.isSel){
+                    // console.log("114");
+                    this.indName = this.inametotrend; 
+                    this.value = [this.inametotrend];
+                    this.indextotrend = this.index;
+                    this.index = this.indextotrend;
+                  }else{
+                    // console.log("567");
+                    this.indName = a.dim_ind_name; //指标名称
+                    this.value = [a.dim_ind_name];
+                  }
+                  
                   //折线图
                   this.changeValue();
                   //分页查询列表
@@ -461,12 +475,15 @@ export default {
     },
     
     onChange(val) {
+      this.isSel = true;
       this.indName = val.join(",");
-      this.changeValue();
-      this.pageList();
+      this.inametotrend = this.indName;
+      this.getList();
+      // this.changeValue();
+      // this.pageList();
     },
     showMsgFromChild(data) {
-      this.index = data;
+      // this.index = data;
     },
     onShow() {
       // console.log("on show");
@@ -492,6 +509,6 @@ export default {
       // });
     }
   },
-  // props: ['indName']
+  props: ['inametotrend','indextotrend']
 };
 </script>

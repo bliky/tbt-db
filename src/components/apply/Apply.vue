@@ -1,120 +1,137 @@
 <template>
-  <div class="apply" style="-webkit-overflow-scrolling:touch;">
-      申请指标
-    <!--swiper :list="imgs" auto style="width:100%;margin:0 auto;" height="120px" dots-class="custom-bottom" dots-position="center"></swiper-->
-    <!--div>
-      <scroller lock-x scrollbar-y height="250px" :bounce=false :scrollbarY="false" ref="scroller">
-        <div class="news-wrap-list">
-          <cell v-for="x in Objlist"  :title="x.title" :link="{path: '/newsdetail',query:{id:x.id,tag:'资讯'}}" :inline-desc='x.body'>
-            <img class="ic_img"  slot="icon" src="../assets/image/ic_label_today.png">
-            <div>
-              <span class="pubdate">{{x.pub_date}}</span>
-            </div>
-          </cell>
-        </div>
-      </scroller>
-    </div-->
+<div id="apply" class="apply" style="-webkit-overflow-scrolling:touch;">
 
-  </div>
+    <div class="applyContent"> 
+       <div class="applyTitles">
+          <div class="applyTitle">
+            <span >指标申请</span>
+            <span class="applyShow" style="padding-left:28px;">
+               <x-button mini  class="clearBtn">清空重置</x-button>
+            </span>   
+          </div>
+       </div>
+
+       <div class="cellGroup">
+          <group> 
+            <cell
+            :title="('总况')"
+            is-link
+            :link="{path:'/bdc-prd-dbd/selInd'}">
+            </cell>
+      
+            
+          </group>
+
+          
+       </div>
+       <div class="abtn">
+         <x-button class="applyBtn">提交申请</x-button>
+        <x-button class="applyBtn" disabled>提交申请</x-button>
+      </div>    
+    </div>
+</div>
 </template>
 <style scoped>
-  .ic_img{
-    position:absolute; top:10px; left: 5px;
-    width:15px;
-    height:15px;
+  .apply{
+    padding:15px 15px 20px 15px;
   }
-  .weui_cell_bd>p{
-    font-size:15px;
+  .applyContent{
+    padding-left:15px;
+    padding-right: 10px;
+    background: #FFFFFF;
+    border: 1px solid  #E3E3E3;
+  }
+  .applyTitles{
+    padding-top:15px;
+    padding-bottom:5px;
+  }
+  .applyTitle{
+    /* padding-left:25%; */
+    font-family: PingFangSC-Semibold;
+    font-size: 24px;
+    color: #333333;
+    letter-spacing: 0;
+    text-align: center;
   }
 
-  .weui_cell_bd.weui_cell_primary{
-    padding-left:5px;
+  .clearBtn{
+    padding:0 10px;
+    touch-action: none;
+    border-radius: 99px!important;
+    border: 1px solid #999999;
+    background: #FFFFFF;
+    font-family: PingFangSC-Regular;
+    font-size: 1px;
+    height: 27.8px;
+    text-align: center;
+    color: #999999;
   }
-  .pubdate{
-    font-size:5px;
+  #apply .weui-cell:before {
+    font-family: PingFangSC-Regular;
+    font-size: 17px;
+    color: #333333;
+      /* border-top:none!important; */
+  }
+  #apply .weui-cell {
+    font-family: PingFangSC-Regular;
+    font-size: 17px;
+    color: #333333;
+      /* border-top:none!important; */
+  }
+  .abtn{touch-action: none;
+   padding-top:50px;
+   padding-bottom:10px;
+}
 
-  }
+.applyBtn {
+  touch-action: none;
+  background: #09C767;
+  border: 1px solid #09C767;
+  border-radius: 2px;
+  font-family: PingFangSC-Regular;
+  font-size: 18px;
+  color: #FFFFFF;
+  letter-spacing: 0;
+  text-align: center;
+  width: 88%;
+}
 </style>
 <script>
-  import { Group, Cell,Swiper,Scroller,Divider } from 'vux'
-  //import { getList } from '../utils/api'
-
-
-
-  const imgList = [
-    /*'http://file06.16sucai.com/2016/0222/17714c3b51079911760e5ef7fdb553f6.jpg',
-    'http://pic.58pic.com/58pic/15/67/98/93C58PICjeM_1024.jpg',
-    'http://file06.16sucai.com/2016/0315/1df566087c24a94cd9534bc9bc1871ff.jpg'
-    */
-  ]
-
-  const urlList = imgList.map((one, index) => ({
-    url: 'javascript:',  //这里填写图片点击的链接
-    img: one
-  }))
-
+  import {ButtonTab,ButtonTabItem,XButton,Cell, CellBox, CellFormPreview,Badge,Group,Popup, TransferDom,Checker, CheckerItem } from 'vux'
+ 
   export default{
-    name: 'NewsList',
+    directives: {
+     TransferDom
+    },
     data(){
       return{
-        ishow:false,
-        Objlist:[],
-        pageIndex:1,
-        catalog:0,
-        imgs:urlList,
+        ishow: false,
+        showPopup: false,
+        demo4: '花跟叶',
       }
     },
     components:{
-      Scroller,
-      Cell,
+      Checker,
+      CheckerItem,
+      Popup,
+      ButtonTab,
+      ButtonTabItem,
+      Cell, 
+      CellBox, 
+      CellFormPreview,
+      Badge,
       Group,
-      Divider,
-      Swiper
-    },/*
+      XButton
+    },
     created () {
-      this.getList()
     },
     methods:{
-      async getList() {
-        let data =await getList(this.pageIndex, this.catalog)
-        console.log(data)
-        var news_list=data.result.items;
-        if(news_list.length>0){
-          this.ishow=true
-          for(var i=0;i<news_list.length;i++){
-            var time = news_list[i].pubDate;
-            var bngDate = new Date(time.replace(/-/g, "/"));
-            var endDate = new Date();
-            var minutes = (endDate.getTime()-bngDate.getTime())/60/1000;
-
-            if(minutes>=60){
-              minutes=minutes/60;
-              var datetime=parseInt(minutes);
-              if(datetime>=48){
-                news_list[i].pubDate="2天前"
-              }else if (datetime>=24){
-                  news_list[i].pubDate="昨天"
-              }else{
-                news_list[i].pubDate=datetime+ "小时以前"
-              }
-            }else{
-              var minute=parseInt(minutes);
-              news_list[i].pubDate=minute+ "分钟以前"
-            }
-            news_list[i].title="  "+news_list[i].title;
-            this.Objlist.push(news_list[i]);
-          }
-
+      onItemClick (value, disabled) {
+        console.log(value, disabled)
+        if (!this.disabled) {
+          this.showPopup = false
         }
-        this.locked = false
-        this.loading = false
-      },
-      load (uuid) {
-        setTimeout(() => {
-          this.getList();
-          this.$broadcast('pulldown:reset', uuid)
-        }, 1000)
-      },
-    }*/
+      }
+    },
   }
 </script>

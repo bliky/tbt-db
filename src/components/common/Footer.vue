@@ -7,7 +7,7 @@
           <span class="label" slot="label">数据看板</span>
         </tabbar-item>
         
-        <!-- <tabbar-item :link="{path:'/dbd/bdc-prd-dbd/page'}" >
+        <!-- <tabbar-item :link="{path:'/bdc-prd-dbd/apply'}" >
           <img slot="icon" src="../../assets/image/icon_bottom_apply_gray@2x.png">
           <img slot="icon-active" src="../../assets/image/icon_bottom_apply_green@2x.png">
           <span class="label" slot="label">指标申请</span>

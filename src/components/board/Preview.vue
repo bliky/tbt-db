@@ -42,7 +42,7 @@
             <tbody style="font-size: 14px;color: #666666;">
               <tr  id="backcolor" v-for="(item,indexs) in listdata" :key="indexs" 
                    :class="{'backColor': indexs % 2 != 0} " 
-                   @click="sendMsgToParent(item.dim_ind_name)">
+                   @click="sendMsgToParent(item.dim_ind_name,index)">
                 <td style="text-align: left;padding-left:9px;">{{item.dim_ind_name}}</td>
                 <td style="text-align: right;padding-right:11px;">{{item.statis_num}}</td>
                 <td style="text-align: right;padding-right:11px;" v-if="index === 0">{{item.dtd}}</td>
@@ -141,14 +141,38 @@ export default {
     
   }, 
   methods: {
-    sendMsgToParent:function(indName){
-     this.$emit("listenToPreiew",indName,1);
+    sendMsgToParent:function(indName,index){
+     this.$emit("listenToPreiew",indName,index,1);
     },
     getList(item,index){
       this.tag = item;
       this.index = index;
       this.uid = Cookie.get('t8t-it-uid');
+      this.$http.fetch('acc/employee/findById',
+              {        
+              id: this.uid
+              })
+        .then((response) => {
+          if(response.data.status == 200){
+            Cookie.set('t8t-oa-username', response.data.result.name+","+response.data.result.enName)
+          }
+        }, (response) => {
+      });
       this.uname = Cookie.get('t8t-oa-username');
+       this.$http.fetch('acc/employee/findSubId',
+              {        
+              "uid":this.uid,
+              "subNum":1,
+               "type":1
+              })
+        .then((response) => {
+          if(response.data.status == 200){
+            Cookie.set('t8t-oa-item', response.data.result.name+","+response.data.result.enName)
+          }
+        }, (response) => {
+      });
+      
+    
       // this.page = 1;
       // this.size = 100;
       this.dataType = "D";
