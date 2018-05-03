@@ -199,6 +199,7 @@ export default {
       showPopupPicker: false,
       isClick: false,
       isSel: false,
+      selIndex: this.indextotrend,
       index: this.indextotrend,
     };
   },
@@ -230,13 +231,14 @@ export default {
     getList(item, index) {
       if(typeof(item) == "undefined"){
         this.isClick = false;
-        if(this.indextotrend > 0){
+        if(this.inametotrend.length > 0){
           this.index = this.indextotrend;
         }else{
           this.index = index;
         }
       }else{
         this.isClick = true;
+        this.selIndex = index;
         this.index = index;
       }
       this.tag = item;
@@ -482,9 +484,12 @@ export default {
     
     onChange(val) {
       this.isSel = true;
+      this.index = this.selIndex;
+      this.indextotrend = this.index;
       this.indName = val.join(",");
+      console.log(val);
+      // this.value = [val];
       this.inametotrend = this.indName;
-      this.index = index;
       this.getList();
       // this.changeValue();
       // this.pageList();
