@@ -200,6 +200,7 @@ export default {
       isClick: false,
       isSel: false,
       selIndex: this.indextotrend,
+      stepIndName: '',
       index: this.indextotrend,
     };
   },
@@ -207,7 +208,7 @@ export default {
     //参数赋值
     this.getList();
      //分页查询列表
-    // this.pageList();
+    this.pageList();
     //选择列表
     this.selist();
     //折线图
@@ -245,34 +246,20 @@ export default {
       this.uid = Cookie.get("t8t-it-uid");
       this.uname = Cookie.get("t8t-oa-username");
       this.dataType = "D";
-      // console.log("this.index===="+this.index);
-      // console.log("this.indName===="+this.indName);
-      // console.log("this.inametotrend===="+this.inametotrend);
+      this.stepIndName = this.indName;
       if (this.index == 0) {
         this.dataType = "D";
-        this.indName = this.indName.replace("MAU","DAU");
-        this.indName = this.indName.replace("WAU","DAU");
-
-        this.inametotrend = this.inametotrend.replace("MAU","DAU");
-        this.inametotrend = this.inametotrend.replace("WAU","DAU");
+        this.inametotrend = this.inametotrend.replace(/MAU/,"DAU");
+        this.inametotrend = this.inametotrend.replace(/WAU/,"DAU");
       } else if (this.index == 1) {
         this.dataType = "W";
-        this.indName = this.indName.replace("MAU","WAU");
-        this.indName = this.indName.replace("DAU","WAU");
-
-        this.inametotrend = this.inametotrend.replace("MAU","WAU");
-        this.inametotrend = this.inametotrend.replace("DAU","WAU");
+        this.inametotrend = this.inametotrend.replace(/MAU/,"WAU");
+        this.inametotrend = this.inametotrend.replace(/DAU/,"WAU");
       } else if (this.index == 2) {
         this.dataType = "M";
-        this.indName = this.indName.replace("DAU","MAU");
-        this.indName = this.indName.replace("WAU","MAU");
-
-        this.inametotrend = this.inametotrend.replace("DAU","MAU");
-        this.inametotrend = this.inametotrend.replace("WAU","MAU");
+        this.inametotrend = this.inametotrend.replace(/DAU/,"MAU");
+        this.inametotrend = this.inametotrend.replace(/WAU/,"MAU");
       }
-      // console.log("this.index===="+this.index);
-      // console.log("this.indName===="+this.indName);
-      //  console.log("this.inametotrend===="+this.inametotrend);
       //选择列表
       this.selist();
       this.page = 1;
@@ -469,30 +456,23 @@ export default {
                   this.list.push(this.values);
 
                   let  a = this.selistdate.shift();
-                  // console.log("isClick==>>>="+this.isClick);
-                  // console.log("isSel==>>>="+this.isSel);
-                  //  console.log("this.inametotrend.length==>>>="+this.inametotrend.length);
+                  
                   if(!this.isClick && this.inametotrend.length > 0 && !this.isSel){
-                    // console.log("113");
                    this.indName = this.inametotrend; //指标名称
                    this.value = [this.inametotrend];
                    this.index = this.indextotrend;
                   }else if(this.isClick && this.inametotrend.length > 0 && !this.isSel){
-                    // console.log("114");
                     this.indName = this.inametotrend; 
                     this.value = [this.inametotrend];
-                    this.indextotrend = this.index;
-                    this.index = this.indextotrend;
                   }else{
-                    // console.log("567");
                     this.indName = a.dim_ind_name; //指标名称
                     this.value = [a.dim_ind_name];
                   }
                   
-                  //折线图
-                  this.changeValue();
-                  //分页查询列表
-                  this.pageList();
+                    this.changeValue();
+                    //分页查询列表
+                    this.pageList();
+                        
                 }  
             }
           },
@@ -502,6 +482,7 @@ export default {
     },
     
     onChange(val) {
+      // debugger
       this.isSel = true;
       this.index = this.selIndex;
       this.indextotrend = this.index;
@@ -509,9 +490,9 @@ export default {
       // console.log(val);
       // this.value = [val];
       this.inametotrend = this.indName;
-      this.getList();
-      // this.changeValue();
-      // this.pageList();
+        // this.getList();
+      this.changeValue();
+      this.pageList();
     },
     showMsgFromChild(data) {
       // this.index = data;
