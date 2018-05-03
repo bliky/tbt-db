@@ -242,18 +242,37 @@ export default {
         this.index = index;
       }
       this.tag = item;
-      
       this.uid = Cookie.get("t8t-it-uid");
       this.uname = Cookie.get("t8t-oa-username");
       this.dataType = "D";
+      // console.log("this.index===="+this.index);
+      // console.log("this.indName===="+this.indName);
+      // console.log("this.inametotrend===="+this.inametotrend);
       if (this.index == 0) {
         this.dataType = "D";
+        this.indName = this.indName.replace("MAU","DAU");
+        this.indName = this.indName.replace("WAU","DAU");
+
+        this.inametotrend = this.inametotrend.replace("MAU","DAU");
+        this.inametotrend = this.inametotrend.replace("WAU","DAU");
       } else if (this.index == 1) {
         this.dataType = "W";
+        this.indName = this.indName.replace("MAU","WAU");
+        this.indName = this.indName.replace("DAU","WAU");
+
+        this.inametotrend = this.inametotrend.replace("MAU","WAU");
+        this.inametotrend = this.inametotrend.replace("DAU","WAU");
       } else if (this.index == 2) {
         this.dataType = "M";
-      }
+        this.indName = this.indName.replace("DAU","MAU");
+        this.indName = this.indName.replace("WAU","MAU");
 
+        this.inametotrend = this.inametotrend.replace("DAU","MAU");
+        this.inametotrend = this.inametotrend.replace("WAU","MAU");
+      }
+      // console.log("this.index===="+this.index);
+      // console.log("this.indName===="+this.indName);
+      //  console.log("this.inametotrend===="+this.inametotrend);
       //选择列表
       this.selist();
       this.page = 1;
@@ -487,7 +506,7 @@ export default {
       this.index = this.selIndex;
       this.indextotrend = this.index;
       this.indName = val.join(",");
-      console.log(val);
+      // console.log(val);
       // this.value = [val];
       this.inametotrend = this.indName;
       this.getList();
