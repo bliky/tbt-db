@@ -230,11 +230,16 @@ export default {
     getList(item, index) {
       if(typeof(item) == "undefined"){
         this.isClick = false;
+        if(this.indextotrend > 0){
+          this.index = this.indextotrend;
+        }else{
+          this.index = index;
+        }
       }else{
         this.isClick = true;
       }
       this.tag = item;
-      this.index = index;
+      
       this.uid = Cookie.get("t8t-it-uid");
       this.uname = Cookie.get("t8t-oa-username");
       this.dataType = "D";
@@ -442,22 +447,22 @@ export default {
                   this.list.push(this.values);
 
                   let  a = this.selistdate.shift();
-                  // console.log("isClick==>>>="+this.isClick);
-                  // console.log("isSel==>>>="+this.isSel);
-                  //  console.log("this.inametotrend.length==>>>="+this.inametotrend.length);
+                  console.log("isClick==>>>="+this.isClick);
+                  console.log("isSel==>>>="+this.isSel);
+                   console.log("this.inametotrend.length==>>>="+this.inametotrend.length);
                   if(!this.isClick && this.inametotrend.length > 0 && !this.isSel){
-                    // console.log("113");
+                    console.log("113");
                    this.indName = this.inametotrend; //指标名称
                    this.value = [this.inametotrend];
                    this.index = this.indextotrend;
                   }else if(this.isClick && this.inametotrend.length > 0 && !this.isSel){
-                    // console.log("114");
+                    console.log("114");
                     this.indName = this.inametotrend; 
                     this.value = [this.inametotrend];
                     this.indextotrend = this.index;
                     this.index = this.indextotrend;
                   }else{
-                    // console.log("567");
+                    console.log("567");
                     this.indName = a.dim_ind_name; //指标名称
                     this.value = [a.dim_ind_name];
                   }
