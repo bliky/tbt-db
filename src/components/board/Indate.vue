@@ -29,7 +29,7 @@
 <style scoped>
 /* @import '~vux/dist/vux.css'; */
   #indate .vux-button-group-current {
-   background-color:#09C767;
+   background-color:#06C792;
 }
 </style>
 

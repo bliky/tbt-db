@@ -29,9 +29,9 @@ export default {
     const canvas = document.getElementById("mountNode");
     const ctx = canvas.getContext("2d");
     const gradient = ctx.createLinearGradient(0, 0, window.innerWidth, 0);
-    gradient.addColorStop(0, "#09C767");
-    gradient.addColorStop(0.5, "#09C767");
-    gradient.addColorStop(1, "#09C767");
+    gradient.addColorStop(0, "#06C792");
+    gradient.addColorStop(0.5, "#06C792");
+    gradient.addColorStop(1, "#06C792");
 
     const data = [
       { statis_dt: "1日", age: 27.2 },
@@ -96,10 +96,10 @@ export default {
       direct: "tl",
       offsetY: -5,
       background: {
-        fill: "#09C767"
+        fill: "#06C792"
       },
       pointStyle: {
-        fill: "#09C767"
+        fill: "#06C792"
       }
     });
     chart

@@ -5,7 +5,7 @@
 let getUserToken = {
   data() {
     let uid = this.$route.query.uid
-    let ticket = this.$route.query.ticket
+    let ticket = this.$route.query.tickets
     return {
       myUploadUrl: `https://scmgw.to8to.com/?action=file&uid=${uid}&ticket=${ticket}`,
     }

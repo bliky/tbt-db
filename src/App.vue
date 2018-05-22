@@ -60,6 +60,7 @@ import AppHeader from "./components/common/Header";
 import AppFooter from "./components/common/Footer";
 import { ViewBox, Tabbar, TabbarItem } from "vux";
 
+
 export default {
   components: {
     AppHeader,

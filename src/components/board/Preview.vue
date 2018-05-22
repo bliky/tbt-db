@@ -70,7 +70,7 @@
   -webkit-overflow-scrolling: touch!important;
 }
 #preview .vux-button-group-current {
-   background-color:#09C767;
+   background-color:#06C792;
 }
 
 .popover-demo-content {

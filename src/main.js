@@ -15,12 +15,14 @@ import MyInds from './components/my/MyInds'
 import Indesc from './components/my/Indesc'
 import NounDesc from './components/my/NounDesc'
 import selInd from './components/apply/selInd'
+import selDim from './components/apply/selDim'
 import Page from './components/test/testPage'
+import utils from './utils/utils.js'
 
 
 // new VConsole()
 Vue.prototype.$http = http
-Vue.use(VueRouter,F2,Vue,ConfirmPlugin, LoadingPlugin, ToastPlugin)
+Vue.use(VueRouter,F2,Vue,ConfirmPlugin, LoadingPlugin, ToastPlugin,utils)
 window.axios = axios; 
 
 FastClick.attach(document.body)
@@ -55,6 +57,10 @@ const routes = [
     component: selInd
   },
   {
+    path: '/bdc-prd-dbd/selDim',
+    component: selDim
+  },
+  {
     path: '/bdc-prd-dbd/page',
     component: Page
   }
@@ -79,9 +85,15 @@ router.beforeEach((to, from, next) => {
 let rel = router.beforeEach((to, from, next) => {
   // 从路由的元信息中获取 title 属性
   // Cookie.set('t8t-it-ticket', to.query.ticket)
+  Cookie.set('t8t-it-appVersion', to.query.appVersion)
+  Cookie.set('t8t-it-appType', to.query.appType)
+  Cookie.set('t8t-it-deviceId', to.query.deviceId)
+  Cookie.set('t8t-it-version', to.query.version)
+  Cookie.set('t8t-it-accountId', to.query.accountId)
   Cookie.set('t8t-it-ticket', to.query.tickets)
+  Cookie.set('t8t-it-token', to.query.token)
   Cookie.set('t8t-it-uid', to.query.uid)
-  Cookie.set('t8t-it-uname', to.query.uname)
+  // Cookie.set('t8t-it-uname', to.query.uname)
   rel()
   next()
 })

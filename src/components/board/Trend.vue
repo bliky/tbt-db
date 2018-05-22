@@ -72,15 +72,15 @@
 
 <style>
 .vux-button-group > a {
-    color: #09C767;
+    color: #06C792;
 }
 
 .vux-button-group > a.vux-button-tab-item-last:after {
-    border-right: 1px solid #09C767;
-    border-top: 1px solid #09C767;
-    border-bottom: 1px solid #09C767;
+    border-right: 1px solid #06C792;
+    border-top: 1px solid #06C792;
+    border-bottom: 1px solid #06C792;
     border-left: none;
-    color: #09C767;
+    color: #06C792;
 }
 
 #valSelect .weui-label {
@@ -119,7 +119,7 @@
  -webkit-overflow-scrolling:touch;
 }
 #trend .vux-button-group-current {
-  background-color: #09c767;
+  background-color: #06C792;
 }
 th {
   font-family: PingFangSC-Medium;
@@ -283,9 +283,9 @@ export default {
                 const canvas = document.getElementById("mountNode");
                 const ctx = canvas.getContext("2d");
                 const gradient = ctx.createLinearGradient(0, 0, window.innerWidth, 0);
-                      gradient.addColorStop(0, "#09C767");
-                      gradient.addColorStop(0.5, "#09C767");
-                      gradient.addColorStop(1, "#09C767");
+                      gradient.addColorStop(0, "#06C792");
+                      gradient.addColorStop(0.5, "#06C792");
+                      gradient.addColorStop(1, "#06C792");
 
                 let maxDate = response.data.result.maxDate//'7日'
                 let maxValues = response.data.result.maxValues//98.88
@@ -342,10 +342,10 @@ export default {
                 //   direct: "tl",
                 //   offsetY: -5,
                 //   background: {
-                //     fill: "#09C767"
+                //     fill: "#06C792"
                 //   },
                 //   pointStyle: {
-                //     fill: "#09C767"
+                //     fill: "#06C792"
                 //   }
                 // });
                 chart

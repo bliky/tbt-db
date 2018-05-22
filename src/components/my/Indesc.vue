@@ -8,13 +8,11 @@
           <div class="x-title2">{{item.indName}}</div>  
           <div class="x-text">{{item.inDesc}}</div>
           <hr color="#eee" size="1px">
-        </div>
-        
+        </div>     
         <br>
         <!-- <divider>.</divider> -->
       </div>
     </div>  
-   
 </div>
 </template>
 <script>

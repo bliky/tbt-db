@@ -1,16 +1,14 @@
 <template>
   <div id="board" style="-webkit-overflow-scrolling:touch;">
 
-    <div id="applyShow" class="applyShow" v-if="!dataShow">
+    <div id="applyShow" class="applyShow" v-if="dataShow">
+      <img height="100%" width="100%" src="../../assets/image/collect_nofound@2x.png"/>
       <h2>您还没有关注的指标</h2>
       <p>马上申请我关注的指标，随时随地的关注数据变化</p>
-      <div class="abtn">
-         <x-button class="applyBtn" >申请我的指标</x-button>
-      </div>   
     </div>
 
-    <div id="data" class="dataShow" v-if="dataShow">
-        <tab :line-width="2" height="44px;" slot="header" v-model="index" active-color="#09C767" active-size="17px">
+    <div id="data" class="dataShow" v-if="!dataShow">
+        <tab :line-width="2" height="44px;" slot="header" v-model="index" active-color="#06C792" active-size="17px">
           <tab-item :selected="tag === item" v-for="item in taglist" :key="item" @click="tag = item" @on-item-click="onClick(tag,item,index)">
             {{item}}
           </tab-item>
@@ -29,19 +27,12 @@
 
 <style scoped>
 .applyShow {
-  margin-top:50%;
+  padding-top:40%;
   text-align: center;
-  color: #666;
 }
-.applyShow p {
-  font-family: PingFangSC-Regular;
-  font-size: 12px;
-  color: #3F3F3F;
-  letter-spacing: 0;
-  text-align: center;
-  line-height: 30px;
-}
+
 .applyShow h2 {
+  margin-top:-30px;
   font-family: PingFangSC-Regular;
   font-size: 20px;
   color: #999999;
@@ -50,21 +41,14 @@
   line-height: 30px;
 }
 
-.abtn{
-  padding-top:20px;
-}
-
-.applyBtn {
-  touch-action: none;
-  background: #09C767;
-  border: 1px solid #09C767;
-  border-radius: 2px;
+.applyShow p {
+  margin-top:5px;
   font-family: PingFangSC-Regular;
-  font-size: 18px;
-  color: #FFFFFF;
+  font-size: 12px;
+  color: #3F3F3F;
   letter-spacing: 0;
   text-align: center;
-  width: 58%;
+  line-height: 30px;
 }
 
 #board element.style {
@@ -101,6 +85,9 @@ import Trend from './Trend'
     },
     data () {
       return {
+        uid: null,//用户ID
+        uname: null,//用户姓名
+        token: null,
         tag: '指标总览',
         taglist: list(),
         iname: '',
@@ -143,38 +130,36 @@ import Trend from './Trend'
           }, (response) => {
         });
        this.uname = Cookie.get('t8t-oa-username');
-       this.$http.fetch('acc/employee/findSubId',
-              {        
-              "uid":this.uid,
-              "subNum":1,
-               "type":1
-              })
-        .then((response) => {
-          if(response.data.status == 200){
-            Cookie.set('t8t-oa-item', response.data.result.name+","+response.data.result.enName)
-          }
-        }, (response) => {
-      });
-      
-      // this.$http.fetch('dsa/dataBoard/indPvw/pageList',
-      //                 {        
-      //                 uid: this.uid,
-      //                 uname: this.uname,
-      //                 dataType: this.dataType,
-      //                 page: this.page,
-      //                 size: this.size
-      //                 })
-      //           .then((response) => {
-      //               this.dataShow = false;
-      //               this.startDate = ''
-      //               this.lupdate = ''
-      //             if(response.data.status == 200){
-      //               if(response.data.result.total > 0){
-      //                 this.dataShow = true;
-      //               } 
-      //             }
-      //           }, (response) => {
-      //         });
+      //  this.$http.fetch('acc/employee/findSubId',
+      //         {        
+      //         "uid":this.uid,
+      //         "subNum":1,
+      //          "type":1
+      //         })
+      //   .then((response) => {
+      //     if(response.data.status == 200){
+      //       Cookie.set('t8t-oa-item', response.data.result.name+","+response.data.result.enName)
+      //     }
+      //   }, (response) => {
+      // });
+      let token = ""
+      let ticket = ""
+      this.$http.fetch('dsa/dataBoard/isApply',
+                      {        
+                      uid: this.uid,
+                      uname: this.uname,
+                      token: token,
+                      ticket: ticket
+                      })
+                .then((response) => {let count = 0
+                  console.log(response.data)
+                  if(response.data.status == 200){
+                    if(!response.data.result.isApply){
+                      this.dataShow = true;
+                    } 
+                  }
+                }, (response) => {
+              });
       }
     }
   }
