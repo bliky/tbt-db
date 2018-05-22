@@ -1,15 +1,17 @@
 <template>
   <div id="board" style="-webkit-overflow-scrolling:touch;">
 
-    <div id="applyShow" class="applyShow" v-if="dataShow">
+    <!-- <div id="applyShow" class="applyShow" v-if="dataShow">
       <img height="100%" width="100%" src="../../assets/image/collect_nofound@2x.png"/>
       <h2>您还没有关注的指标</h2>
       <p>马上申请我关注的指标，随时随地的关注数据变化</p>
-    </div>
+    </div> -->
 
-    <div id="data" class="dataShow" v-if="!dataShow">
+    <!-- <div id="data" class="dataShow" v-if="!dataShow"> -->
+      <div id="data" class="dataShow">
         <tab :line-width="2" height="44px;" slot="header" v-model="index" active-color="#06C792" active-size="17px">
-          <tab-item :selected="tag === item" v-for="item in taglist" :key="item" @click="tag = item" @on-item-click="onClick(tag,item,index)">
+          <tab-item :selected="tag === item" v-for="item in taglist" :key="item" 
+              @click="tag = item" @on-item-click="onClick(tag,item,index)">
             {{item}}
           </tab-item>
         </tab>
@@ -91,7 +93,7 @@ import Trend from './Trend'
         tag: '指标总览',
         taglist: list(),
         iname: '',
-        dataShow: true,
+        dataShow: false,
         dataType: "D",
         page: 1,
         size: 2,
@@ -129,7 +131,8 @@ import Trend from './Trend'
             }
           }, (response) => {
         });
-       this.uname = Cookie.get('t8t-oa-username');
+      //  this.uname = Cookie.get('t8t-oa-username');
+
       //  this.$http.fetch('acc/employee/findSubId',
       //         {        
       //         "uid":this.uid,
@@ -142,24 +145,24 @@ import Trend from './Trend'
       //     }
       //   }, (response) => {
       // });
-      let token = ""
-      let ticket = ""
-      this.$http.fetch('dsa/dataBoard/isApply',
-                      {        
-                      uid: this.uid,
-                      uname: this.uname,
-                      token: token,
-                      ticket: ticket
-                      })
-                .then((response) => {let count = 0
-                  console.log(response.data)
-                  if(response.data.status == 200){
-                    if(!response.data.result.isApply){
-                      this.dataShow = true;
-                    } 
-                  }
-                }, (response) => {
-              });
+      // let token = ""
+      // let ticket = ""
+      // this.$http.fetch('dsa/dataBoard/isApply',
+      //                 {        
+      //                 uid: this.uid,
+      //                 uname: this.uname,
+      //                 token: token,
+      //                 ticket: ticket
+      //                 })
+      //           .then((response) => {let count = 0
+      //             console.log(response.data)
+      //             if(response.data.status == 200){
+      //               if(!response.data.result.isApply){
+      //                 this.dataShow = true;
+      //               } 
+      //             }
+      //           }, (response) => {
+      //         });
       }
     }
   }

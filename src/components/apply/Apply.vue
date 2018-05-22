@@ -15,13 +15,13 @@
           <group  > 
             <cell v-for="(item,index) in indClassItem" :key="index" 
                   :title = item.className 
-                  :inline-desc="getContent(item.classId)"> 
+                  :inline-desc = item.attrName>
               <label @click="clickSelInd(item.classId,item.className)" 
-                    v-if="getContent(item.classId) == null">
+                v-if="item.attrName == null">
                 <img  width="20px" height="20px" 
-                  src="../../assets/image/icon_forward_gray@2x.png">
+                      src="../../assets/image/icon_forward_gray@2x.png">
               </label>
-              <label @click="clickSelInd(item.classId,item.className)"  v-if="getContent(item.classId) != null">
+              <label @click="aginClickSelInd(item.classId,item.className)"  v-if="item.attrName != null">
                <img  width="20px" height="20px" src="../../assets/image/icon_checked@2x.png"> 
               </label>
             </cell>
@@ -35,44 +35,40 @@
       </div>
 
     <div v-transfer-dom>
-      <x-dialog v-model="show" class="conformDialog">
-        <div class="alertTitle">
-          <span class="conTitle">指标确认</span>
-          <span @click="show=false" class="vux-close"></span>
-        </div>
-        <div class="inputDesc">
-          <div class="inputTip">您共选择{{count}}项指标,请确认及填写原因后提交</div>
-           <group :title="('')">
-              <x-textarea :height="50" :show-counter="false" :max="30"  id="desc" 
-                   v-model="textareaValue"
-                  name="desc" :placeholder="('请输入申请原因(30个字内)')"></x-textarea>
-           </group>
-           <div class="noDesc" style="font-family: PingFangSC-Regular;font-size: 14px;color: #FFFFFF;background: #323232;">
-              <toast v-model="noDesc" type="text" width="10em" 
-                  :time="2000" is-show-mask text="请填写申请原因" 
-                  :position="position"></toast>
-            </div>
-        </div>
-       
-        <div class="selIndCon">
-        <!-- <div  v-for="(item,index) in listdata" :key="index"> -->
-          <div selContent v-for="(item,index) in applyContentList" :key="index" >
-            <div class="x-title2">{{item.className}}</div>  
-              <div class="x-text" style="margin-left:10px;margin-right:10px">
-                <span > 
-                <!-- <span v-for="(item,index) in item.attrNameList" :key="index">  -->
-                  {{item.attrNameList}} </span>
-                   <hr style="margin-top:8px;" color="#E3E3E3" size="1px">
+        <x-dialog v-model="show" class="conformDialog">
+          <div class="alertTitle">
+            <span class="conTitle">指标确认</span>
+            <span @click="show=false" class="vux-close"></span>
+          </div>
+          <div class="inputDesc">
+            <div class="inputTip">您共选择{{count}}项指标,请确认及填写原因后提交</div>
+            <group :title="('')">
+                <x-textarea :height="50" :show-counter="false" :max="30"  id="desc" 
+                    v-model="textareaValue"
+                    name="desc" :placeholder="('请输入申请原因(30个字内)')"></x-textarea>
+            </group>
+            <div class="noDesc" style="font-family: PingFangSC-Regular;font-size: 14px;color: #FFFFFF;background: #323232;">
+                <toast v-model="noDesc" type="text" width="10em" 
+                    :time="2000" is-show-mask text="请填写申请原因" 
+                    :position="position"></toast>
               </div>
-            <!-- </div> -->
-            
           </div>
+        
+          <div class="selIndCon">
+            <div selContent v-for="(item,index) in applyContentList" :key="index" >
+              <div v-if="index < 4" class="x-title2">{{item.className}}</div>  
+                <div v-if="index < 4" class="x-text" style="margin-left:10px;margin-right:10px">
+                  <span > 
+                    {{item.attrNameList}} </span>
+                    <hr style="margin-top:8px;" color="#E3E3E3" size="1px">
+                </div>
+            </div>
 
-          <div class="subtn">
-            <x-button class="applyBtn" @click.native="confirmSubmit">确认提交</x-button>
+            <div class="subtn">
+              <x-button class="applyBtn" @click.native="confirmSubmit">确认提交</x-button>
+            </div>
           </div>
-        </div>
-      </x-dialog>
+        </x-dialog>
     </div>
 
      </div> 
@@ -80,7 +76,7 @@
     
     <div class="selInd" v-if="iselIndShow">
       <!-- <input v-model="indClassName"> -->
-       <selInd @listenToSelInd="showMsgFromChild" :indClassId="indClassId" :indClassName="indClassName" ></selInd>
+       <selInd @listenToSelInd="showMsgFromChild" :cdimList="cdimList" :indClassId="indClassId" :indClassName="indClassName" ></selInd>
     </div>  
  
 
@@ -91,6 +87,7 @@
 import selInd from './selInd'
 import Cookie from 'js-cookie'
 import {
+  ViewBox,
   Toast,
   XTextarea,
   ButtonTab,
@@ -115,6 +112,7 @@ export default {
     TransferDom
   },
   components: {
+    ViewBox,
     Toast,
     selInd,
     Cookie,
@@ -153,6 +151,7 @@ export default {
       iselIndShow: false,//选择指标是否显示
       indClassItem: [],
       isSubmitApply: false,
+      cdimList: [],
       isClear: false,
       show: false
     };
@@ -194,55 +193,63 @@ export default {
                   console.log(response.data)
                   if(response.data.status == 200){
                     this.indClassItem = response.data.result.rows 
+                    for(let arr of this.indClassItem){
+                      arr.attrName = null
+                    }
                   }
                 }, (response) => {
               });
-    },
-    getContent(classId){
-      // let className = null
-      let content = null
-      let applyContent = {}
-      let indContent = {}
-      let indList = []
-      let attrContent = {}
-      let attrList = []
-        for(let arr of this.applyContentList){
-          if(classId == arr.classId){
-            content = arr.attrName
-            this.selIndCount = arr.attrCount
-          }
-          this.count = this.selIndCount
-        }
-        
-      
-      
-      if(content != null){
-        // content = content.substring(0, content.indexOf("/",content.indexOf("/")+1 ))
-        content = content+"等"+this.selIndCount+"个"
-      }
-      return content
     },
     clickSelInd(classId,className){
       this.indClassId = classId
       this.indClassName = className
       this.iselIndShow = true
     },
-     showMsgFromChild: function (classList){
-       console.log("开始接受数据======")
-       console.log(classList)
-      //  this.count = classList.
+    aginClickSelInd(classId,className){
+      for(let arr of this.applyContentList){
+        if(classId == arr.classId){
+          this.cdimList = arr.indList
+        }
+      }
+      this.indClassId = classId
+      this.indClassName = className
+      this.iselIndShow = true
+    },
+    showMsgFromChild: function (classList){
+       if(this.applyContentList.length > 0){
+         for(let arr of this.applyContentList){
+            if(arr.classId == classList.classId){
+              arr.indList = classList.indList
+              arr.attrName = classList.attrName
+              arr.attrNameList = classList.attrNameList
+            }else{
+              this.applyContentList.push(classList)
+            }
+          } 
+        }else{
+         this.applyContentList.push(classList)
+        }
        this.isSubmitApply = true;
-      //  this.count = this.count+content.applyCount
+       this.count += classList.attrCount
        this.iselIndShow = false
-      //  this.selIndContent.push(content)
-       this.applyContentList.push(classList)
+       let content = null
+       if(classList.attrCount <= 2){
+         content = classList.attrName
+         content = content.substring(0,18) +classList.attrCount+"个"
+       }else if(classList.attrCount > 2){
+         content = classList.attrName
+         content = content.substring(0,18) + "..."+classList.attrCount+"个"
+       }else{
+         content = classList.indList[0].dim_ind_name
+       }
+         
+       for(let arr of this.indClassItem){
+         if(arr.classId == classList.classId){
+            arr.attrName = content
+         }
+       }
        this.isClear = true;
-      //  this.selIndCount = content.applyCount
-      //  this.classCount = this.selIndCount
-      //   if(this.selIndCount > 0){
-      //     this.isClear = true;
-      //   }
-      },
+    },
     clearReast(){
       this.applyContentList = []
       this.count = null
@@ -266,13 +273,19 @@ export default {
     confirmSubmit(){
       if(this.textareaValue != null){//判断申请原因是否为空
         //提交申请数据到后台
-        this.$http.fetch('/data-board/apply',
+        let applyContent = []
+        let content = {}
+        for(let arr of this.applyContentList){
+          content = {classId:arr.classId,className:arr.className,indList:arr.indList}
+          applyContent.push(content)
+        }
+        this.$http.fetch('dsa/dataBoard/submitApply',
                 {        
                 token: this.token,
-                id: this.uid,
+                uid: this.uid,
                 uname: this.uname,
                 reason: this.textareaValue,//申请原因
-                applyContent: applyContentList//申请内容
+                applyContent: applyContent//申请内容
                 })
           .then((response) => {
             console.log("成功")
@@ -283,6 +296,7 @@ export default {
           }, (response) => {
             console.log("失败")
         });
+        this.cdimList = []
         this.textareaValue = null
         this.show = false;
         this.clearReast();
@@ -295,12 +309,12 @@ export default {
   submitApplyToOa(){
     let apply_indexs = [{'classId':1,'className':"指标分类1",'indexes':[{"id":1,"name":"指标1"},{"id":2,"name":"指标2"}]},{"classId":2,"className":"指标分类2","indexes":[{"id":3,"name":"指标3"},{"id":4,"name":"指标4"}]}]
     let params = new URLSearchParams();
-          params.append('applyer_uid', this.uid);
-          params.append('apply_id', 20263);
-          params.append('apply_indexes',JSON.stringify(apply_indexs));
-          params.append('reason', this.textareaValue);
-          params.append('index_chargers', [20263,20940]);
-          params.append('big_data_chargers',[20751]);
+          params.append('applyer_uid', this.uid);//流程发起人uid
+          params.append('apply_id', 20263);//数据中心指标记录ID
+          params.append('apply_indexes',JSON.stringify(apply_indexs));//申请指标内容
+          params.append('reason', this.textareaValue);//申请原因
+          params.append('index_chargers', [20263,20940]);//指标负责人uids 
+          params.append('big_data_chargers',[20751]);//数据中心审批人uids
   let appVersion = Cookie.get('t8t-it-appVersion')
   let appType = Cookie.get('t8t-it-appType')
   let deviceId = Cookie.get('t8t-it-deviceId')

@@ -162,7 +162,7 @@
 
             </div>
 
-            <aside class="letter-aside" style="height:100%;">
+            <aside class="letter-aside" style="height:100%;-webkit-overflow-scrolling:touch;">
              <view-box ref="viewBox">
                 <ul>
                   <li v-for="(item,index) in otherCityItems" :key="index" @click="naver(item.letter)" >
@@ -772,10 +772,33 @@ export default {
                      ,attrCount: this.selAttrCount
                      ,attrName:  this.selAttrName.substring(0, this.selAttrName.indexOf("/",this.selAttrName.indexOf("/")+2 )).replace("null",'')
                      ,attrNameList: this.selAttrNameList.substring(0,this.selAttrNameList.length-1).replace("null",'')
-                     ,indList:this.selIndList}
+                     ,indList:  this.dimList}
+                    //  ,indList:this.selIndList}
         this.sendMsgToApply(classList);
         //  this.$emit("listenToSelInd",selInd)
       } else if (deter === "dim") {
+        console.log("cityList=========")
+        console.log(thiss.dimList.otherCityList)
+        //  for(let arr of this.dimList){
+        //    if(arr.otherCityList ){
+
+        //    }
+        //  }
+
+        let result = [], isRepeated;
+        for (let i = 0, len = this.dimList.length; i < len; i++) {
+          isRepeated = false;
+          for (let j = 0, len = result.length; j < len; j++) {
+            if (this.dimList[i] == result[j]) {   
+                isRepeated = true;
+                break;
+            }
+          }
+          if (!isRepeated) {
+            result.push(this.dimList[i]);
+          }
+        }
+       this.dimList = result
         //维度确定
         this.selDimShow = false; //关闭页面
         this.isDimDetermine = false; //确定按钮取消
@@ -797,13 +820,12 @@ export default {
           for(let indArr of this.selIndList){
             for(let ndimArr of indArr.dimList){
               for(let odimArr of this.dimList){
-                if(this.indId == indArr.indId && ndimArr.attrId == odimArr.attrId && ndimArr.dimId == odimArr.dimId){
-                  console.log("有相等")
+                if(this.indId == indArr.indId && ndimArr.attrId == odimArr.attrId 
+                  && ndimArr.dimId == odimArr.dimId){
                   // this.selAttrName += ndimArr.dim_ind_name+"/" 
                   // this.selAttrNameList +=  ndimArr.dim_ind_name+"，" 
                    return 
                 }else{
-                  console.log("不相等")
                   // this.selAttrName += odimArr.dim_ind_name+"/" 
                   // this.selAttrNameList +=  odimArr.dim_ind_name+"，" 
                   dimList = {dimId:odimArr.dimId,dimName:odimArr.dimName
@@ -818,7 +840,6 @@ export default {
           indlist.indName = this.indName
           this.selIndList.push(indlist)
         }else{
-          console.log("没有数据")
          let selndList = {indId:this.indId,indName:this.indName,dimList: this.dimList}
          this.selIndList.push(selndList)
         }
@@ -1076,6 +1097,10 @@ export default {
       return document.getElementById("vux_view_box_body").scrollTop = (oPos - 36);
     },
     getList() {
+      this.dimList = this.cdimList
+      if(this.dimList.length > 0){
+        this.isDetermine = true
+      }
       this.classId = this.indClassId;
       this.className = this.indClassName;
       // this.classId = this.$route.query.classId
@@ -1102,6 +1127,6 @@ export default {
               });
     }
   },
-  props: ["indClassId", "indClassName"]
+  props: ["indClassId", "indClassName","cdimList"]
 };
 </script>
