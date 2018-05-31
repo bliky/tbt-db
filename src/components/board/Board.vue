@@ -1,10 +1,10 @@
 <template>
   <div id="board" style="height:100%;-webkit-overflow-scrolling:touch;">
-     <flexbox orient="vertical" style=""> 
+     <flexbox orient="vertical"> 
       <flexbox-item>
         <label @click="callNative(1007,{url:'https://dbdbigdata.to8to.com/bdc-prd-dbd/dataBoard',title:'数据看板'})">
           <!-- <router-link to="dataBoard"> -->
-            <div class="flex-board"  style="margin-right: 19px;display: flex;align-items: center;justify-content: space-between;width:335px;height:80px;">
+            <div class="flex-board">
               <div style="display: flex;align-items: center;">
                 <img style="margin-left:20px;height:24px;width:24px;" src="../../assets/image/index/icon/data@2x.png">
                 <span style="margin-left:15px;font-family:PingFangSC-Medium;font-size: 17px;color:#FFFFFF;letter-spacing: 0;">
@@ -19,7 +19,7 @@
       <flexbox-item>
         <label @click="callNative(1007,{url:'https://dbdbigdata.to8to.com/bdc-prd-dbd/apply',title:''})">
           <!-- <router-link to="apply"> -->
-            <div class="flex-apply" style="margin-right: 19px;display: flex;align-items: center;justify-content: space-between;width:335px;height:80px;">
+            <div class="flex-apply">
               <div style="display: flex;align-items: center;">
                 <img style="margin-left:20px;height:24px;width:24px;"  src="../../assets/image/index/icon/apply@2x.png">
                 <span style="margin-left:15px;font-family:PingFangSC-Medium;font-size:17px;color:#FFFFFF;letter-spacing: 0;">
@@ -34,7 +34,7 @@
       <flexbox-item>
         <label @click="callNative(1007,{url:'https://dbdbigdata.to8to.com/bdc-prd-dbd/MyInds',title:'指标释义'})">
           <!-- <router-link to="MyInds"> -->
-            <div class="flex-desc"  style="margin-right: 19px;display: flex;align-items: center;justify-content: space-between;width:335px;height:80px;">
+            <div class="flex-desc">
               <div style="display: flex;align-items: center;">
                 <img style="margin-left:20px;height:24px;width:24px;" src="../../assets/image/index/icon/explain@2x.png">
                 <span style="margin-left:15px;font-family:PingFangSC-Medium;font-size:17px;color: #FFFFFF;letter-spacing: 0;">
@@ -66,8 +66,11 @@
   text-align: center;
 }
 .flex-board {
-  margin:30px 20px 0 20px;
-  height:12%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height:80px;
+  margin:30px 19px 0px 19px;
   background: linear-gradient(-90deg, #4B63D5 0%, #483A8E 100%);
   box-shadow: 0 3px 8px 0 rgba(28,0,189,0.20);
   border-radius: 4px;
@@ -81,8 +84,11 @@
   background:#483A8E;
 }
 .flex-apply {
-  margin:4.5% 5.3% 0% 5.3%;
-  height:12%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height:80px;
+  margin:20px 19px 0px 19px;
   background: linear-gradient(-90deg, #00B7FF 0%,#0079DE 100%);
   box-shadow: 0 3px 8px 0 rgba(0,142,192,0.30);
   // text-align: center;
@@ -96,8 +102,11 @@
   background:#0079DE;
 }
 .flex-desc {
-  margin:4.5% 5.3% 0% 5.3%;
-  height:12%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height:80px;
+  margin:20px 19px 0px 19px;
   background: linear-gradient(-90deg, #74DBD8 0%,#00C9C6  100%);
   box-shadow: 0 3px 8px 0 rgba(0,169,163,0.30);
   border-radius: 4px;
