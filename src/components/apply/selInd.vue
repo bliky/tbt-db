@@ -1,7 +1,7 @@
 <template>
-<div class="selInd" style="padding: 15px 0px 80px 0px;-webkit-overflow-scrolling:touch;">
+<div class="selInd" style="height:100%;margin: 0px 0px;padding-bottom:80px;-webkit-overflow-scrolling:touch;">
    
-    <div id="ind" class="ind" >  
+    <div id="ind" class="ind">  
       <div v-if="!selDimShow && !isCityMore">
         <div id="title" class="indTitle">
           <span class="indTitleName">{{className}}</span> 
@@ -12,7 +12,14 @@
         </div>
 
         <div class="boxIndList">
-          <checker v-model="indList" 
+          <x-button mini plain :class="{'itemInd-selected': isSel(item.indId),'itemInd': !isSel(item.indId)}" 
+                  style="height:40px;margin-right:15px;border-radius:99px;" 
+                  v-for="(item, index) in indItem" :key="index"
+                  @click.native="onItemClickInd(item,item.indId,item.indName
+                      ,item.isummary,item.isummapply,index,disabled)"> 
+            {{item.indName}}
+          </x-button>
+          <!-- <checker v-model="indList" 
             type="checkbox" 
             default-item-class="itemInd"
             selected-item-class="itemInd-selected"
@@ -22,7 +29,7 @@
               :class="{'itemInd-selecteds': isSel(item.indId) }">
                {{item.indName}}
             </checker-item>
-          </checker> 
+          </checker>  -->
         </div>
       
         <!-- <div class="noSelInd" v-if="!isNoSelInd">
@@ -41,51 +48,66 @@
         <!-- 维度，属性城市确定 -->
         <x-button class="indDetBtn"  v-if="selDimShow && isCityMore && isDimAttrCityDetermine" 
           @click.native="clickDetermine('city')">确定</x-button>
-        <x-button class="indDetBtnDisabled"
+        <!-- <x-button class="indDetBtnDisabled"
            v-if=" (!selDimShow && !isCityMore && !isDetermine)
               || (selDimShow && !isCityMore && !isDimDetermine)
               || (selDimShow && isCityMore && !isDimAttrCityDetermine)
-                " disabled>确定</x-button>
+                " disabled>确定</x-button> -->
       </div>  
     </div>
 
     
-    <div class="selDim" v-if="selDimShow && !isCityMore">  
+        <div class="selDim"
+           v-if="selDimShow && !isCityMore">  
         <!-- <div id="title" class="titleDim">
           <div @click="selDimClose" class="vux-close"></div>
         </div> -->
 
-          <div class="boxDimList" v-for="(item,index) in dimItem" :key="index">
+          <div class="boxDimList" :class="{'animated slideInUp' : isDimUp == 1}"
+          v-for="(item,index) in dimItem" :key="index">
+                   <!-- ,'animatedo fadeOutDownBig' : isDimUp == 2}"  v-for="(item,index) in dimItem" :key="index"> -->
             <!-- <div class="titleDimName"  v-if="item.dimId == 0"> -->
             <div v-if="item.dimId == 0">
               <checker v-model="dimList"  type="checkbox" 
                 default-item-class="itemDim"
                 selected-item-class="itemDim-selected"
                 disabled-item-class="itemDim-disabled">
-                <checker-item  :value="item" @on-item-click="onItemClickDim(item.dimId,item.dimName,item.isdimapply,disabled)"
-                   :disabled="item.isdimapply == 'true'">
-                  {{indName}}{{item.dimName}}
+                <!-- :class="{'itemDim-selecteds': isSelDims(item,item.indId,item.dimId) }" -->
+                <checker-item  v-for="(item, index) in item.dimAttrItem"  :key="index" :value="item" 
+                 @on-item-click="onItemClickDim(item,index,item.isAttrApply,disabled)"
+                   :disabled="item.isAttrApply == 'true'">
+                  {{item.dim_ind_name}}
                   <img class="dimSummDis" 
                       src="../../assets/image/icon_chose@2x.png"> 
                 </checker-item>
-              </checker>
+              </checker> 
             </div>
 
 
               <div class="selDimName" style="margin-top:20px;" v-if="item.dimId > 0">
                 <span class="dimName">{{item.dimName}}</span>
-                <x-button mini class="fullOrMoreSel"  v-if="item.isCity == 'false'" @click.native="selectFull(item,index)" >全选</x-button>
+                <!-- <x-button mini class="fullOrMoreSel"  v-if="item.isCity == 'false'" @click.native="selectFull(item,item.dimId,index)">
+                  <span v-if="!isSelFull(item.dimId,index)" >全选</span>
+                  <span v-if="isSelFull(item.dimId,index)">取消全选</span>
+                </x-button> -->
+                <!-- <x-button mini class="fullOrMoreSel"  v-if="item.isCity == 'false' " 
+                          @click.native="selectFull(item,item.dimId,index)" >
+                  
+                  <span v-if="(isClick == false) || (selFullIndex == index && !isSelFull(item,index))" >全选</span>
+                  <span v-if="selFullIndex == index && isSelFull(item,index)">取消全选</span>
+                </x-button> -->
+               
                 <x-button mini class="fullOrMoreSel"  v-if="item.isCity == 'true'"  @click.native="cityMore(item,item.dimId,index)">更多城市</x-button>
               </div>
 
-              <checker v-model="dimList" v-if="item.dimId > 0"
+              <checker v-model="dimList" v-if="item.dimId > 0" 
                 type="checkbox" 
                 default-item-class="itemDims"
                 selected-item-class="itemDims-selected"
                 disabled-item-class="itemDims-disabled">
                   <checker-item  :value="item" v-for="(item, index) in item.dimAttrItem"  :key="index"
                       :disabled="item.isAttrApply == 'true'" :on-change="selChange(index)"
-                      v-if="item.letter != null ? index < 5:index >= 0 "
+                      v-if="item.letter != '' ? index < 5:index >= 0 "
                   @on-item-click="onItemClickDims(item,index,item.isAttrApply,disabled)">
                     {{item.dim_ind_name}}
                     <img class="attrDisImg"
@@ -101,8 +123,8 @@
     <div class="cityMore" v-if="isCityMore" >
       <!-- <span @click="closeCityItem" class="vux-close" style="margin:0px 0px 10px 15px;"></span> -->
       <div class="hotCity" style="background:#F6F6F6">
-        <div class="hotCityTitle" >
-          <span class="hotCityTitleName" style="margin:0px 15px 0px 15px;font-family: PingFangSC-Regular;font-size: 14px;color: #999999;">
+        <div class="hotCityTitle" style="padding:15px 0px 0px 15px;">
+          <span class="hotCityTitleName" style="font-family: PingFangSC-Regular;font-size: 14px;color: #999999;">
             热门城市
           </span>
           <!-- <x-button mini class="hotCityFull"  v-if="!isCity" @click.native="selectHotCityFull" >全选</x-button> -->
@@ -122,18 +144,12 @@
           </checker>
         </div>
       </div>
+      
       <div class="selOtherCity" height="45px;">
-         <!-- <sticky
-          scroll-box="vux_view_box_body"
-          ref="sticky"
-          :offset="46"
-          :check-sticky-support="false"
-          :disabled="disabled"> -->
-            <div class="otherCityTitle" style="background:#F6F6F6;">
-              <span class="otherCityTitleName" style="margin:0px 15px 5px 15px;font-family: PingFangSC-Regular;font-size: 14px;color: #999999;">
+            <div class="otherCityTitle" style="padding:0px 15px 10px 15px;background:#F6F6F6;">
+              <span class="otherCityTitleName" style="font-family: PingFangSC-Regular;font-size: 14px;color: #999999;">
                 其他城市
               </span>
-              <!-- <x-button mini class="otherCityFull"  v-if="!isCity" @click.native="selectOtherCityFull" >全选</x-button> -->
             </div>
             <div class="selOtherCityList"  v-for="(item, index) in otherCityItems" :key="index">
                
@@ -141,7 +157,7 @@
                   <a :id="item.letter">{{item.letter}}</a>
                 </div>
 
-                <div v-for="(item, index) in item.list" :key="index" class="cityName" style="padding:0px 0px 0px 0px;font-family: PingFangSC-Regular;font-size: 17px;color: #333333;">
+                <div v-for="(item, index) in item.list" :key="index" class="cityName" style="font-family: PingFangSC-Regular;font-size: 17px;color: #333333;">
                   <checker v-model="dimList" 
                           type="checkbox" 
                           default-item-class="otherCityItem" 
@@ -181,6 +197,22 @@
 </template>
 
 <style  lang="less" scoped>
+@import "../../assets/css/animate.css";
+.animated {
+    -webkit-animation-duration: 0.1s;
+    animation-duration: 0.1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+.animatedo {
+    -webkit-animation-duration: 0.1s;
+    animation-duration: 2s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+.weui-btn_plain-default{
+  border:none;
+}
 .weui-btn {
   margin-left: -18px;
 }
@@ -189,7 +221,7 @@
 }
 #ind {
   .indTitleName {
-    margin: 0px 0px 0px 20px;
+    margin: 0px 15px 0px 0px;
     font-weight: bold;
     font-family: PingFangSC-Medium;
     font-size: 17px;
@@ -202,7 +234,7 @@
   }
 
   .boxIndList {
-    margin: 0px 15px 0px 15px;
+    margin: 0px 15px 0px 0px;
   }
 
   .vux-checker-box {
@@ -225,48 +257,48 @@
   // }
   .itemInd {
     // width:25%;
-    padding: 0px 15px;
+    padding: 0px 20px;
     margin: 3% 4% 0% 0%;
-    height: 26px;
+    height: 40px;
     border: 1px solid #e3e3e3;
     border-radius: 100px;
     font-family: PingFangSC-Regular;
     font-size: 15px;
     color: #666666;
-    line-height: 25px;
+    line-height: 38px;
   }
   .itemInd-selected {
     // width: 25%;
-    padding: 0px 15px;
+    padding: 0px 20px;
     margin: 3% 4% 0% 0%;
-    height: 26px;
+    height: 40px;
     background: #06C792;
     border-radius: 100px;
     font-family: PingFangSC-Regular;
     font-size: 15px;
     color: #ffffff;
-    line-height: 25px;
+    line-height: 38px;
   }
   .itemInd-selecteds {
     // width: 25%;
-    padding: 0px 15px;
+    padding: 0px 20px;
     margin: 3% 4% 0% 0%;
-    height: 26px;
+    height: 40px;
     background: #06C792;
     border-radius: 100px;
     font-family: PingFangSC-Regular;
     font-size: 15px;
     color: #ffffff;
-    line-height: 25px;
+    line-height: 38px;
   }
   .itemInd-disabled {
-    padding: 0px 15px;
+    padding: 0px 20px;
     margin: 3% 4% 0% 0%;
     color: #666666;
     border-radius: 100px;
     font-family: PingFangSC-Regular;
     font-size: 15px;
-    line-height: 25px;
+    line-height: 38px;
   }
   .noSelInd {
     padding-top: 88%;
@@ -287,21 +319,22 @@
     background: #323232;
     box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.12), 0 6px 6px 0 rgba(0, 0, 0, 0.24);
     border-radius: 100px;
-    line-height: 20px;
+    line-height: 38px;
   }
 
   .indBtn {
-    touch-action: none;
-    display: flex;
-    position: absolute;
+    // touch-action: none;
+    // display: flex;
+    position: fixed;
     z-index: 600;
     bottom: 0;
-    width: 100%;
-    height: 51px;
+    width: 97%;
+    // height: 51px;
+    line-height:50px;
   }
 
   .indDetBtnDisabled {
-    width: 125%;
+    width: 102%;
     background: #b7efd3;
     font-family: PingFangSC-Regular;
     font-size: 18px;
@@ -317,12 +350,15 @@
     color: #ffffff;
     letter-spacing: 0;
     text-align: center;
-    width: 125%;
+    width: 108%;
   }
+  .flex-indDetBtn:active {
+  background:#00B180;
+}
 }
 
 .selDim {
-  margin: 0px 15px 15px 15px;
+  margin: 0px 15px 15px 0px;
 }
 .selDim {
   .titleDim {
@@ -350,48 +386,63 @@
       display: none;
     }
     padding: 0px 15px;
-    margin: 3% 4% 0% 0%;
-    height: 26px;
+    margin: 15px 15px 0px 0px;
+    height: 40px;
     border: 1px solid #e3e3e3;
     border-radius: 100px;
     font-family: PingFangSC-Regular;
     font-size: 15px;
     color: #333333;
-    line-height: 25px;
+    line-height: 37px;
   }
   .itemDim-selected {
     .dimSummDis {
       display: none;
     }
     padding: 0px 15px;
-    margin: 3% 4% 0% 0%;
-    height: 26px;
+    margin: 15px 15px 0px 0px;
+    height: 40px;
+    border: 1px solid #eeeeee;
+    background: #06C792;
+    border-radius: 100px;
+    font-family: PingFangSC-Regular;
+    font-size: 15px;
+    color: #ffffff;
+    line-height: 37px;
+  }
+  .itemDim-selecteds {
+    .dimSummDis {
+      display: none;
+    }
+    padding: 0px 15px;
+    margin: 15px 15px 0px 0px;
+    height: 40px;
     border: 1px solid #eeeeee;
     background: #06C792;
     border-radius: 100px;
     font-family: PingFangSC-Regular;
     font-size: 15px;
     color: #eeeeee;
-    line-height: 25px;
+    line-height: 37px;
   }
   .itemDim-disabled {
     .dimSummDis {
-      width: 15px;
-      height: 15px;
+      width: 18px;
+      height: 18px;
       display: block;
       float: right;
-      margin-top: 5px;
-      padding-left: 3px;
+      margin-top: 10px;
+      padding-left: 7px;
     }
-    padding: 0px 5px 0px 15px;
-    margin: 3% 4% 0% 0%;
-    height: 26px;
+    padding: 0px 15px;
+    margin: 15px 15px 0px 0px;
+    height: 40px;
     border: 1px solid #eeeeee;
     background: #ffffff;
     font-family: PingFangSC-Regular;
     font-size: 15px;
     color: #999;
-    line-height: 25px;
+    line-height: 38px;
   }
 }
 
@@ -418,46 +469,46 @@
     .attrDisImg {
       display: none;
     }
-    padding: 0px 8px 0px 8px;
-    margin: 10px 1% 0px 1%;
-    height: 26px;
+    padding: 0px 15px;
+    margin: 15px 15px 0px 0px;
+    height: 40px;
     border: 1px solid #e3e3e3;
     border-radius: 100px;
     font-family: PingFangSC-Regular;
     font-size: 14px;
     // color: #E3E3E3;
-    line-height: 25px;
+    line-height: 38px;
   }
   .itemDims-selected {
     .attrDisImg {
       display: none;
     }
-    padding: 0px 8px 0px 8px;
-    margin: 10px 1% 0px 1%;
-    height: 26px;
+    padding: 0px 15px;
+    margin: 15px 15px 0px 0px;
+    height: 40px;
     border: 1px solid #eeeeee;
     background: #06C792;
     border-radius: 100px;
     font-family: PingFangSC-Regular;
     font-size: 14px;
-    color: #eeeeee;
-    line-height: 25px;
+    color: #ffffff;
+    line-height: 38px;
   }
   .itemDims-disabled {
     .attrDisImg {
-      margin: 5px 0px 0px 3px;
+      margin: 10px 0 0 5px;
       float: right;
       display: block;
-      width: 14px;
-      height: 14px;
+      width: 18px;
+      height: 18px;
     }
-    padding: 0px 8px 0px 8px;
-    margin: 10px 1% 0px 1%;
-    height: 26px;
+    padding: 0px 15px;
+    margin: 10px 15px 0px 0px;
+    height: 40px;
     font-family: PingFangSC-Regular;
     font-size: 14px;
     color: #666666;
-    line-height: 25px;
+    line-height: 38px;
   }
 }
 
@@ -469,9 +520,9 @@
   #hotCityItemDis {
     display: none;
   }
-  padding: 0px 15px;
+  padding: 0px 20px;
   margin: 3% 4% 0% 0%;
-  height: 26px;
+  height: 40px;
   background: #ffffff;
   border: 1px solid #eeeeee;
   font-family: PingFangSC-Regular;
@@ -479,40 +530,41 @@
   border-radius: 100px;
   color: #333333;
   text-align: center;
+  line-height: 38px;
 }
 .hotCityItemSelected {
   #hotCityItemDis {
     display: none;
   }
-  padding: 0px 15px;
+  padding: 0px 20px;
   margin: 3% 4% 0% 0%;
-  height: 26px;
+  height: 40px;
   border: 1px solid #eeeeee;
   background: #06C792;
   font-family: PingFangSC-Regular;
   font-size: 15px;
   border-radius: 100px;
-  color: #eeeeee;
-  line-height: 25px;
+  color: #ffffff;
+  line-height: 38px;
 }
 
 .hotCityItemDisabled {
   #hotCityItemDis {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
     float: right;
     display: block;
-    padding-top: 5px;
+    padding-top: 12px;
     margin-left: 2px;
   }
-  padding: 0px 6px 0px 15px;
+  padding: 0px 15px 0px 15px;
   margin: 3% 4% 0% 0%;
-  height: 26px;
+  height: 40px;
   border: 1px solid #eeeeee;
   font-family: PingFangSC-Regular;
   font-size: 15px;
   color: #999;
-  line-height: 25px;
+  line-height: 38px;
 }
 
 .otherCityItem {
@@ -522,14 +574,15 @@
   #selectOtherCityImg {
     display: none;
   }
-  padding: 0px 15px;
+  padding: 0px 20px;
   margin: 5px 3px 5px 0px;
-  height: 26px;
-  width: 100%;
+  height: 40px;
+  width: 90%;
   background: #ffffff;
   font-family: PingFangSC-Regular;
   font-size: 15px;
   color: #333333;
+  line-height: 40px;
   text-align: left;
 }
 
@@ -539,16 +592,17 @@
   }
   #selectOtherCityImg {
     display: block;
-    padding-right: 50px;
+    margin-top: 7px;
+    margin-right: 20px;
   }
-  padding: 0px 15px;
+  padding: 0px 20px;
   margin: 5px 3px 5px 0px;
-  width: 100%;
-  height: 26px;
+  width: 90%;
+  height: 40px;
   font-family: PingFangSC-Regular;
   font-size: 15px;
   color: #333333;
-  line-height: 25px;
+  line-height: 40px;
   text-align: left;
 }
 .otherCityItemDisabled {
@@ -557,34 +611,35 @@
   }
   #otherCityImgDis {
     display: block;
-    padding-right: 50px;
+    margin-top: 7px;
+    margin-right: 20px;
   }
-  padding: 0px 15px;
+  padding: 0px 20px;
   margin: 5px 3px 5px 0px;
-  width: 100%;
-  height: 26px;
+  width: 90%;
+  height: 40px;
   font-family: PingFangSC-Regular;
   font-size: 15px;
   color: #999;
-  line-height: 25px;
+  line-height: 40px;
   text-align: left;
 }
 
 .letter-aside {
   width:35px;
   position: fixed;
-  right: 5px;
+  right: 1px;
   top: 0px;
   ul {
     list-style: none;
     line-height: 1.4em;
     font-family: PingFangSC-Medium;
-    font-size: 20px;
+    font-size: 10px;
     color: #999999;
     text-align: center;
   }
   li {
-    padding-top: 15px;
+    padding-top: 10px;
   }
 }
 
@@ -716,7 +771,7 @@ export default {
       dimAttrCount: null, //选择维度属性数
       dimAttrCityCount: null, //选择维度属性城市数
       selDimShow: false, //选择维度显示
-      isDetermine: false, //指标按钮是否确定
+      isDetermine: true, //指标按钮是否确定
       isDimDetermine: false, //指标维度按钮是否确定
       isDimAttrDetermine: false, //指标维度，属性按钮是否确定
       isDimAttrCityDetermine: false, //指标维度，属性,城市按钮是否确定
@@ -743,6 +798,12 @@ export default {
       selAttrName: null,//已选择的维度属性连接名称
       selAttrCount: 0,//选择维度属性数
       selAttrNameList: null,//已选择的维度属性名称列表
+      //动画类
+      isDimUp : 0,
+      selFull: "全选",
+      selFulls: "取消全选",
+      selFullIndex: null,
+      isClick: false,
       dimListIndex: 10000000//第几个维度属性选择列表
     };
   },
@@ -754,7 +815,7 @@ export default {
     // utils.callNative(1009, {"url":apply,"title":"指标申请"})
     this.getList();
     this.getCountValue();
-    document.getElementById("vux_view_box_body").scrollTo = (500);
+    document.getElementById("vux_view_box_body").scrollTo = (100);
     // this.sendMsgToApply();
   },
   methods: {
@@ -762,28 +823,58 @@ export default {
       //点击确定按钮
       let classList = []//已选择的指标大类列表
         if (deter === "ind") {
-          for(let arr of this.selIndList){
-            for(let dimrr of arr.dimList){
-              this.selAttrName += dimrr.dim_ind_name+"/" 
-              this.selAttrNameList += dimrr.dim_ind_name+"，" 
+             if(this.selIndList.length === 0 && this.dimList.length > 0){
+               let indlist = {}
+               indlist.indId = this.dimList[0].indId
+               indlist.indName = this.dimList[0].indName
+               indlist.dimList = this.dimList
+               this.selIndList.push(indlist)
+             }
+          
+          let result = [], isRepeated;
+        for (let i = 0, len = this.dimList.length; i < len; i++) {
+          isRepeated = false;
+          for (let j = 0, len = result.length; j < len; j++) {
+            if (this.dimList[i] == result[j]) {   
+                isRepeated = true;
+                break;
             }
           }
+          if (!isRepeated) {
+            result.push(this.dimList[i]);
+          }
+        }
+       this.dimList = result
+       this.selAttrCount =  0
+      
+        this.selAttrName = null
+        this.selAttrNameList = null
+        for(let arr of this.dimList){
+           this.selAttrCount += 1
+           this.selAttrName += arr.dim_ind_name+"/" 
+           this.selAttrNameList += arr.dim_ind_name+","
+        }
         classList = {classId:this.classId,className:this.className
                      ,attrCount: this.selAttrCount
-                     ,attrName:  this.selAttrName.substring(0, this.selAttrName.indexOf("/",this.selAttrName.indexOf("/")+2 )).replace("null",'')
-                     ,attrNameList: this.selAttrNameList.substring(0,this.selAttrNameList.length-1).replace("null",'')
+                     ,attrName:  this.selAttrName == null ? null : this.selAttrName.substring(0, this.selAttrName.indexOf("/",this.selAttrName.indexOf("/")+2 )).replace("null",'')
+                     ,attrNameList: this.selAttrNameList == null ? null : this.selAttrNameList.substring(0,this.selAttrNameList.length-1).replace("null",'')
                      ,indList:  this.dimList}
                     //  ,indList:this.selIndList}
         this.sendMsgToApply(classList);
         //  this.$emit("listenToSelInd",selInd)
       } else if (deter === "dim") {
-        console.log("cityList=========")
-        console.log(thiss.dimList.otherCityList)
-        //  for(let arr of this.dimList){
-        //    if(arr.otherCityList ){
-
-        //    }
-        //  }
+        this.isSel(this.indId);
+         for(let arr of this.dimList){
+           if(arr.otherCityList != 'undefined'){
+             delete arr.otherCityList
+           }
+           if(arr.dimAttrItem != 'undefined'){
+             delete arr.dimAttrItem
+           }
+           if(arr.hotCityList != 'undefined'){
+             delete arr.hotCityList
+           }
+         }
 
         let result = [], isRepeated;
         for (let i = 0, len = this.dimList.length; i < len; i++) {
@@ -800,22 +891,26 @@ export default {
         }
        this.dimList = result
         //维度确定
-        this.selDimShow = false; //关闭页面
-        this.isDimDetermine = false; //确定按钮取消
+        this.isDimUp = 2
+         setTimeout(() => {
+           this.selDimShow = false; //关闭页面
+           this.isDimDetermine = false; //确定按钮取消
+          }, 10);
+       
         //确定选择指标下的维度，维度属性
         let count = 0;
-        for(let arr of this.dimList){
-          count += 1;
-          if(arr.dimId === 0){
-            arr.attrId = 0
-            arr.dim_ind_name = this.indName+arr.dimName
-          }
-        }
+        // for(let arr of this.dimList){
+        //   count += 1;
+        //   if(arr.dimId === 0){
+        //     arr.attrId = 0
+        //     arr.dim_ind_name = this.indName+arr.dimName
+        //   }
+        // }
         
         this.selAttrCount = count
         let dimList = {}
         let indlist = {}
-        if(this.selIndList.length > 0){
+        if(this.selIndList.length > 0 && this.dimList.length > 0){
           let selndList = {indId:this.indId,indName:this.indName}
           for(let indArr of this.selIndList){
             for(let ndimArr of indArr.dimList){
@@ -840,8 +935,18 @@ export default {
           indlist.indName = this.indName
           this.selIndList.push(indlist)
         }else{
-         let selndList = {indId:this.indId,indName:this.indName,dimList: this.dimList}
-         this.selIndList.push(selndList)
+          if(this.dimList.length > 0){
+            console.log("已选择了")
+            // for(let arr of  this.dimList){
+            //   if(arr.attrId == null){arr.attrId = 0}
+            //   if(arr.dim_ind_name == null){ arr.dim_ind_name = this.indName + arr.dimName}
+            //   if(arr.indName == null){arr.indName = this.indName}
+            // }
+            let selndList = {indId:this.indId,indName:this.indName,dimList: this.dimList}
+            this.selIndList.push(selndList)
+          }else{
+            console.log("选择为空")
+          }
         }
         
       } else if (deter === "city") {
@@ -855,42 +960,64 @@ export default {
       this.$emit("listenToSelInd", classList);
     },
     selChange() {},
+    isSelFull(dimId){
+      // console.log("dimId=========")
+      // console.log(dimId)
+      // console.log("dimList====")
+      // console.log(this.dimList)
+      // if(this.dimList != null){
+      //   for(let arr of this.dimList){
+      //     if(arr.dimId = dimId){
+      //       return true
+      //     }
+
+      //   }
+      // }else{
+      //   return false
+      // }
+      
+    },
     selectFull(dimItem, index) {
       let isExisted = false;
       for (let arr of this.dimList) {
-        if (arr.index === index && arr.dimName == dimItem.dimName) {
+        if (
+          // arr.index === index && 
+          arr.dimName == dimItem.dimName) {
           isExisted = true;
         }
       }
       if (isExisted == true) {
         //判断是否已经选择过,有则删除
         this.dimCount -= 1;
-        if (this.dimCount > 0) {
-          this.isDimDetermine = true;
-        } else {
-          this.isDimDetermine = false;
-        }
+        // if (this.dimCount > 0) {
+        //   this.isDimDetermine = true;
+        // } else {
+        //   this.isDimDetermine = false;
+        // }
         for (var i = this.dimList.length - 1; i >= 0; i--) {
           if (
-            this.dimList[i].index == index &&
+            // this.dimList[i].index == index &&
             this.dimList[i].dimName == dimItem.dimName
           ) {
+            
+            // this.selFull = "全选"
             this.dimList.splice(i, 1);
             this.dimAttrCount -= 1;
-            if (this.dimAttrCount > 0) {
-              this.isDimAttrDetermine = true;
-            } else {
-              this.isDimAttrDetermine = false;
-            }
+            // if (this.dimAttrCount > 0) {
+            //   this.isDimAttrDetermine = true;
+            // } else {
+            //   this.isDimAttrDetermine = false;
+            // }
           }
         }
       } else {
         //没有则添加
+        // this.selFull = "取消全选"
         this.dimCount += 1;
         this.isDimDetermine = true;
         for (let arr of dimItem.dimAttrItem) {
           if (arr.isAttrApply == "false") {
-            arr.index = index;
+            // arr.index = index;
             arr.dimName = dimItem.dimName;
             this.dimList.push(arr);
             this.dimAttrCount += 1;
@@ -904,14 +1031,13 @@ export default {
       this.selDimShow = false;
     },
     getCountValue() {
-      this.isSelDim = true;
+      // this.isSelDim = true;
     },
     isSel(indId){
       let isSel = false
-      if(typeof(this.selIndList) != null){
-        console.log(this.selIndList)
-        for(let arr of this.selIndList){
-          if( arr.indId == indId && arr.dimList.length > 0){
+      if(typeof(this.dimList) != null){
+        for(let arr of this.dimList){
+          if( arr.indId == indId){
               // this.isInd = true
               isSel = true
           }
@@ -919,52 +1045,69 @@ export default {
       }
       return isSel
     },
+    isSelDims(dimList,indId,dimId){
+      let isSel = false
+      if(typeof(this.dimList) != null){
+        for(let arr of this.dimList){
+          if(arr.dimId == 0 && this.indId == arr.indId){
+              // this.isInd = true
+              isSel = true
+          }
+        }
+      }else{
+        isSel = false
+      }
+      return isSel
+    },
     onItemClickInd(indItem, indId, indName, isummary, isummapply,index,disabled) {
+      this.isDimUp = 1
+      this.isSel(indId);
       this.indId = indId
       this.indName = indName
       this.isummary = isummary
       this.isummapply = isummapply
-      let isExisted = false;
-      let indIdList = {};
-      for (let arr of this.selIndIdList) {
-        if (arr.indId == indId) {
-          isExisted = true;
-        }
-      }
-      if (isExisted) {
+      // let isExisted = false;
+      // let indIdList = {};
+      // for (let arr of this.selIndIdList) {
+      //   if (arr.indId == indId) {
+      //     isExisted = true;
+      //   }
+      // }
+      // if (isExisted) {
         //已经选择过
-        this.count -= 1;
-        if (this.count < 1) {
-          this.isDetermine = false;
+        // this.count -= 1;
+        // if (this.count < 1) {
+          // this.isDetermine = false;
           // this.isNoSelInd = false
-        }
-        for (var i = this.selIndIdList.length - 1; i >= 0; i--) {
-          if (this.selIndIdList[i].indId == indId) {
-            this.selIndIdList.splice(i, 1);
-          }
-        }
-      } else {
+        // }
+      //   for (var i = this.selIndIdList.length - 1; i >= 0; i--) {
+      //     if (this.selIndIdList[i].indId == indId) {
+      //       this.selIndIdList.splice(i, 1);
+      //     }
+      //   }
+      // } else {
         //没有选择过
-        indIdList.indId = indId;
-        this.selIndIdList.push(indIdList);
-        this.count += 1;
-        this.isDetermine = true;
+        // indIdList.indId = indId;
+        // this.selIndIdList.push(indIdList);
+        // this.count += 1;
+        // this.isDetermine = true;
         // this.isNoSelInd = true
 
         setTimeout(() => {
           this.dimCount = 0;
           this.dimAttrCount = 0;
           // this.dimList = [];
-          this.isDimDetermine = false;
+          this.isDimDetermine = true;
           this.selDimShow = true; //去往维度选择
         }, 100);
-      }
+      // }
        //维度list
         this.uid = Cookie.get("t8t-it-uid");
         this.uname = Cookie.get("t8t-oa-username");
         this.uid = Cookie.get('t8t-it-uid');
         let token = ''
         let ticket = ''
+        this.dimItem = []
         this.$http.fetch('dsa/dataBoard/dimAndAttrList',
                       {        
                       uid: this.uid,
@@ -980,7 +1123,18 @@ export default {
                 }, (response) => {
               });
     },
-    onItemClickDim(indId, indName, isummapply, disabled) {
+    onItemClickDim(item,index,isAttrApply,disabled) {
+      // for (var i = this.dimList.length - 1; i >= 0; i--) {
+      //   if (this.dimList[i].attrId == 0) {
+      //     this.dimList.splice(i, 1);
+      //   }
+      //   if(this.dimList.length > 0){
+      //     this.isSelDim = true
+      //   }else{
+      //     this.isSelDim = false
+      //   }
+      // }
+
       if (!disabled) {
         this.dimCount += 1;
         this.dimAttrCount += 1;
@@ -997,13 +1151,12 @@ export default {
       }
     },
     cityMore(item,dimId,index) {
-      console.log(item,dimId,index)
       this.hostCityItems = item.dimAttrItem
       this.otherCityItems = item.otherCityList
       this.dimAttrCityCount = 0;
       // this.hostCityItem = [];
       // this.otherCityItem = [];
-      this.isDimAttrCityDetermine = false;
+      this.isDimAttrCityDetermine = true;
       this.isCityMore = true;
     },
     selectHotCityFull() {},
@@ -1017,7 +1170,6 @@ export default {
       this.isCityMore = false;
     },
     onItemClickHotCity(hotCityItem, cityId,cityName,index, disabled) {
-      console.log("点击选择")
       if (!disabled) {
         let isExisted = false;
         let hotCityList = {};
@@ -1030,10 +1182,10 @@ export default {
           //已经选择过
           console.log("已经选择过")
           this.dimAttrCityCount -= 1;
-          if (this.dimAttrCityCount < 1) {
-            this.isDimAttrCityDetermine = false;
+          // if (this.dimAttrCityCount < 1) {
+          //   this.isDimAttrCityDetermine = false;
             // this.isNoSelInd = false
-          }
+          // }
           for (var i = this.selHotCityList.length - 1; i >= 0; i--) {
             if (this.selHotCityList[i].cityId == cityId) {
               this.selHotCityList.splice(i, 1);
@@ -1064,10 +1216,10 @@ export default {
         if (isExisted) {
           //已经选择过
           this.dimAttrCityCount -= 1;
-          if (this.dimAttrCityCount < 1) {
-            this.isDimAttrCityDetermine = false;
+          // if (this.dimAttrCityCount < 1) {
+          //   this.isDimAttrCityDetermine = false;
             // this.isNoSelInd = false
-          }
+          // }
           for (var i = this.selOtherCityList.length - 1; i >= 0; i--) {
             if (this.selOtherCityList[i].cityId == cityId) {
               this.selOtherCityList.splice(i, 1);
@@ -1084,6 +1236,7 @@ export default {
         }
       }
     },
+    //滚动字母
     naver(id) {
       // 点击右边字母滚动
       this.tipString = id;
@@ -1101,6 +1254,7 @@ export default {
       if(this.dimList.length > 0){
         this.isDetermine = true
       }
+      
       this.classId = this.indClassId;
       this.className = this.indClassName;
       // this.classId = this.$route.query.classId
@@ -1127,6 +1281,6 @@ export default {
               });
     }
   },
-  props: ["indClassId", "indClassName","cdimList"]
+  props: ["indClassId", "indClassName","cdimList","oselAttrName","oselAttrNameList","oselAttrCount"]
 };
 </script>

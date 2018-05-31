@@ -288,10 +288,12 @@ export default {
                       gradient.addColorStop(1, "#06C792");
 
                 let maxDate = response.data.result.maxDate//'7日'
+                
                 let maxValues = response.data.result.maxValues//98.88
               //  let position = [maxDate,maxValues]
               //  let content = '最大值：'+maxValues
                 this.datav = response.data.result.rows
+
                 const chart = new F2.Chart({
                   id: "mountNode",
                   width: window.innerWidth,
@@ -385,6 +387,7 @@ export default {
                   let xiaoshu = "";  //用来记录参数小数数值包括小数点
                   let zhengshu ="";  //用来记录参数录整数数值
                   let t = item.statis_num.toString();
+                 
                   if(item.statis_num < 1000 || t.indexOf('%') > 0){    //当参数小于1000的时候直接返回参数
                       return item;
                   }else{
@@ -399,7 +402,7 @@ export default {
 
                       //将整数1234567890部分拆分为2部分，变量head:1   变量body:123456789
                       var head = zhengshu.slice(0,zhengshu.length-num*3);  
-                      if(head.length>0){  //如果head存在，则在head后面加个千位分隔符，
+                      if(head.length > 0 && t  != '-'){  //如果head存在，则在head后面加个千位分隔符，
                           head += ',';
                       }
                       var body = zhengshu.slice(zhengshu.length-num*3,zhengshu.length);

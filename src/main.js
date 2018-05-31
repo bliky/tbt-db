@@ -6,23 +6,27 @@ import http from './utils/http.js'
 import Cookie from 'js-cookie'
 // import VConsole from 'vconsole'
 import axios from 'axios'
-import { ConfirmPlugin, LoadingPlugin, ToastPlugin } from 'vux'
+import { ConfigPlugin,ConfirmPlugin, LoadingPlugin, ToastPlugin } from 'vux'
 import App from './App'
 import Home from './components/Home'
 import Apply from './components/apply/Apply'
 import Board from './components/board/Board'
+import DataBoard from './components/board/DataBoard'
 import MyInds from './components/my/MyInds'
 import Indesc from './components/my/Indesc'
 import NounDesc from './components/my/NounDesc'
 import selInd from './components/apply/selInd'
 import selDim from './components/apply/selDim'
+import Ind from './components/apply/Ind'
 import Page from './components/test/testPage'
 import utils from './utils/utils.js'
 
 
 // new VConsole()
 Vue.prototype.$http = http
-Vue.use(VueRouter,F2,Vue,ConfirmPlugin, LoadingPlugin, ToastPlugin,utils)
+Vue.use(VueRouter,F2,Vue,ConfirmPlugin, LoadingPlugin, ToastPlugin,utils,ConfigPlugin, {
+  $layout: 'VIEW_BOX'
+})
 window.axios = axios; 
 
 FastClick.attach(document.body)
@@ -37,8 +41,16 @@ const routes = [
     component: Board
   },
   {
+    path: '/bdc-prd-dbd/dataBoard',
+    component: DataBoard
+  },
+  {
     path: '/bdc-prd-dbd/apply',
     component: Apply
+  },
+  {
+    path: '/bdc-prd-dbd/apply/ind',
+    component: Ind
   },
   {
     path: '/bdc-prd-dbd/myinds',

@@ -2,7 +2,7 @@
   <div id="app" style="-webkit-overflow-scrolling: touch; height: 100%">
     <view-box ref="viewBox" body-padding-top="0px">
       <router-view></router-view>
-      <app-footer  slot="bottom"></app-footer>
+      <!-- <app-footer  slot="bottom"></app-footer> -->
     </view-box>
       
         
@@ -56,6 +56,7 @@ body {
 }
 </style>
 <script>
+import Board from "./components//board/Board";
 import AppHeader from "./components/common/Header";
 import AppFooter from "./components/common/Footer";
 import { ViewBox, Tabbar, TabbarItem } from "vux";
@@ -63,6 +64,7 @@ import { ViewBox, Tabbar, TabbarItem } from "vux";
 
 export default {
   components: {
+    Board,
     AppHeader,
     ViewBox,
     AppFooter,

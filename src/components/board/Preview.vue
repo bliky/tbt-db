@@ -72,7 +72,13 @@
 #preview .vux-button-group-current {
    background-color:#06C792;
 }
-
+#preview .vux-button-group > a.vux-button-tab-item-first:after{
+  border: 1px solid #06C792;
+}
+#preview .vux-button-group > a.vux-button-tab-item-middle:after{
+   border: 1px solid #06C792;
+}
+itemDim-disabled
 .popover-demo-content {
   padding: 5px 10px;
 }
@@ -205,11 +211,12 @@ export default {
                           let xiaoshu = "";  //用来记录参数小数数值包括小数点
                           let zhengshu ="";  //用来记录参数录整数数值
                           let t = item.statis_num.toString();
+                         
                           if(item.statis_num < 1000 || t.indexOf('%') > 0){    //当参数小于1000的时候直接返回参数
                               return item;
                           }else{
                              ;   //将整数转换成字符串
-                              if(t.indexOf('.')>0){   //如果参数存在小数，则记录小数部分与整数部分
+                              if(t.indexOf('.') > 0 ){   //如果参数存在小数，则记录小数部分与整数部分
                                   var index = t.indexOf('.');
                                   xiaoshu = t.slice(index,t.length);
                                   zhengshu = t.slice(0,index);
@@ -220,7 +227,7 @@ export default {
 
                               //将整数1234567890部分拆分为2部分，变量head:1   变量body:123456789
                               var head = zhengshu.slice(0,zhengshu.length-num*3);  
-                              if(head.length>0){  //如果head存在，则在head后面加个千位分隔符，
+                              if(head.length>0 && t  != '-'){  //如果head存在，则在head后面加个千位分隔符，
                                   head += ',';
                               }
                               var body = zhengshu.slice(zhengshu.length-num*3,zhengshu.length);
