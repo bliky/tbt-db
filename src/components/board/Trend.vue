@@ -70,7 +70,17 @@
 
 </template>
 
-<style>
+<style >
+#trend .vux-button-group-current {
+   background-color:#06C792;
+}
+#trend .vux-button-group > a.vux-button-tab-item-first:after{
+  border: 1px solid #06C792;
+}
+#trend .vux-button-group > a.vux-button-tab-item-middle:after{
+   border: 1px solid #06C792;
+}
+
 .vux-button-group > a {
     color: #06C792;
 }

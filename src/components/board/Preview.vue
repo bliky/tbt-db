@@ -62,7 +62,7 @@
 </template>
 
 
-<style scoped>
+<style lang="less" scoped>
 .backColor{
   background: #F8F9FF;
 }

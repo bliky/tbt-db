@@ -1,7 +1,7 @@
 {
   "name": "osdbd_1.0",
   "version": "1.0.0",
-  "description": "开源中国微信版vux1.x&vue2.x",
+  "description": "vue2.x",
   "author": "iuoon",
   "private": true,
   "scripts": {
