@@ -30,7 +30,7 @@ Vue.use(VueRouter,F2,Vue,ConfirmPlugin, LoadingPlugin, ToastPlugin,utils,ConfigP
 window.axios = axios; 
 
 FastClick.attach(document.body)
-
+//控制路由
 const routes = [
   {
   path: '/dbd',

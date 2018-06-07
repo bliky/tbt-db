@@ -422,9 +422,33 @@ export default {
               if(response.data.status == 200){
                 backApplyContent = response.data.result.rows
               
+               //根据指标审批人发起审批流程
+                  let apply_id = null
+                  let index_chargers = []
+                  let big_data_chargers = []
+                  for(let arr of backApplyContent){
+                    apply_id = arr.apply_id 
+                    index_chargers = arr.index_chargers
+                    big_data_chargers = arr.big_data_chargers
+                  }
+                  
+                  this.$http.fetch('dsa/dataBoard/insertApply',
+                          {        
+                          token: this.token,
+                          uid: this.uid,
+                          uname: this.uname,
+                          oapplyStatus: 200,
+                          applyId: apply_id,
+                          //reason: response.data,//提交OA返回状态 
+                          applyContent: applyContent//申请内容
+                          })
+                    .then((response) => {
+                      console.log("插入成功")
+                    })
+
           let toaContent = {}
           let oaContent = []
-
+    
           let oapplyContent = applyContent
           for(let arr of oapplyContent){
             for(let indArr of arr.indList){
@@ -447,15 +471,6 @@ export default {
               toaContent = {classId:arr.classId,className:arr.className,indexes:arr.indList}
               oaContent.push(toaContent)
             }
-                //根据指标审批人发起审批流程
-                  let apply_id = null
-                  let index_chargers = []
-                  let big_data_chargers = []
-                  for(let arr of backApplyContent){
-                    apply_id = arr.apply_id 
-                    index_chargers = arr.index_chargers
-                    big_data_chargers = arr.big_data_chargers
-                  }
                   let params = new URLSearchParams();
                         params.append('applyer_uid', this.uid);//流程发起人uid
                         params.append('apply_id', apply_id);//数据中心指标记录ID
@@ -475,16 +490,59 @@ export default {
               //提交申请
                   axios.post(oappUrl,params)
                             .then(function (response) {
+                              console.log("提交OA成功")
                               this.clearReast()
                               console.log(response)
+                              //提交OA申请成功，插入申请指标
+                              // console.log("插入指标===========")
+                              // console.log(applyContent)
+                              // this.$http.fetch('dsa/dataBoard/insertApply',
+                              //         {        
+                              //         token: this.token,
+                              //         uid: this.uid,
+                              //         uname: this.uname,
+                              //         oapplyStatus: 200,
+                              //         reason: response.data,//提交OA返回状态 
+                              //         applyContent: applyContent//申请内容
+                              //         })
+                              //   .then((response) => {
+                              //     console.log("插入成功")
+                              //   })
                             })
                             .catch(function (error) {
+                              //删除申请指标数据
+                              console.log("提交oa 返回异常")
                               console.log(error)
+                             /* this.$http.fetch('dsa/dataBoard/insertApply',
+                                      {        
+                                      token: this.token,
+                                      uid: this.uid,
+                                      uname: this.uname,
+                                      oapplyStatus: 500,
+                                      reason: error,//提交OA返回内容
+                                      applyContent: applyContent//申请内容
+                                      })
+                                .then((response) => {
+                                  console.log("回滚成功")
+                                })*/
                             });
                           }
                         }, (response) => {
-                          console.log("失败")
+                          console.log("提交OA失败")
+                           //删除申请指标数据
                           this.submit = false
+                           this.$http.fetch('dsa/dataBoard/insertApply',
+                                      {        
+                                      token: this.token,
+                                      uid: this.uid,
+                                      uname: this.uname,
+                                      oapplyStatus: 500,
+                                      reason: response.data,//提交OA返回状态 
+                                      applyContent: applyContent//申请内容
+                                      })
+                                .then((response) => {
+                                  console.log("回滚成功")
+                                })
                       });
                     
                       setTimeout(() => {
