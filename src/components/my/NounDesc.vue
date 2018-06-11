@@ -45,8 +45,8 @@ export default {
   }, 
   methods: {
     getList(){
-      this.uid = Cookie.get('t8t-it-uid');
-      this.uname = Cookie.get('t8t-oa-username');
+      this.uid = Cookie.get('t8t-it-uid')
+      this.uname = Cookie.get('t8t-oa-username')
       this.page = 1;
       this.size = 100;
       this.$http.fetch('dsa/dataBoard/nounDesc/pageList',

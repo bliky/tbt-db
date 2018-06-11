@@ -809,7 +809,7 @@ export default {
   },
   mounted: function() {
     this.uid = Cookie.get('t8t-it-uid')
-    this.uname = Cookie.get('t8t-it-uname')
+    this.uname = Cookie.get('t8t-oa-username')
     this.token = Cookie.get('t8t-it-token')
 
     // utils.callNative(1009, {"url":apply,"title":"指标申请"})

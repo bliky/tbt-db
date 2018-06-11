@@ -192,7 +192,7 @@ export default {
   },
    mounted : function(){
      this.uid = Cookie.get('t8t-it-uid')
-     this.uname = Cookie.get('t8t-it-username')
+     this.uname = Cookie.get('t8t-oa-username')
      this.token = Cookie.get('t8t-it-token')
 
      
@@ -220,6 +220,7 @@ export default {
       }
     },
     getIndClassList(){//获取指标分类列表
+     this.uname = Cookie.get('t8t-oa-username')
     this.$http.fetch('dsa/dataBoard/indClassList',
                       {        
                       uid: this.uid,
@@ -409,6 +410,7 @@ export default {
             content = {classId:carr.classId,className:carr.className,indList:carr.indList}
             applyContent.push(content)
           }
+           this.uname = Cookie.get('t8t-oa-username')
           this.$http.fetch('dsa/dataBoard/submitApply',
                   {        
                   token: this.token,
@@ -431,7 +433,7 @@ export default {
                     index_chargers = arr.index_chargers
                     big_data_chargers = arr.big_data_chargers
                   }
-                  
+                   this.uname = Cookie.get('t8t-oa-username')
                   this.$http.fetch('dsa/dataBoard/insertApply',
                           {        
                           token: this.token,

@@ -47,6 +47,7 @@ export default {
   },
   data () {
     return {
+      uname: "",
       showContent01: false,
       showContent02: false,
       params: null

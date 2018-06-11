@@ -200,7 +200,7 @@ export default {
   },
   mounted: function() {
     this.uid = Cookie.get('t8t-it-uid')
-    this.uname = Cookie.get('t8t-it-uname')
+    this.uname = Cookie.get('t8t-oa-username')
     this.token = Cookie.get('t8t-it-token')
 
     this.getList();
@@ -329,9 +329,8 @@ export default {
         this.isDetermine = true
       }
       
-      this.uid = Cookie.get("t8t-it-uid");
-      this.uname = Cookie.get("t8t-oa-username");
-      this.uid = Cookie.get('t8t-it-uid');
+      this.uid = Cookie.get("t8t-it-uid")
+      this.uname = Cookie.get("t8t-oa-username")
       let token = ''
       let ticket = ''
       this.$http.fetch('dsa/dataBoard/indList',
