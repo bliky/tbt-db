@@ -56,13 +56,13 @@
                 v-for="(item,index) in listdata" :key="index">
                 <tr :class="{'backColor': index % 2 != 0} ">
                    <td style="padding-left:9px;text-align: left;color:#FF6D16" 
-                      >{{item.statis_dt}} 
+                       v-if="item.week == 7 || item.week == 1">{{item.statis_dt}} 
                      <span style="color:#FF6D16" v-if="item.week == 7">(周六)</span>
                      <span style="color:#FF6D16" v-if="item.week == 1">(周日)</span>
                   </td>
-                  <!-- <td style="padding-left:9px;text-align: left;" 
+                  <td style="padding-left:9px;text-align: left;" 
                        v-else>{{item.statis_dt}} 
-                  </td> -->
+                  </td>
                   <td style="padding-right:11px;text-align: right;">{{item.statis_num}}</td>
                 </tr>
 
