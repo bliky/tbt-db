@@ -55,7 +55,14 @@
               <tbody style="font-size: 14px;color: #666666;" 
                 v-for="(item,index) in listdata" :key="index">
                 <tr :class="{'backColor': index % 2 != 0} ">
-                  <td style="padding-left:9px;text-align: left;">{{item.statis_dt}}</td>
+                   <td style="padding-left:9px;text-align: left;color:#FF6D16" 
+                      >{{item.statis_dt}} 
+                     <span style="color:#FF6D16" v-if="item.week == 7">(周六)</span>
+                     <span style="color:#FF6D16" v-if="item.week == 1">(周日)</span>
+                  </td>
+                  <!-- <td style="padding-left:9px;text-align: left;" 
+                       v-else>{{item.statis_dt}} 
+                  </td> -->
                   <td style="padding-right:11px;text-align: right;">{{item.statis_num}}</td>
                 </tr>
 
@@ -70,7 +77,10 @@
 
 </template>
 
-<style >
+<style lang="less">
+.weekColor {
+  color:#FF6D16;
+}
 #trend .vux-button-group-current {
    background-color:#06C792;
 }
