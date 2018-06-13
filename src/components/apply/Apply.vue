@@ -183,6 +183,7 @@ export default {
       indClassItem: [],
       isSubmitApply: false,
       cdimList: [],
+      insertApplyContent: [],
       isClear: false,
       ishow: false,
       isConShow: false,
@@ -410,7 +411,8 @@ export default {
             content = {classId:carr.classId,className:carr.className,indList:carr.indList}
             applyContent.push(content)
           }
-           this.uname = Cookie.get('t8t-oa-username')
+          this.insertApplyContent = applyContent
+          this.uname = Cookie.get('t8t-oa-username')
           this.$http.fetch('dsa/dataBoard/submitApply',
                   {        
                   token: this.token,
@@ -433,7 +435,7 @@ export default {
                     index_chargers = arr.index_chargers
                     big_data_chargers = arr.big_data_chargers
                   }
-                   this.uname = Cookie.get('t8t-oa-username')
+                  this.uname = Cookie.get('t8t-oa-username')
                   this.$http.fetch('dsa/dataBoard/insertApply',
                           {        
                           token: this.token,
@@ -441,7 +443,7 @@ export default {
                           uname: this.uname,
                           oapplyStatus: 200,
                           applyId: apply_id,
-                          //reason: response.data,//提交OA返回状态 
+                          reason: response.data,//提交OA返回状态 
                           applyContent: applyContent//申请内容
                           })
                     .then((response) => {
@@ -487,60 +489,44 @@ export default {
                 let accountId = Cookie.get('t8t-it-accountId')
                 let token = Cookie.get('t8t-it-token')
                 let oappUrl = 'https://oapp.to8to.com/app/data-board/apply?uid='+this.uid+"&token="+token
-                                +'appVersion='+appVersion+'appType='+appType+'deviceId='+deviceId
-                                +'version='+version+'accountId='+accountId+'token='+token
+                                +'&appVersion='+appVersion+'&appType='+appType+'&deviceId='+deviceId
+                                +'&version='+version+'&accountId='+accountId+'&token='+token
               //提交申请
                   axios.post(oappUrl,params)
                             .then(function (response) {
-                              console.log("提交OA成功")
-                              this.clearReast()
-                              console.log(response)
-                              //提交OA申请成功，插入申请指标
-                              // console.log("插入指标===========")
-                              // console.log(applyContent)
-                              // this.$http.fetch('dsa/dataBoard/insertApply',
-                              //         {        
-                              //         token: this.token,
-                              //         uid: this.uid,
-                              //         uname: this.uname,
-                              //         oapplyStatus: 200,
-                              //         reason: response.data,//提交OA返回状态 
-                              //         applyContent: applyContent//申请内容
-                              //         })
-                              //   .then((response) => {
-                              //     console.log("插入成功")
-                              //   })
-                            })
-                            .catch(function (error) {
-                              //删除申请指标数据
-                              console.log("提交oa 返回异常")
-                              console.log(error)
-                             /* this.$http.fetch('dsa/dataBoard/insertApply',
-                                      {        
-                                      token: this.token,
-                                      uid: this.uid,
-                                      uname: this.uname,
-                                      oapplyStatus: 500,
-                                      reason: error,//提交OA返回内容
-                                      applyContent: applyContent//申请内容
+                              if(response.data.code == 200){
+                                //提交OA申请成功，插入申请指标
+                                    console.log("插入成功")
+                              }else{
+                                console.log("插入失败，进行回滚")
+                                this.$http.fetch('dsa/dataBoard/insertApply',
+                                            {        
+                                            token: this.token,
+                                            uid: this.uid,
+                                            uname: this.uname,
+                                            oapplyStatus: 500,
+                                            reason: response.data,//提交OA返回状态 
+                                            applyId: apply_id//申请ID
+                                            })
+                                      .then((response) => {
+                                        console.log("回滚成功")
                                       })
-                                .then((response) => {
-                                  console.log("回滚成功")
-                                })*/
-                            });
+                              }
+                               this.clearReast()
+                            })
                           }
                         }, (response) => {
                           console.log("提交OA失败")
                            //删除申请指标数据
-                          this.submit = false
-                           this.$http.fetch('dsa/dataBoard/insertApply',
+                             this.submit = false
+                             this.$http.fetch('dsa/dataBoard/insertApply',
                                       {        
                                       token: this.token,
                                       uid: this.uid,
                                       uname: this.uname,
                                       oapplyStatus: 500,
-                                      reason: response.data,//提交OA返回状态 
-                                      applyContent: applyContent//申请内容
+                                      reason: response.data,//提交OA返回内容
+                                      applyId: apply_id//申请ID
                                       })
                                 .then((response) => {
                                   console.log("回滚成功")
@@ -557,7 +543,7 @@ export default {
                         arr.attrName = null
                       }
                         this.clearReast();
-                      }, 3500);
+                      }, 3000);
                     
                     }
                   }else{
