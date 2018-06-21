@@ -12,6 +12,7 @@ import Home from './components/Home'
 import Apply from './components/apply/Apply'
 import Board from './components/board/Board'
 import DataBoard from './components/board/DataBoard'
+import EditInd from './components/board/EditInd'
 import MyInds from './components/my/MyInds'
 import Indesc from './components/my/Indesc'
 import NounDesc from './components/my/NounDesc'
@@ -43,6 +44,10 @@ const routes = [
   {
     path: '/bdc-prd-dbd/dataBoard',
     component: DataBoard
+  },
+  {
+    path: '/bdc-prd-dbd/editInd',
+    component: EditInd
   },
   {
     path: '/bdc-prd-dbd/apply',

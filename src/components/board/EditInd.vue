@@ -1,0 +1,329 @@
+<template>
+<div class="editInd" style="height:100%;margin: 15px 0px 0px 0px;padding-bottom:80px;-webkit-overflow-scrolling:touch;">
+   <div style="margin-left:20px;">
+    <div style="font-family:PingFangSC-Medium;font-size: 20px;color: #333333;"> 编辑指标</div>
+    <div style="font-family:PingFangSC-Regular;font-size: 12px;color: #C1C1C1;">点击左边图标“眼睛”显示或隐藏指标</div>
+   </div>  
+    
+   <!-- <div  v-for="(item,index) in listData" :key="index" class="showItem" style="margin-top:20px;margin-bottom:50px;padding-left:20px;font-family: PingFangSC-Regular;font-size: 17px;color: #333333;"> -->
+     <div style="margin-top:20px;padding-bottom:80px;padding-left:20px;font-family: PingFangSC-Regular;font-size: 17px;color: #333333;">
+      <hr color="#e3e3e3" size="1px">
+      <checker v-model="hiddenItem" v-for="(item, index) in showList" :key="index"
+               type="checkbox">
+        <div :class="{'showInd':item.is_show == 'true','hiddenInd':item.is_show == 'false'}" style="display: flex;align-items: center;font-family: PingFangSC-Regular;font-size: 17px;">
+           <label class="showItem" @click="onItemClickHidden(item,item.ind_id,item.dim_ind_name,index)" padding="550px">
+              <img v-if="item.is_show == 'true'" width="22px" height="22px" style="margin-right:20px" align="center"  
+                src="../../assets/image/icon_eye_open@2x.png">
+              <img v-if="item.is_show == 'false'" width="22px" height="22px" style="margin-right:20px" align="center" 
+                  src="../../assets/image/icon_eye_close@2x.png">
+            </label>
+          <checker-item :value="item" class="showItem">
+              {{item.dim_ind_name}}
+          </checker-item>
+          
+        </div>
+       <hr color="#eeeeee" size="1px">
+      </checker>
+      <div>
+        <checker v-model="showItem" v-for="(item, index) in hiddenList" :key="index" type="checkbox">
+          <div :class="{'showInd':item.is_show == 'true','hiddenInd':item.is_show == 'false'}" style="display: flex;align-items: center;font-family: PingFangSC-Regular;font-size: 17px;">
+             <label class="hiddenItem" @click="onItemClickShow(item,item.ind_id,item.dim_ind_name,index)" width="40px" height="40px">
+                   
+                  <img v-if="item.is_show == 'true'" width="22px" height="22px" style="margin-right:20px"  align="center"
+                    src="../../assets/image/icon_eye_open@2x.png">
+                  <img v-if="item.is_show == 'false'" width="22px" height="22px" style="margin-right:20px"  align="center"
+                    src="../../assets/image/icon_eye_close@2x.png">
+                </label>
+            <checker-item :value="item" class="hiddenItem">
+                  {{item.dim_ind_name}}
+            </checker-item>
+          </div>
+        <hr color="#eeeeee" size="1px">
+        </checker>
+      </div>
+  </div>
+
+  <div class="indBtn">
+    <x-button class="indDetBtn" @click.native="clickDetermine">保存</x-button>
+  </div>  
+
+  <div style="font-family: PingFangSC-Regular;font-size: 14px;color: #FFFFFF;background: #323232;">
+    <toast v-model="save" type="success" width="10em" 
+        :time="4000" is-show-mask text="保存成功" 
+        :position="position">
+    </toast>
+  </div>
+
+  <div class="noDesc" style="font-family: PingFangSC-Regular;font-size: 14px;color: #FFFFFF;background: #323232;">
+      <toast v-model="isSelect" type="text" width="10em" 
+          :time="1000" is-show-mask text="请至少显示一项指标" 
+          :position="position">
+      </toast>
+  </div>
+</div>
+</template>
+
+<style  lang="less" scoped>
+.showInd{
+color: #333333;
+}
+.hiddenInd{
+  color:#999999;
+}
+.weui-btn {
+  border-radius: 0px;
+}
+.indBtn {
+  // touch-action: none;
+  // display: flex;
+  position: fixed;
+  z-index: 600;
+  bottom: 0;
+  width: 97%;
+  // height: 51px;
+  line-height: 50px;
+}
+
+.indDetBtn {
+  touch-action: none;
+  background: #06c792;
+  font-family: PingFangSC-Regular;
+  font-size: 18px;
+  color: #ffffff;
+  letter-spacing: 0;
+  text-align: center;
+  width: 108%;
+}
+.flex-indDetBtn:active {
+  background: #00b180;
+}
+
+.showItem,
+.hiddenItem {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+</style>
+<script>
+import Cookie from "js-cookie";
+import { formatDate } from "../../utils/date.js";
+import {
+  ViewBox,
+  Tabbar,
+  TabbarItem,
+  Sticky,
+  XDialog,
+  ButtonTab,
+  Cell,
+  ButtonTabItem,
+  XButton,
+  Checker,
+  CheckerItem,
+  Group,
+  Toast,
+  TransferDomDirective as TransferDom
+} from "vux";
+import { setTimeout } from "timers";
+
+export default {
+  directives: {
+    TransferDom
+  },
+  components: {
+    Toast,
+    formatDate,
+    Tabbar,
+    TabbarItem,
+    Cell,
+    ButtonTab,
+    ButtonTabItem,
+    XButton,
+    Checker,
+    CheckerItem,
+    Group
+  },
+  data() {
+    return {
+      uid: "",
+      uname: "",
+      save: false,
+      isSelect: false,
+      position: "middle",
+      token: "",
+      //listData: [{
+      showList: [], //获取的显示数据
+      showListBack: [], //显示数据初始化备份
+      hiddenList: [], //获取的隐藏数据
+      hiddenListBack: [], //隐藏数据初始化备份
+      showItem: [], //显示数组
+      hiddenItem: [] //隐藏数组
+    };
+  },
+  mounted: function() {
+    this.uid = Cookie.get("t8t-it-uid");
+    this.uname = Cookie.get("t8t-oa-username");
+    this.token = Cookie.get("t8t-it-token");
+
+    this.getList();
+  },
+  methods: {
+    onItemClickHidden(item, ind_id, dim_ind_name, index) {
+      let date = new Date();
+      date = formatDate(date, "yyyy-MM-dd hh:mm:ss");
+
+      let hitem = item;
+      hitem.update_time = date.toString();
+      if (hitem.is_show == "true") {
+        if (this.showListBack.length > 1) {
+          hitem.is_show = "false";
+          for (var i = this.showListBack.length - 1; i >= 0; i--) {
+            let a = new String(this.showListBack[i].dim_ind_name);
+            let b = new String(dim_ind_name);
+            if (this.showListBack[i].dim_ind_name == dim_ind_name) {
+              this.showListBack.splice(i, 1);
+            }
+          }
+
+          this.hiddenListBack.unshift(hitem);
+        } else {
+          this.isSelect = true;
+        }
+      } else {
+        hitem.is_show = "true";
+        for (var i = this.hiddenListBack.length - 1; i >= 0; i--) {
+          if (this.hiddenListBack[i].dim_ind_name == dim_ind_name) {
+            this.hiddenListBack.splice(i, 1);
+          }
+        }
+        // this.hiddenListBack.splice(index,1)
+        this.showListBack.push(hitem);
+      }
+    },
+    onItemClickShow(item, ind_id, dim_ind_name, index) {
+      let date = new Date();
+      date = formatDate(date, "yyyy-MM-dd hh:mm:ss");
+
+      let hitem = item;
+      hitem.update_time = date.toString();
+      if (hitem.is_show == "false") {
+        hitem.is_show = "true";
+        for (var i = this.hiddenListBack.length - 1; i >= 0; i--) {
+          if (this.hiddenListBack[i].dim_ind_name == dim_ind_name) {
+            this.hiddenListBack.splice(i, 1);
+          }
+        }
+        // this.hiddenListBack.splice(index,1)
+        this.showListBack.push(hitem);
+      } else {
+        if (this.showListBack.length > 1) {
+          hitem.is_show = "false";
+          for (var i = this.showListBack.length - 1; i >= 0; i--) {
+            if (this.showListBack[i].dim_ind_name == dim_ind_name) {
+              this.showListBack.splice(i, 1);
+            }
+          }
+          // this.showListBack.splice(index,1)
+          this.hiddenListBack.unshift(hitem);
+        } else {
+          this.isSelect = true;
+        }
+      }
+    },
+    clickDetermine() {
+      for (let i = 0; i < this.showListBack.length; i++) {
+        this.showListBack[i].order_num = i + 1;
+      }
+      for (let i = 0; i < this.hiddenListBack.length; i++) {
+        this.hiddenListBack[i].order_num = i + 1;
+      }
+      
+      this.$http
+        .fetch("dsa/dataBoard/editInd", {
+          uid: this.uid,
+          dbuaToken: this.token,
+          uname: this.uname,
+          showList: this.showListBack,
+          hiddenList: this.hiddenListBack
+        })
+        .then(
+          response => {
+            if (response.data.status == 200) {
+              console.log("保存成功");
+            }
+          },
+          response => {
+            console.log("保存失败");
+          }
+        );
+
+      setTimeout(() => {
+        this.save = true;
+      }, 900);
+      setTimeout(() => {
+        this.$router.push({ path: "/bdc-prd-dbd/dataBoard" });
+      }, 3500);
+    },
+    getList() {
+      console.log("uid===" + this.uid);
+      console.log("uname===" + this.uname);
+      this.$http
+        .fetch("dsa/dataBoard/getEditIndList", {
+          uid: this.uid,
+          dbuaToken: this.token,
+          uname: this.uname
+        })
+        .then(
+          response => {
+            if (response.data.status == 200) {
+              console.log("成功了");
+              this.showList = [];
+              this.hiddenList = [];
+              this.showList = response.data.result.showList;
+              this.hiddenList = response.data.result.hiddenList;
+              for (var i = this.showList.length - 1; i >= 0; i--) {
+                this.showList[i].dim_ind_name = this.showList[
+                  i
+                ].dim_ind_name.replace("汇总", "");
+              }
+
+              for (var i = this.hiddenList.length - 1; i >= 0; i--) {
+                this.hiddenList[i].dim_ind_name = this.hiddenList[
+                  i
+                ].dim_ind_name.replace("汇总", "");
+              }
+            }
+          },
+          response => {}
+        );
+      this.$http
+        .fetch("dsa/dataBoard/getEditIndList", {
+          uid: this.uid,
+          dbuaToken: this.token,
+          uname: this.uname
+        })
+        .then(
+          response => {
+            if (response.data.status == 200) {
+              this.showListBack = [];
+              this.hiddenListBack = [];
+              this.showListBack = response.data.result.showList;
+              this.hiddenListBack = response.data.result.hiddenList;
+              for (var i = this.showListBack.length - 1; i >= 0; i--) {
+                this.showListBack[i].dim_ind_name = this.showListBack[
+                  i
+                ].dim_ind_name.replace("汇总", "");
+              }
+
+              for (var i = this.hiddenListBack.length - 1; i >= 0; i--) {
+                this.hiddenListBack[i].dim_ind_name = this.hiddenListBack[
+                  i
+                ].dim_ind_name.replace("汇总", "");
+              }
+            }
+          },
+          response => {}
+        );
+    }
+  }
+};
+</script>

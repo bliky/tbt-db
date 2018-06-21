@@ -2,62 +2,64 @@
 
   <div id="preview" style=" -webkit-overflow-scrolling:touch;">
     <!-- <indate @listenToIndateEvent="showMsgFromChild"></indate> -->
-    <div slot="hearder">
-      <div style="padding: 20px 20% 0px 20%;">
-        <button-tab v-model="index">
-          <button-tab-item :selected="tag === item" v-for="item in taglist" 
-            :key="item" @on-item-click="getList(item,index)">
-            {{item}}
-          </button-tab-item>  
-        </button-tab>
-      </div> 
+      <div slot="hearder">
+        <div style="padding: 20px 20% 0px 20%;">
+          <button-tab v-model="index">
+            <button-tab-item :selected="tag === item" v-for="item in taglist" 
+              :key="item" @on-item-click="getList(item,index)">
+              {{item}}
+            </button-tab-item>  
+          </button-tab>
+        </div> 
 
-      <div style="text-align: center;">
-          <p style="margin-top:10px;font-size: 15px;color: #333333;letter-spacing: 0;">
-            <span v-if="index === 0 || index === 1 || index === 2">
-                {{startDate}}
-            </span>
-          
-          </p>
-          <p style="margin-top:5px;font-size: 12px;color: #999999;letter-spacing: 0;">
-            {{lupdate}}
-          </p>
-        </div>
-    </div>
-
-    <div  class="div-table" style="padding: 18px 10px 80px 10px;">
-      <!-- <scroller scrollbar-y  :bounce="true" height="446px" 
-        @on-scroll-bottom="onScrollBottom" >  -->
-      <x-table class="table" style="padding-left:6px;padding-right:6px;" v-if=" dataShow == true">
-        <thead>
-          <tr class="backColor">
-            <th style="width:38%;text-align: left;padding-left:9px;" >指标</th>
-            <th style="width:22%;text-align: right;padding-right:11px;">数值</th>
-            <th style="width:20%;text-align: right;padding-right:11px;">环比</th>
-            <th  style="width:20%;text-align: right;padding-right:11px;" v-if="index === 0">同比</th>
+        <div style="text-align: center;">
+            <p style="margin-top:10px;font-size: 15px;color: #333333;letter-spacing: 0;">
+              <span v-if="index === 0 || index === 1 || index === 2">
+                  {{startDate}}
+              </span>
             
-          </tr>
-        </thead>
-        
-            <tbody style="font-size: 14px;color: #666666;">
-              <tr  id="backcolor" v-for="(item,indexs) in listdata" :key="indexs" 
-                   :class="{'backColor': indexs % 2 != 0} " 
-                   @click="sendMsgToParent(item.dim_ind_name,index)">
-                <td style="text-align: left;padding-left:9px;">{{item.dim_ind_name}}</td>
-                <td style="text-align: right;padding-right:11px;">{{item.statis_num}}</td>
-                <td style="text-align: right;padding-right:11px;" v-if="index === 0">{{item.dtd}}</td>
-                <td style="text-align: right;padding-right:11px;" v-if="index === 1">{{item.wtw}}</td>
-                <td style="text-align: right;padding-right:11px;" v-if="index === 2">{{item.mtm}}</td>
-                
-                <td style="text-align: right;padding-right:11px;" v-if="index === 0">{{item.dtw}}</td>
-              </tr>
-            </tbody>  
-            <!-- <load-more tip="loading"></load-more> -->
-        
-      </x-table>
-      <!-- </scroller>   -->
-    </div>
+            </p>
+            <p style="margin-top:5px;font-size: 12px;color: #999999;letter-spacing: 0;">
+              {{lupdate}}
+            </p>
+          </div>
+      </div>
 
+      <div  class="div-table" style="padding: 18px 10px 80px 10px;">
+        <!-- <scroller scrollbar-y  :bounce="true" height="446px" 
+          @on-scroll-bottom="onScrollBottom" >  -->
+        <x-table class="table" style="padding-left:6px;padding-right:6px;" v-if=" dataShow == true">
+          <thead>
+            <tr class="backColor">
+              <th @click="editInd" style="width:38%;text-align: left;padding-left:9px;" >
+                <img  align="center" style="width:18px;height:18px;" src="../../assets/image/table_button_compositor@2x.png">
+                <span style="text-align: left;padding-left:20px;">指标</span>
+              </th>
+              <th style="width:22%;text-align: right;padding-right:11px;">数值</th>
+              <th style="width:20%;text-align: right;padding-right:11px;">环比</th>
+              <th  style="width:20%;text-align: right;padding-right:11px;" v-if="index === 0">同比</th>
+              
+            </tr>
+          </thead>
+          
+              <tbody style="font-size: 14px;color: #666666;">
+                <tr  id="backcolor" v-for="(item,indexs) in listdata" :key="indexs" 
+                    :class="{'backColor': indexs % 2 != 0} " 
+                    @click="sendMsgToParent(item.dim_ind_name,index)">
+                  <td style="text-align: left;padding-left:9px;">{{item.dim_ind_name}}</td>
+                  <td style="text-align: right;padding-right:11px;">{{item.statis_num}}</td>
+                  <td style="text-align: right;padding-right:11px;" v-if="index === 0">{{item.dtd}}</td>
+                  <td style="text-align: right;padding-right:11px;" v-if="index === 1">{{item.wtw}}</td>
+                  <td style="text-align: right;padding-right:11px;" v-if="index === 2">{{item.mtm}}</td>
+                  
+                  <td style="text-align: right;padding-right:11px;" v-if="index === 0">{{item.dtw}}</td>
+                </tr>
+              </tbody>  
+              <!-- <load-more tip="loading"></load-more> -->
+          
+        </x-table>
+        <!-- </scroller>   -->
+      </div>
   </div>
 </template>
 
@@ -106,6 +108,7 @@ thead {font-size: 15px;color: #333333;}
 </style>
 <script>
 import Trend from './Trend'
+import EditInd from './EditInd'
 import Cookie from 'js-cookie'
 import { Scroller, LoadMore,ViewBox,Spinner,ButtonTab, ButtonTabItem, XTable} from "vux";
 
@@ -119,11 +122,11 @@ export default {
     Spinner,
     XTable,
     ButtonTab,
+    EditInd,
     ButtonTabItem
   },
   data () {
    return {
-        Trend,
         dataShow: false,
         uid: 0,
         uname: "",
@@ -147,6 +150,10 @@ export default {
     
   }, 
   methods: {
+    editInd(){
+      // this.$router.push({path: '/bdc-prd-dbd/editInd', query:{indData: this.listdata}})
+      this.$router.push({path: '/bdc-prd-dbd/editInd'})
+    },
     sendMsgToParent:function(indName,index){
      this.$emit("listenToPreiew",indName,index,1);
     },
