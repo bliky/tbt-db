@@ -31,8 +31,11 @@
         <x-table class="table" style="padding-left:6px;padding-right:6px;" v-if=" dataShow == true">
           <thead>
             <tr class="backColor">
-              <th @click="editInd" style="width:38%;text-align: left;padding-left:9px;" >
-                <img  align="center" style="width:18px;height:18px;" src="../../assets/image/table_button_compositor@2x.png">
+              <th  style="width:38%;text-align: left;padding-left:9px;" >
+                <label @click="editInd" width="22px" height="22px">
+                  <img  align="center" style="width:18px;height:18px;"
+                      src="../../assets/image/table_button_compositor@2x.png">
+                </label>
                 <span style="text-align: left;padding-left:20px;">指标</span>
               </th>
               <th style="width:22%;text-align: right;padding-right:11px;">数值</th>
