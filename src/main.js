@@ -1,41 +1,47 @@
-import Vue from 'vue'
-import F2 from '@antv/f2'
-import FastClick from 'fastclick'
-import VueRouter from 'vue-router'
-import http from './utils/http.js'
-import Cookie from 'js-cookie'
+import Vue from 'vue';
+import Vuex from 'vuex';
+import F2 from '@antv/f2';
+import FastClick from 'fastclick';
+import VueRouter from 'vue-router';
+import http from './utils/http.js';
+import Cookie from 'js-cookie';
 // import VConsole from 'vconsole'
-import axios from 'axios'
-import { ConfigPlugin,ConfirmPlugin, LoadingPlugin, ToastPlugin } from 'vux'
-import App from './App'
-import Home from './components/Home'
-import Apply from './components/apply/Apply'
-import Board from './components/board/Board'
-import DataBoard from './components/board/DataBoard'
-import EditInd from './components/board/EditInd'
-import MyInds from './components/my/MyInds'
-import Indesc from './components/my/Indesc'
-import NounDesc from './components/my/NounDesc'
-import selInd from './components/apply/selInd'
-import selDim from './components/apply/selDim'
-import Ind from './components/apply/Ind'
-import Page from './components/test/testPage'
-import utils from './utils/utils.js'
+import axios from 'axios';
+import { ConfigPlugin, ConfirmPlugin, LoadingPlugin, ToastPlugin } from 'vux';
+import App from './App';
+// import Home from './components/Home';
+import Apply from './components/apply/Apply';
+import Board from './components/board/Board';
+import DataBoard from './components/board/DataBoard';
+import EditInd from './components/board/EditInd';
+import MyInds from './components/my/MyInds';
+import Indesc from './components/my/Indesc';
+import NounDesc from './components/my/NounDesc';
+import selInd from './components/apply/selInd';
+import selDim from './components/apply/selDim';
+import Ind from './components/apply/Ind';
+import Page from './components/test/testPage';
+import Dashboard from './components/dashboard';
+import Roi from './components/roi';
+import utils from './utils/utils.js';
 
+if (process.env.NODE_ENV !== 'production') {
+  require('./services/mock').default.bootstrap();
+}
 
 // new VConsole()
-Vue.prototype.$http = http
-Vue.use(VueRouter,F2,Vue,ConfirmPlugin, LoadingPlugin, ToastPlugin,utils,ConfigPlugin, {
+Vue.prototype.$http = http;
+Vue.use(VueRouter, F2, Vue, ConfirmPlugin, LoadingPlugin, ToastPlugin, utils, ConfigPlugin, {
   $layout: 'VIEW_BOX'
-})
-window.axios = axios; 
+});
+window.axios = axios;
 
-FastClick.attach(document.body)
-//控制路由
+FastClick.attach(document.body);
+// 控制路由
 const routes = [
   {
-  path: '/dbd',
-  redirect: '/bdc-prd-dbd/board'
+    path: '/dbd',
+    redirect: '/bdc-prd-dbd/board'
   },
   {
     path: '/bdc-prd-dbd/board',
@@ -80,43 +86,60 @@ const routes = [
   {
     path: '/bdc-prd-dbd/page',
     component: Page
+  },
+  {
+    path: '/bdc-prd-dbd/dashboard',
+    component: Dashboard
+  },
+  {
+    path: '/bdc-prd-dbd/roi',
+    component: Roi
   }
-]
-
-
+];
 
 const router = new VueRouter({
-  mode:'history',
+  mode: 'history',
   routes
-})
+});
 
-router.beforeEach((to, from, next) => {
-  // 从路由的元信息中获取 title 属性
-  if (to.meta.title) {
-    document.title = to.meta.title
+/*
+ * 页面加载Store
+*/
+Vue.use(Vuex)
+const store = new Vuex.Store({
+  state: {
+    isLoading: false
+  },
+  mutations: {
+    updateLoadingStatus (state, payload) {
+      state.isLoading = payload.isLoading
+    }
   }
-
-  next()
 })
 
 let rel = router.beforeEach((to, from, next) => {
   // 从路由的元信息中获取 title 属性
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  }
+  // 从路由的元信息中获取 title 属性
   // Cookie.set('t8t-it-ticket', to.query.ticket)
-  Cookie.set('t8t-it-appVersion', to.query.appVersion)
-  Cookie.set('t8t-it-appType', to.query.appType)
-  Cookie.set('t8t-it-deviceId', to.query.deviceId)
-  Cookie.set('t8t-it-version', to.query.version)
-  Cookie.set('t8t-it-accountId', to.query.accountId)
-  Cookie.set('t8t-it-ticket', to.query.tickets)
-  Cookie.set('t8t-it-token', to.query.token)
-  Cookie.set('t8t-it-uid', to.query.uid)
+  Cookie.set('t8t-it-appVersion', to.query.appVersion);
+  Cookie.set('t8t-it-appType', to.query.appType);
+  Cookie.set('t8t-it-deviceId', to.query.deviceId);
+  Cookie.set('t8t-it-version', to.query.version);
+  Cookie.set('t8t-it-accountId', to.query.accountId);
+  Cookie.set('t8t-it-ticket', to.query.tickets);
+  Cookie.set('t8t-it-token', to.query.token);
+  Cookie.set('t8t-it-uid', to.query.uid);
   // Cookie.set('t8t-it-uname', to.query.uname)
-  rel()
-  next()
-})
+  rel();
+  next();
+});
 
 /* eslint-disable no-new */
 new Vue({
   router,
+  store,
   render: h => h(App)
-}).$mount('#app')
+}).$mount('#app');

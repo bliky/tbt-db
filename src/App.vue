@@ -4,8 +4,7 @@
       <router-view></router-view>
       <!-- <app-footer  slot="bottom"></app-footer> -->
     </view-box>
-      
-        
+    <loading v-model="isLoading"></loading>
   </div>
 </template>
 
@@ -56,14 +55,15 @@ body {
 }
 </style>
 <script>
-import Board from "./components//board/Board";
-import AppHeader from "./components/common/Header";
-import AppFooter from "./components/common/Footer";
-import { ViewBox, Tabbar, TabbarItem } from "vux";
-
+import { mapState, mapMutations } from 'vuex'
+import Board from './components//board/Board';
+import AppHeader from './components/common/Header';
+import AppFooter from './components/common/Footer';
+import { Loading, ViewBox, Tabbar, TabbarItem } from 'vux';
 
 export default {
   components: {
+    Loading,
     Board,
     AppHeader,
     ViewBox,
@@ -71,7 +71,24 @@ export default {
     Tabbar,
     TabbarItem
   },
-  data() {
+  mounted () {
+    this.updateLoadingStatus({isLoading: true})
+    let that = this
+    setTimeout(()=>{
+      that.updateLoadingStatus({isLoading: false})
+    }, 2000)
+  },
+  methods: {
+    ...mapMutations([
+      'updateLoadingStatus'
+    ])
+  },
+  computed: {
+    ...mapState({
+      isLoading: state => state.isLoading
+    })
+  },
+  data () {
     return {
       routerAnimate: false
     };

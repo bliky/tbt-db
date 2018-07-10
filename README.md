@@ -1,20 +1,13 @@
-# oscwx_2.0
+# 数据看板
+基于开源项目[开源中国微信版 vue+vux的2.x版本](https://github.com/iuoon/oscwx_2.0)
 
-> 开源中国微信版
+## 快速开发
 
-## 版本说明
- 
- > 该项目基于vue+vux的2.x版本
-
- > 基于vue+vux的1.x版本参考 https://github.com/iuoon/oscwx
-
-## Build Setup
-
-``` bash
-# install dependencies
+```
+# 安装npm依赖
 npm install
 
-# serve with hot reload at localhost:8080
+# 启动开发
 npm run dev
 
 # 启动转发层服务
@@ -23,10 +16,24 @@ https://github.com/iuoon/TWServer
 # 修改utils目录api.js的host_addr为自己的TWServer服务地址
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## 页面总览
 
+sn | path | module | status | description
+-- | -- | -- | -- | --
+0 | bdc-prd-dbd/board | board/Board | ok | 首页
+1 | bdc-prd-dbd/dataBoard | board/DataBoard | ok | 指标总览与指标趋势
+2 | bdc-prd-dbd/editInd | board/EditInd | ok | 编辑指标
+3 | bdc-prd-dbd/myinds | my/MyInds | ok | 名词释义，指标释义
+4 | bdc-prd-dbd/indesc | my/Indesc | ok | 总况(GMV，装企收入)，流量（新访客数，PV，APP启动次数）
+5 | bdc-prd-dbd/nounDesc | my/NounDesc | ok | 日同比，日环比
+6 | bdc-prd-dbd/apply | apply/Apply | ok | 指标申请
+6 | bdc-prd-dbd/selInd | apply/selInd | error | 空白
+7 | bdc-prd-dbd/selDim | apply/selDim | ok | 外呼转化率
+8 | bdc-prd-dbd/apply/ind | apply/Ind | empty | 空白
+9 | bdc-prd-dbd/zongkuang | zongkuang/index | dev | 开发中
+10 | bdc-prd-dbd/roi | roi/index | dev | 开发中
 
-##预览效果
+## author
+name: ken.li
 
-![image](https://github.com/iuoon/oscwx_2.0/blob/master/src/assets/ab.png)
-
+email: ken.li@corp.to8to.com

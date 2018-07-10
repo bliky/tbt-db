@@ -24,9 +24,10 @@
 
   export default{
     name: 'AppHeader',
+    props: ['xtitle'],
     data (){
-        return{
-          tag:'我的指标',
+        return {
+          tag: this.xtitle || '我的指标',
           showMenus: false
         }
     },
