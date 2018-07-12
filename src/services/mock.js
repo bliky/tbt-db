@@ -1,7 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import Mock from 'mockjs';
-import zkModel from '../components/dashboard/model';
 import moment from 'moment';
 
 function genTrendData (dt) {
