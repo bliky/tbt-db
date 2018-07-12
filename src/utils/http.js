@@ -17,6 +17,4 @@ let apiClient = new ApiClient(Config.oldGatewayAddr)
 apiClient.setNewGateway(Config.newGatewayAddr)
 apiClient.Global.setAppName('dbd-app')
 
-
-
 export default apiClient

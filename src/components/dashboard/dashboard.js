@@ -1,4 +1,3 @@
-import { fetchDashboard } from '../../services/api';
 import appHeader from '../common/Header';
 import { Tab,TabItem } from 'vux'
 import statistical from './subcoms/statistical'
@@ -18,9 +17,6 @@ export default {
     trace
   },
   mounted () {
-    fetchDashboard({}).then(res => {
-      console.log('获取业绩总况', res);
-    })
   },
   methods: {
     

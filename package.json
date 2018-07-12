@@ -13,6 +13,8 @@
     "fastclick": "^1.0.6",
     "jquery": "^1.8.3",
     "mand-mobile": "^1.0.9",
+    "moment": "^2.22.2",
+    "numeral": "^2.0.6",
     "vconsole": "^3.2.0",
     "vue": "^2.1.0",
     "vue-awesome-swiper": "^3.1.3",

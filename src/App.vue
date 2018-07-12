@@ -4,7 +4,7 @@
       <router-view></router-view>
       <!-- <app-footer  slot="bottom"></app-footer> -->
     </view-box>
-    <loading v-model="isLoading"></loading>
+    <loading text="数据加载中..." v-model="isLoading"></loading>
   </div>
 </template>
 
@@ -55,7 +55,7 @@ body {
 }
 </style>
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState } from 'vuex'
 import Board from './components//board/Board';
 import AppHeader from './components/common/Header';
 import AppFooter from './components/common/Footer';
@@ -72,16 +72,6 @@ export default {
     TabbarItem
   },
   mounted () {
-    this.updateLoadingStatus({isLoading: true})
-    let that = this
-    setTimeout(()=>{
-      that.updateLoadingStatus({isLoading: false})
-    }, 2000)
-  },
-  methods: {
-    ...mapMutations([
-      'updateLoadingStatus'
-    ])
   },
   computed: {
     ...mapState({

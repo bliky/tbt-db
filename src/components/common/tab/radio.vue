@@ -1,13 +1,32 @@
 <template>
   <div class="tbt-tabs-radio" style="margin-left: 15px;">
-    <div class="tbt-tab checked">日</div>
-    <div class="tbt-tab">周</div>
-    <div class="tbt-tab">月</div>  
+    <div v-if="!noday" class="tbt-tab" :class="{checked: currentValue==0}" @click="currentValue=0">日</div>
+    <div class="tbt-tab" :class="{checked: currentValue==1}" @click="currentValue=1">周</div>
+    <div class="tbt-tab" :class="{checked: currentValue==2}" @click="currentValue=2">月</div>  
   </div>
 </template>
 
 <script>
-  
+export default {
+  props: {
+    value: [String, Number, Array, Object],
+    noday: Boolean
+  },
+  watch: {
+    value (newValue) {
+      this.currentValue = newValue
+    },
+    currentValue (val) {
+      this.$emit('input', val)
+      this.$emit('on-change', val)
+    }
+  },
+  data () {
+    return {
+      currentValue: this.value
+    }
+  }
+}
 </script>
 
 <style lang="less">

@@ -160,21 +160,21 @@ import Trend from './Trend'
         let token = Cookie.get('t8t-it-token')
         let ticket = Cookie.get('t8t-it-ticket')
         this.$http.fetch('dsa/dataBoard/isApply',
-                        {        
-                        uid: this.uid,
-                        uname: this.uname,
-                        token: token
-                        })
-                  .then((response) => {
-                    if(response.data.status == 200){
-                         if(response.data.result.isApply){
-                           this.dataShow = 2
-                         }else{
-                           this.dataShow = 1
-                         }
-                    }
-                  }, (response) => {
-                });
+          {
+            uid: this.uid,
+            uname: this.uname,
+            token: token
+          })
+          .then((response) => {
+            if(response.data.status == 200){
+                 if(response.data.result.isApply){
+                   this.dataShow = 2
+                 }else{
+                   this.dataShow = 1
+                 }
+            }
+          }, (response) => {
+        });
       }
     }
   }

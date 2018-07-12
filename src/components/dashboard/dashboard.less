@@ -65,3 +65,71 @@
   font-weight: bold;
   font-size: @font-size-title;
 }
+
+.tbt-funnel-table {
+  width: 100%;
+  border-collapse: collapse;
+  th {
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    color: rgba(0,0,0,0.30);
+  }
+  td {
+    font-family: PingFangSC-Regular;
+    font-size: 12px;
+    color: #666666;
+  }
+  th,td {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    box-sizing: border-box;
+    position: relative;
+    .tbt-icon {
+      display: none;
+    }
+    &.increase .tbt-icon-in {
+      display: inline-block;
+    }
+    &.decrease .tbt-icon-de {
+      display: inline-block;
+    }
+    &:first-child {
+      text-align: left;
+      padding-left: 20px;
+    }
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      //border-bottom: 1px solid #e0e0e0;
+    }
+  }
+}
+
+.increase {
+  color: @color-in !important;
+}
+
+.decrease {
+  color: @color-de !important;
+}
+
+.flex-box {
+  display: flex;
+}
+
+.flex-item {
+  flex: 1;
+}
+
+.dp-header .dp-item.dp-right {
+  color: @color-primary !important;
+}
+
+.vux-popup-header-right {
+  color: @color-primary !important;
+}

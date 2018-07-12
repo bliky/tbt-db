@@ -11,4 +11,12 @@
 .tbt-icon-down {
   background-image: url(../../../assets/image/icon_arrow_down.png);
 }
+
+.tbt-icon-in {
+  background-image: url(../../../assets/image/icon_up@2x.png);
+}
+
+.tbt-icon-de {
+  background-image: url(../../../assets/image/dow@2x.png);
+}
 </style>

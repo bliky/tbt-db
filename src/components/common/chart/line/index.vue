@@ -1,10 +1,10 @@
 <template>
 <div>
-  <v-chart :data="data">
-    <v-scale x :tick-count="5" :max="2020" />
-    <v-line shape="smooth" :colors="gradient"/>
-    <v-guide type="tag" :options="tag" />
-    <v-area shape="smooth" :colors="gradient"/>
+  <v-chart :data="chartData">
+    <v-scale x :tick-count="chartCount" :max="chartMax" />
+    <v-line :colors="gradient"/>
+<!--     <v-guide type="tag" :options="tag" /> -->
+    <v-area :colors="gradient"/>
   </v-chart>
 </div>
 </template>
@@ -13,6 +13,23 @@
 import { VChart, VGuide, VLine, VArea, VScale } from 'vux'
 
 export default {
+  props: {
+    data: {
+      type: Array,
+      default: function () {
+        return [0];
+      },
+      required: true
+    },
+    count: {
+      type: Number,
+      default: 30
+    },
+    max: {
+      type: String,
+      default: '2018-07-11'
+    }
+  },
   components: {
     VChart,
     VGuide,
@@ -20,45 +37,39 @@ export default {
     VLine,
     VScale
   },
+  watch: {
+    data (newval) {
+      this.chartData = newval;
+    },
+    count (newval) {
+      this.chartCount = newval;
+    },
+    max (newval) {
+      this.chartMax = newval;
+    }
+  },
   data () {
     return {
+      chartData: this.data,
+      chartCount: this.count,
+      chartMax: this.max,
       gradient: [
-        [0, '#F2C587'],
-        [0.5, '#ED7973'],
-        [1, '#8659AF']
+        [0, '#57FFD6'],
+        [0.5, '#57FFD6'],
+        [1, '#57FFD6']
       ],
-      tag: {
-        position: [ 2017, 30.12 ],
-        content: '30.12',
+/*      tag: {
+        position: [ 2010, 28.9 ],
+        content: '28.9',
         direct: 'tl',
         offsetY: -5,
         background: {
-          fill: '#8659AF'
+          fill: 'rgba(0,0,0,0.80)'
         },
         pointStyle: {
-          fill: '#8659AF'
+          fill: '#57FFD6'
         }
-      },
-      data: [
-        { year: 2000, age: 27.2 },
-        { year: 2001, age: 27.5 },
-        { year: 2002, age: 27.8 },
-        { year: 2003, age: 28 },
-        { year: 2004, age: 28.2 },
-        { year: 2005, age: 28.4 },
-        { year: 2006, age: 28.8 },
-        { year: 2007, age: 28.8 },
-        { year: 2008, age: 28.8 },
-        { year: 2009, age: 28.8 },
-        { year: 2010, age: 28.9 },
-        { year: 2011, age: 29 },
-        { year: 2012, age: 29.3 },
-        { year: 2013, age: 29.4 },
-        { year: 2014, age: 29.5 },
-        { year: 2015, age: 29.7 },
-        { year: 2016, age: 30 },
-        { year: 2017, age: 30.12 }
-      ]
+      },*/
     }
   }
 }
