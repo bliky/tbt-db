@@ -38,27 +38,16 @@ export default {
       showWeekPicker: false,
       currentWeek: [],
       currentDate:  lastDay.format('YYYY-MM-DD'),
-      funnel: [[100,0,0], [73,0,0], [54,0,0], [32,0,0], [24,0,0], [3,0,0]],
-      trends: {
-        uv: [{dt: '2018-07-11', value: 100}],
-        clue_launch: [{dt: '2018-07-11', value: 100}],
-        clue_launch_per_uv: [{dt: '2018-07-11', value: 100}],
-        clue_rise: [{dt: '2018-07-11', value: 100}],
-        clue_rise_per_launch: [{dt: '2018-07-11', value: 100}],
-        saleable: [{dt: '2018-07-11', value: 100}],
-        saleable_per_clue_rise: [{dt: '2018-07-11', value: 100}],
-        assignment: [{dt: '2018-07-11', value: 100}],
-        assignment_per_saleable: [{dt: '2018-07-11', value: 100}],
-        payment: [{dt: '2018-07-11', value: 100}],
-        payment_per_assignment: [{dt: '2018-07-11', value: 100}],
-        payment_money: [{dt: '2018-07-11', value: 100}],
-        order: [{dt: '2018-07-11', value: 100}],
-        order_money: [{dt: '2018-07-11', value: 100}],
-        order_per_payment: [{dt: '2018-07-11', value: 100}],
-        unit_price: [{dt: '2018-07-11', value: 100}]
-      },
-      trendXCount: 30,
-      trendXMax: ''
+      funnel: [
+        {class_id: 1, class_name: '发起', value: [100,0,0]}, 
+        {class_id: 2, class_name: '新增', value: [73,0,0]},
+        {class_id: 3, class_name: '可售', value: [54,0,0]},
+        {class_id: 4, class_name: '分派', value: [32,0,0]},
+        {class_id: 5, class_name: '扣款', value: [24,0,0]},
+        {class_id: 6, class_name: '签约', value: [3,0,0]}
+      ],
+      tabs: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  // 支持10组数据的tab切换
+      trends: []
     }
   },
   watch: {
@@ -68,15 +57,12 @@ export default {
           case 0:
             let lastDay = moment().subtract(1, 'days');
             this.currentDate = lastDay.format('YYYY-MM-DD');
-            this.trendXCount = 30;
             break;
           case 1:
-            this.trendXCount = 12;
             break;
           case 2:
             let lastMonth = moment().subtract(1, 'months');
             this.currentDate = lastMonth.format('YYYY-MM');
-            this.trendXCount = 13;
             break;
         }
       } catch (err) {
@@ -93,9 +79,8 @@ export default {
       let funnel = this.funnel;
       let funnelData = [];
       for (let i=0, len=funnel.length; i<len; i++) {
-        funnelData.push(funnel[i][0]);
+        funnelData.push(funnel[i].value[0]);
       }
-      console.log(funnelData);
       return funnelData;
     }
   },
@@ -105,34 +90,66 @@ export default {
       this.openLoading();
       fetchDashboard(param).then(res => {
         //console.log("请求参数", param, '响应数据', res.data);
-        this.updateChart(res.data.data);
+        this.updateChart(res.data.result);
         this.$nextTick(() => {
           setTimeout(this.closeLoading(), 800);
         });
       })
     },
+    parseTrends (trends) {
+      let trendsTemp = {};
+      let trendsName = {};
+      let trendsRes = [];
+
+      trends.forEach(item => {
+        let {dt_range, class_id, class_name, value} = item;
+        let kid = String(class_id);
+        if (typeof trendsTemp[kid] === 'undefined') {
+          trendsTemp[kid] = [];
+          trendsName[kid] = class_name;
+        }
+        if (dt_range.indexOf('~') !== -1) {
+          console.log(dt_range);
+          dt_range = dt_range.split('~')[1];
+        }
+        trendsTemp[kid].push({ dt: dt_range, val: value });
+      });
+
+      this.conf.forEach(item => {
+        if (item.children && item.children.length) {
+          let kp = trendsRes.length;
+          trendsRes.push({name: item.name, children:[]});
+          item.children.forEach(item => {
+            let id = String(item.id);
+            let trd = trendsRes[kp].children;
+            trd.push({ id, name: trendsName[id]||item.name, data: trendsTemp[id]||[] });
+            if (item.vtype) {
+              trd[trd.length-1]['vtype'] = item.vtype;
+            }
+          })
+        } else {
+          let id = String(item.id);
+
+          trendsRes.push({ id, name: trendsName[id]||item.name, data: trendsTemp[id]||[] });
+          if (item.vtype) {
+            trendsRes[trendsRes.length-1]['vtype'] = item.vtype;
+          }
+        }
+      });
+
+      console.log(trendsTemp, trendsRes);
+      return trendsRes;
+    },
     updateChart (data) {
       try {
         let {funnel, trends} = data;
-        let th_trends = this.trends;
-        let tmp_trends = {};
 
         // 校验服务端返回数据是否正常
-        if (!funnel || !trends) {
+        if (!funnel || !trends || !funnel.length || !trends.length) {
           throw '漏斗数据接口字段格式有误，请检查相关字段。file: statistical.vue line:205 。';
         }
         this.funnel = funnel;
-
-        for (const k in th_trends) {
-          if (th_trends.hasOwnProperty(k) && k !== 'constructor' ) {
-            tmp_trends[k] = [];
-            for (let i = 0, len = trends.length; i < len; i++) {
-              let trend = trends[i];
-              tmp_trends[k].push({dt: trend.date, value: trend[k]});
-            }
-          }
-        }
-        this.trends = tmp_trends;
+        this.trends = this.parseTrends(trends);
       } catch (err) {
         exceptionScript(err);
       }

@@ -1,7 +1,8 @@
 <template>
 <div>
-  <v-chart :data="chartData">
-    <v-scale x :tick-count="chartCount" :max="chartMax" />
+  <v-chart :data="chartData" ref="chart">
+    <v-scale x :tick-count="6" type="timeCat" mask="M-D" />
+    <v-scale y :tick-count="5" alias="数值" :formatter="yAxisFormatter" />
     <v-line :colors="gradient"/>
 <!--     <v-guide type="tag" :options="tag" /> -->
     <v-area :colors="gradient"/>
@@ -10,7 +11,9 @@
 </template>
 
 <script>
-import { VChart, VGuide, VLine, VArea, VScale } from 'vux'
+import { VChart, VGuide, VLine, VArea, VScale } from '../f2'
+import { filterYAxis } from '../../../../common/filter'
+
 
 export default {
   props: {
@@ -21,14 +24,7 @@ export default {
       },
       required: true
     },
-    count: {
-      type: Number,
-      default: 30
-    },
-    max: {
-      type: String,
-      default: '2018-07-11'
-    }
+    yPercent: Boolean
   },
   components: {
     VChart,
@@ -38,21 +34,15 @@ export default {
     VScale
   },
   watch: {
-    data (newval) {
+    data (newval) { 
       this.chartData = newval;
-    },
-    count (newval) {
-      this.chartCount = newval;
-    },
-    max (newval) {
-      this.chartMax = newval;
     }
+  },
+  mounted () {
   },
   data () {
     return {
       chartData: this.data,
-      chartCount: this.count,
-      chartMax: this.max,
       gradient: [
         [0, '#57FFD6'],
         [0.5, '#57FFD6'],
@@ -70,6 +60,12 @@ export default {
           fill: '#57FFD6'
         }
       },*/
+    }
+  },
+  methods: {
+    yAxisFormatter (val) {
+      if (this.yPercent) return filterYAxis(val, '%');
+      return filterYAxis(val);
     }
   }
 }
