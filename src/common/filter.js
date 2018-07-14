@@ -12,6 +12,25 @@ const filterNumber = (num, format, prefix, suffix) => {
   return prefix + numeral(num).format(format) + suffix;
 }
 
+const dayGraReg = /^\d{4}-\d{2}-\d{2}$/;
+const weekGraReg = /^\d{4}-\d{2}-\d{2}~\d{4}-\d{2}-\d{2}$/;
+const monthGraReg = /^\d{4}-\d{2}$/;
+
+const filterXAxis = (timeCat) => {
+  if (dayGraReg.test(timeCat)) {
+    // 日
+    timeCat = timeCat.substr(5);
+  } else if (weekGraReg.test(timeCat)) {
+    // 周
+    timeCat = timeCat.replace(/\d{4}-\d{2}-/g, '');
+  } else if (monthGraReg.test(timeCat)) {
+    // 月
+    timeCat = timeCat.substr(-2) + '月';
+  }
+  //console.log(timeCat);
+  return timeCat;
+}
+
 const filterYAxis = (num, suffix) => {
   if (isNaN(parseFloat(num))) {
     return num;
@@ -35,5 +54,6 @@ const filterYAxis = (num, suffix) => {
 
 export {
   filterNumber,
+  filterXAxis,
   filterYAxis
 }

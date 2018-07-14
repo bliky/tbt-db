@@ -273,9 +273,6 @@ export default {
       chart.scale(this.xField, this.currentXFieldOptions)
       chart.scale(this.yField, this.currentYFieldOptions)
 
-/*      console.log('x', this.xField, this.currentXFieldOptions);
-      console.log('y', this.yField, this.currentYFieldOptions);*/
-
       if (this.legendOptions) {
         if (this.legendOptions.disabled) {
           chart.legend(false)

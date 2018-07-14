@@ -1,18 +1,19 @@
 <template>
 <div>
   <v-chart :data="chartData" ref="chart">
-    <v-scale x :tick-count="6" type="timeCat" mask="M-D" />
+    <v-scale x :tick-count="6" :sortable='false' :formatter="xAxisFormatter" />
     <v-scale y :tick-count="5" alias="数值" :formatter="yAxisFormatter" />
     <v-line :colors="gradient"/>
-<!--     <v-guide type="tag" :options="tag" /> -->
     <v-area :colors="gradient"/>
+    <v-guide type="line" top :options="lineGuide" />
+    <v-guide type="tag" top :options="tagGuide" />
   </v-chart>
 </div>
 </template>
 
 <script>
 import { VChart, VGuide, VLine, VArea, VScale } from '../f2'
-import { filterYAxis } from '../../../../common/filter'
+import { filterXAxis, filterYAxis } from '../../../../common/filter'
 
 
 export default {
@@ -41,6 +42,7 @@ export default {
   mounted () {
   },
   data () {
+    let that = this;
     return {
       chartData: this.data,
       gradient: [
@@ -48,21 +50,53 @@ export default {
         [0.5, '#57FFD6'],
         [1, '#57FFD6']
       ],
-/*      tag: {
-        position: [ 2010, 28.9 ],
-        content: '28.9',
-        direct: 'tl',
-        offsetY: -5,
-        background: {
-          fill: 'rgba(0,0,0,0.80)'
+      lineGuide: {
+        start(xScale, yScales) {
+          return ['min', that.average]; // 位置信息
         },
-        pointStyle: {
-          fill: '#57FFD6'
+        end(xScale, yScales) {
+          return ['max', that.average]; // 位置信息
+        },
+        style: {
+          stroke: '#f5da55', // 线的颜色
+          lineWidth: 2,
+          lineDash: [5, 5]
         }
-      },*/
+      },
+      tagGuide: {
+        direct: 'tc',
+        background: {
+          padding: [ 4, 6 ], // tag 内边距，用法同 css 盒模型的 padding
+          radius: 2, // tag 圆角
+          fill: '#1890FF', // tag 背景填充颜色
+          fillOpacity: 0.5
+        },
+        textStyle: {
+          fontSize: 12, // 字体大小
+          fill: '#fff' // 字体颜色
+        },
+        position () {
+          return ['median', that.average];
+        },
+        content: '均值线'
+      }
+    }
+  },
+  computed: {
+    average() {
+      if (!this.data || !this.data.length) return 0;
+
+      let sum = this.data.map(item => item.val).reduce((total, cur) => {
+        return total + cur;
+      });
+
+      return sum/this.data.length;
     }
   },
   methods: {
+    xAxisFormatter (val) {
+      return filterXAxis(val);
+    },
     yAxisFormatter (val) {
       if (this.yPercent) return filterYAxis(val, '%');
       return filterYAxis(val);

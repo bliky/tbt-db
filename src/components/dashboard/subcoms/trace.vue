@@ -12,7 +12,7 @@
         <div class="tbt-cell_hd">时间范围</div>
         <div class="tbt-cell_bd">
           <div style="margin-left: 15px; color: #333;" @click="handleOnClickDateSelect">
-            {{ granularity == 1 ? currentWeek[0] : currentDate }} <i class="tbt-icon tbt-icon-down" style="position: relative; top: 3px;"></i>
+            {{ currentDate }} <i class="tbt-icon tbt-icon-down" style="position: relative; top: 3px;"></i>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@
     </div>
 
     <div class="tbt-pannel">
-      <div class="tbt-pannel_title"><div class="tbt-pannel_tittle-inner">转化率趋势<span class="tbt-pannel_title-append">(基于发起线索时间{{ currentDate }})</span></div></div>
+      <div class="tbt-pannel_title"><div class="tbt-pannel_tittle-inner">转化率趋势<span class="tbt-pannel_title-append">(基于发起线索时间)</span></div></div>
       <div class="tbt-pannel_bd">
         <ul class="tbt-trend-list">
           <template v-if="trends.length">
@@ -90,11 +90,6 @@ export default {
       granularity: 1, // 时间粒度
       conf
     }
-  },
-  watch: {
-  },
-  created () {
-    this.fetchData(this.currentWeek[0], 2);
   },
   mounted () {
   },

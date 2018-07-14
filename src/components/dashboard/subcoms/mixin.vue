@@ -4,7 +4,9 @@ import { Funnel as ChartFunnel, Line as ChartLine } from '../../common/chart'
 import { tabRadio } from '../../common/tab'
 import '../../common/icon'
 import { exceptionScript } from '../../../common/exception'
+import { buildQuery } from '../../../common/stringify'
 import { filterNumber } from '../../../common/filter'
+import storage from '../../../common/storage'
 import _ from 'lodash'
 import moment from 'moment'
 import { fetchDashboard } from '../../../services/api';
@@ -32,12 +34,16 @@ export default {
   data () {
     let startDay = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
     let lastDay = moment().subtract(1, 'days');
+    let lastMonth = moment().subtract(1, 'months');
     return {
       startDay,
+      endDay: lastDay.format('YYYY-MM-DD'),
+      endMonth: lastMonth.format('YYYY-MM-DD'),
       weeks: [],
       showWeekPicker: false,
+      currentDay: lastDay.format('YYYY-MM-DD'),
+      currentMonth: lastMonth.format('YYYY-MM'),
       currentWeek: [],
-      currentDate:  lastDay.format('YYYY-MM-DD'),
       funnel: [
         {class_id: 1, class_name: '发起', value: [100,0,0]}, 
         {class_id: 2, class_name: '新增', value: [73,0,0]},
@@ -51,28 +57,14 @@ export default {
     }
   },
   watch: {
-    granularity (newVal, oldVal) {
-      try {
-        switch (newVal) {
-          case 0:
-            let lastDay = moment().subtract(1, 'days');
-            this.currentDate = lastDay.format('YYYY-MM-DD');
-            break;
-          case 1:
-            break;
-          case 2:
-            let lastMonth = moment().subtract(1, 'months');
-            this.currentDate = lastMonth.format('YYYY-MM');
-            break;
-        }
-      } catch (err) {
-        exceptionScript(err);
-      }
+    granularity () {
+      this.fetchData();
     }
   },
   created () {
     this.initWeeks();
     this.currentWeek = [this.weeks[0].value];
+    this.fetchData();
   },
   computed: {
     funnelData () {
@@ -82,18 +74,44 @@ export default {
         funnelData.push(funnel[i].value[0]);
       }
       return funnelData;
+    },
+    currentDate () {
+      let granularity = this.granularity;
+
+      return granularity == 1 ? this.currentWeek[0]
+             : granularity == 0 ? this.currentDay
+             : granularity == 2 ? this.currentMonth : '';
     }
   },
   methods: {
+    localCache (param, data) {
+      let qs = buildQuery(param);
+      if (!data) {
+        return storage.get(qs);
+      }
+
+      return storage.set(qs, data);
+    },
     fetchData (dt, mode) {
-      let param = {mode: mode||this.mode, gra: ['day', 'week', 'month'][this.granularity], dt};
+      let param = {mode: mode||this.mode, gra: ['day', 'week', 'month'][this.granularity], dt: dt||this.currentDate};
+
+      let localCacheData = this.localCache(param);
+      if (localCacheData) {
+        return this.updateChart(localCacheData);
+      }
+
       this.openLoading();
       fetchDashboard(param).then(res => {
-        //console.log("请求参数", param, '响应数据', res.data);
         this.updateChart(res.data.result);
+        this.localCache(param, res.data.result);
         this.$nextTick(() => {
           setTimeout(this.closeLoading(), 800);
         });
+      }).catch(err => {
+        setTimeout(()=>{
+          this.closeLoading();
+          alert('获取数据失败');
+        }, 800);
       })
     },
     parseTrends (trends) {
@@ -108,10 +126,7 @@ export default {
           trendsTemp[kid] = [];
           trendsName[kid] = class_name;
         }
-        if (dt_range.indexOf('~') !== -1) {
-          console.log(dt_range);
-          dt_range = dt_range.split('~')[1];
-        }
+
         trendsTemp[kid].push({ dt: dt_range, val: value });
       });
 
@@ -137,7 +152,6 @@ export default {
         }
       });
 
-      console.log(trendsTemp, trendsRes);
       return trendsRes;
     },
     updateChart (data) {
@@ -185,7 +199,8 @@ export default {
           monthRow: '{value}月',
           dayRow: '{value}日',
           onConfirm (value) {
-            that.currentDate = value;
+            that[that.granularity==0?'currentDay':'currentMonth'] = value;
+            // 更新当前Day或Month
             that.fetchData(value);
           },
           onHide () {
@@ -202,23 +217,21 @@ export default {
       }
     },
     graDay () {
-      let lastDay = moment().subtract(1, 'days').format('YYYY-MM-DD');
       this.openDatePicker({
-        value: lastDay,
+        value: this.currentDay,
         startDate: this.startDay,
-        endDate: lastDay
+        endDate: this.endDay
       });
     },
     graWeek () {
       this.showWeekPicker = true
     },
     graMonth () {
-      let lastMonth = moment().subtract(1, 'months');
       this.openDatePicker({
         format: 'YYYY-MM',
-        value: lastMonth.format('YYYY-MM'),
+        value: this.currentMonth,
         startDate: this.startDay,
-        endDate: lastMonth.format('YYYY-MM-DD')
+        endDate: this.endMonth
       });
     },
     handleOnClickDateSelect () {

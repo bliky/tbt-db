@@ -30,7 +30,7 @@ sn | path | module | status | description
 6 | bdc-prd-dbd/selInd | apply/selInd | error | 空白
 7 | bdc-prd-dbd/selDim | apply/selDim | ok | 外呼转化率
 8 | bdc-prd-dbd/apply/ind | apply/Ind | empty | 空白
-9 | bdc-prd-dbd/zongkuang | zongkuang/index | dev | 开发中
+9 | bdc-prd-dbd/dashboard | dashboard/index | dev | 已开发，待上线
 10 | bdc-prd-dbd/roi | roi/index | dev | 开发中
 
 ## author

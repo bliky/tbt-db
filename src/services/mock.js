@@ -98,6 +98,7 @@ export default {
           }
           break;
       }
+      trends.reverse();
 
       let resp = {
         status: 200, // 成功返回200 失败返回错误码

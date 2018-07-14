@@ -1,8 +1,8 @@
 <template>
   <div class="tbt-tabs-radio" style="margin-left: 15px;">
-    <div v-if="!noday" class="tbt-tab" :class="{checked: currentValue==0}" @click="currentValue=0">日</div>
-    <div class="tbt-tab" :class="{checked: currentValue==1}" @click="currentValue=1">周</div>
-    <div class="tbt-tab" :class="{checked: currentValue==2}" @click="currentValue=2">月</div>  
+    <div v-if="!noday" class="tbt-tab" :class="{checked: currentValue==0}" @click.stop="handleOnClick(0)">日</div>
+    <div class="tbt-tab" :class="{checked: currentValue==1}" @click.stop="handleOnClick(1)">周</div>
+    <div class="tbt-tab" :class="{checked: currentValue==2}" @click.stop="handleOnClick(2)">月</div>  
   </div>
 </template>
 
@@ -18,12 +18,16 @@ export default {
     },
     currentValue (val) {
       this.$emit('input', val)
-      this.$emit('on-change', val)
     }
   },
   data () {
     return {
       currentValue: this.value
+    }
+  },
+  methods: {
+    handleOnClick (gra) {
+      this.currentValue = gra
     }
   }
 }
