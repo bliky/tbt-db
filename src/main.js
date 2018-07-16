@@ -25,13 +25,17 @@ import Dashboard from './components/dashboard';
 import Roi from './components/roi';
 import utils from './utils/utils.js';
 
+Vue.use(ToastPlugin);
+Vue.use(LoadingPlugin);
+Vue.use(ConfirmPlugin);
+
 if (process.env.NODE_ENV !== 'production') {
   require('./services/mock').default.bootstrap();
 }
 
 // new VConsole()
 Vue.prototype.$http = http;
-Vue.use(VueRouter, F2, Vue, ConfirmPlugin, LoadingPlugin, ToastPlugin, utils, ConfigPlugin, {
+Vue.use(VueRouter, F2, Vue, utils, ConfigPlugin, {
   $layout: 'VIEW_BOX'
 });
 window.axios = axios;
@@ -132,7 +136,7 @@ let rel = router.beforeEach((to, from, next) => {
   Cookie.set('t8t-it-ticket', to.query.tickets);
   Cookie.set('t8t-it-token', to.query.token);
   Cookie.set('t8t-it-uid', to.query.uid);
-  // Cookie.set('t8t-it-uname', to.query.uname)
+  Cookie.set('t8t-it-uname', to.query.uname);
   rel();
   next();
 });

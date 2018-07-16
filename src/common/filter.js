@@ -12,6 +12,14 @@ const filterNumber = (num, format, prefix, suffix) => {
   return prefix + numeral(num).format(format) + suffix;
 }
 
+const filterAbs = (num) => {
+  if (isNaN(parseFloat(num))) {
+    return num;
+  }
+
+  return Math.abs(num);
+}
+
 const dayGraReg = /^\d{4}-\d{2}-\d{2}$/;
 const weekGraReg = /^\d{4}-\d{2}-\d{2}~\d{4}-\d{2}-\d{2}$/;
 const monthGraReg = /^\d{4}-\d{2}$/;
@@ -54,6 +62,7 @@ const filterYAxis = (num, suffix) => {
 
 export {
   filterNumber,
+  filterAbs,
   filterXAxis,
   filterYAxis
 }

@@ -35,7 +35,7 @@
                 <td :class="{increase: item.value[2]>0, decrease: item.value[2]<0}">
                   <i class="tbt-icon tbt-icon-in" style="position: relative; left: 3px; top: 3px;"></i>
                   <i class="tbt-icon tbt-icon-de" style="position: relative; left: 3px; top: 3px;"></i>
-                  {{Math.abs(item.value[2])|filter-number('0.0', '', '%')}}
+                  {{item.value[2]|filter-abs|filter-number('0.0', '', '%')}}
                 </td>
               </tr>
 
