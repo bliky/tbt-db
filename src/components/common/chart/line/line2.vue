@@ -5,14 +5,13 @@
     <v-scale y :tick-count="5" alias="数值" :formatter="yAxisFormatter" />
     <v-line :colors="gradient"/>
     <v-area :colors="gradient"/>
-    <v-guide type="line" top :options="lineGuide" />
     <v-tooltip :options="tooltip" />
   </v-chart>
 </div>
 </template>
 
 <script>
-import { VChart, VGuide, VLine, VArea, VScale, VTooltip } from '../f2'
+import { VChart, VLine, VArea, VScale, VTooltip } from '../f2'
 import { filterXAxis, filterYAxis } from '../../../../common/filter'
 
 export default {
@@ -24,15 +23,10 @@ export default {
       },
       required: true
     },
-/*    average: {
-      type: Number,
-      default: 0
-    },*/
     yPercent: Boolean
   },
   components: {
     VChart,
-    VGuide,
     VArea,
     VLine,
     VScale,
@@ -54,36 +48,6 @@ export default {
         [0.5, '#57FFD6'],
         [1, '#57FFD6']
       ],
-      lineGuide: {
-        start(xScale, yScales) {
-          return ['min', that.average]; // 位置信息
-        },
-        end(xScale, yScales) {
-          return ['max', that.average]; // 位置信息
-        },
-        style: {
-          stroke: '#FFAE22', // 线的颜色
-          lineWidth: 1,
-          lineDash: [5, 5]
-        }
-      },
-      tagGuide: {
-        direct: 'tc',
-        background: {
-          padding: [ 4, 6 ], // tag 内边距，用法同 css 盒模型的 padding
-          radius: 2, // tag 圆角
-          fill: '#1890FF', // tag 背景填充颜色
-          fillOpacity: 0.5
-        },
-        textStyle: {
-          fontSize: 12, // 字体大小
-          fill: '#fff' // 字体颜色
-        },
-        position () {
-          return ['median', that.average];
-        },
-        content: '均值 '+ that.average
-      },
       tooltip: {
         showItemMarker: false,
         showTooltipMarker: true,
@@ -102,17 +66,6 @@ export default {
     }
   },
   computed: {
-    average() {
-      if (!this.data || !this.data.length) return 0;
-
-      let sum = this.data.map(item => item.val).reduce((total, cur) => {
-        return total + cur;
-      });
-
-      let average = sum/this.data.length;
-
-      return average;
-    }
   },
   methods: {
     xAxisFormatter (val) {

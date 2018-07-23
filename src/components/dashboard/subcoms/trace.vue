@@ -46,7 +46,7 @@
     </div>
 
     <div class="tbt-pannel">
-      <div class="tbt-pannel_title"><div class="tbt-pannel_tittle-inner">转化率趋势<span class="tbt-pannel_title-append">(基于发起线索时间)</span></div></div>
+      <div class="tbt-pannel_title"><div class="tbt-pannel_tittle-inner">转化率趋势<span class="tbt-pannel_title-append">({{trendsStartDate}}&nbsp;到&nbsp;{{trendsEndDate}})</span></div></div>
       <div class="tbt-pannel_bd">
         <ul class="tbt-trend-list">
           <template v-if="trends.length">
@@ -71,7 +71,7 @@
       </div>
     </div>
 
-    <popup-picker cancel-text="取消" confirm-text="确认" :show.sync="showWeekPicker" :columns="1" :show-cell="false" title="选择周" :data="weeks" v-model="currentWeek" @on-change="handleOnChangeWeek"></popup-picker>
+    <popup-picker style="max-width: 100%; display: none;"  cancel-text="取消" confirm-text="确认" :show.sync="showWeekPicker" :columns="1" :show-cell="false" title="选择周" :data="weeks" v-model="currentWeek" @on-change="handleOnChangeWeek"></popup-picker>
   </div>
 </template>
 
@@ -79,16 +79,35 @@
 import mLoading from '../../common/mixins/loading'
 import dashMixin from './mixin'
 import conf from './trace.conf'
+import {Line2 as ChartLine} from '../../common/chart'
+import moment from 'moment'
 
 export default {
   mixins: [mLoading, dashMixin],
   components: {
+    ChartLine
   },
   data () {
     return {
       mode: 2,
       granularity: 1, // 时间粒度
       conf
+    }
+  },
+  computed: {
+    trendsStartDate () {
+      let granularity = this.granularity;
+
+      return granularity == 1 ? moment(this.currentWeek[0].split('~')[1]).subtract(29, 'days').format('YYYY-MM-DD')
+             : granularity == 0 ? moment(this.currentDay).subtract(29, 'days').format('YYYY-MM-DD')
+             : granularity == 2 ? moment(this.currentMonth).startOf('month').format('YYYY-MM-DD') : '';
+    },
+    trendsEndDate () {
+      let granularity = this.granularity;
+
+      return granularity == 1 ? this.currentWeek[0].split('~')[1]
+             : granularity == 0 ? this.currentDay
+             : granularity == 2 ?  moment(this.currentMonth).endOf('month').format('YYYY-MM-DD') : '';
     }
   },
   mounted () {

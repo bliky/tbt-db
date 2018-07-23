@@ -1,6 +1,6 @@
 export default [
   {
-    id: 1,
+    id: 21,
     name: 'UV',
     data: []
   },
@@ -8,12 +8,12 @@ export default [
     name: '线索',
     children: [
       {
-        id: 6,
+        id: 7,
         name: '发起次数',
         data: []
       },
       {
-        id: 7, // 还未提供
+        id: 22, // 还未提供
         name: '发起/UV',
         vtype: 1,
         data: []
@@ -79,7 +79,7 @@ export default [
       },
       {
         id: 15,
-        name: '金额',
+        name: '金额(元)',
         data: []
       }
     ]
@@ -94,7 +94,7 @@ export default [
       },
       {
         id: 17,
-        name: '订单金额',
+        name: '订单金额(元)',
         data: []
       },
       {
@@ -105,7 +105,7 @@ export default [
       },
       {
         id: 19,
-        name: '客单价',
+        name: '客单价(元)',
         data: []
       }
     ]

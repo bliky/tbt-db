@@ -56,7 +56,6 @@ body {
 </style>
 <script>
 import { mapState } from 'vuex'
-import Board from './components//board/Board';
 import AppHeader from './components/common/Header';
 import AppFooter from './components/common/Footer';
 import { Loading, ViewBox, Tabbar, TabbarItem } from 'vux';
@@ -64,7 +63,6 @@ import { Loading, ViewBox, Tabbar, TabbarItem } from 'vux';
 export default {
   components: {
     Loading,
-    Board,
     AppHeader,
     ViewBox,
     AppFooter,
