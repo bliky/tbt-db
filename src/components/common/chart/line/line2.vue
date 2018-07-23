@@ -3,8 +3,8 @@
   <v-chart :data="chartData" ref="chart">
     <v-scale x :tick-count="5" :sortable='false' :formatter="xAxisFormatter" />
     <v-scale y :tick-count="5" alias="数值" :formatter="yAxisFormatter" />
-    <v-line :colors="gradient"/>
-    <v-area :colors="gradient"/>
+    <v-line :colors="colorLine"/>
+    <v-area :colors="colorArea"/>
     <v-tooltip :options="tooltip" />
   </v-chart>
 </div>
@@ -43,11 +43,8 @@ export default {
     let that = this;
     return {
       chartData: this.data,
-      gradient: [
-        [0, '#57FFD6'],
-        [0.5, '#57FFD6'],
-        [1, '#57FFD6']
-      ],
+      colorLine: [[0, '#00E9A9'], [0.5, '#00E9A9'], [1, '#00E9A9']],
+      colorArea: [[0.3, '#57FFD6'], [0.3, '#57FFD6'], [0.3, '#57FFD6']],
       tooltip: {
         showItemMarker: false,
         showTooltipMarker: true,

@@ -1,10 +1,10 @@
 <template>
 <div style="overflow: hidden; width: 100%;">
   <v-chart :data="chartData" ref="chart">
-    <v-scale x :tick-count="5" :nice="false" :sortable='false' :formatter="xAxisFormatter" />
-    <v-scale y :tick-count="5" :nice="false" :min='0' :formatter="yAxisFormatter" />
-    <v-line :colors="gradient"/>
-    <v-area :colors="gradient"/>
+    <v-scale x :tick-count="5" :nice="true" :sortable='false' :formatter="xAxisFormatter" />
+    <v-scale y :tick-count="5" :nice="true" :min='0' :formatter="yAxisFormatter" />
+    <v-line :colors="colorLine"/>
+    <v-area :colors="colorArea"/>
     <v-guide type="line" top :options="lineGuide" />
     <v-tooltip :options="tooltip" />
   </v-chart>
@@ -50,11 +50,8 @@ export default {
     let that = this;
     return {
       chartData: this.data,
-      gradient: [
-        [0, '#57FFD6'],
-        [0.5, '#57FFD6'],
-        [1, '#57FFD6']
-      ],
+      colorLine: [[0, '#00E9A9'], [0.5, '#00E9A9'], [1, '#00E9A9']],
+      colorArea: [[0.3, '#57FFD6'], [0.3, '#57FFD6'], [0.3, '#57FFD6']],
       lineGuide: {
         start(xScale, yScales) {
           return ['min', that.average]; // 位置信息
@@ -113,7 +110,7 @@ export default {
 
       let average = sum/this.data.length;
 
-      return average.toFixed(1);
+      return parseInt(average);
     }
   },
   methods: {

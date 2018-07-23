@@ -2,7 +2,6 @@ export default [
   {
     id: 21,
     name: 'UV',
-    vtype: 2,
     data: []
   },
   {

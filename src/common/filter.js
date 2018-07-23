@@ -68,7 +68,7 @@ const filterYAxis = (num, suffix) => {
   if (suffix === '%') return num + suffix;
   if (suffix === 'w' && num >= 10000) return  numeral(num/10000).format('0,0.0') + 'w';
 
-  return num.toString().lastIndexOf('.') !== -1 ? numeral(num).format('0,0.0') : numeral(num).format('0,0');
+  return numeral(num).format('0,0');
 }
 
 export {
