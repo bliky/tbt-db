@@ -39,7 +39,7 @@ const filterXAxis = (timeCat) => {
   return timeCat;
 }
 
-const filterYAxis = (num, suffix) => {
+/*const filterYAxis = (num, suffix) => {
   if (isNaN(parseFloat(num))) {
     return num;
   }
@@ -58,6 +58,17 @@ const filterYAxis = (num, suffix) => {
   }
 
   return ret + (suffix || '');
+}*/
+
+const filterYAxis = (num, suffix) => {
+  if (isNaN(parseFloat(num))) {
+    return num;
+  }
+
+  if (suffix === '%') return num + suffix;
+  if (suffix === 'w' && num >= 10000) return  numeral(num/10000).format('0,0.0') + 'w';
+
+  return num.toString().lastIndexOf('.') !== -1 ? numeral(num).format('0,0.0') : numeral(num).format('0,0');
 }
 
 export {

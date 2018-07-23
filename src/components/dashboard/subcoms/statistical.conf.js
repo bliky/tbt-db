@@ -2,6 +2,7 @@ export default [
   {
     id: 21,
     name: 'UV',
+    vtype: 2,
     data: []
   },
   {
@@ -80,6 +81,7 @@ export default [
       {
         id: 15,
         name: '金额(元)',
+        vtype: 2,
         data: []
       }
     ]
@@ -95,6 +97,7 @@ export default [
       {
         id: 17,
         name: '订单金额(元)',
+        vtype: 2,
         data: []
       },
       {
@@ -106,6 +109,7 @@ export default [
       {
         id: 19,
         name: '客单价(元)',
+        vtype: 2,
         data: []
       }
     ]

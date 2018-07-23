@@ -59,10 +59,10 @@
               </div>
               <div class="tbt-trend-chart">
                 <template v-if="item.children && item.children.length" >
-                  <chart-line v-for="(sub_item, sub_idx) in item.children" v-show="tabs[idx]==sub_idx" :data="sub_item.data" :y-percent="sub_item.vtype && sub_item.vtype==1"></chart-line>
+                  <chart-line v-for="(sub_item, sub_idx) in item.children" v-show="tabs[idx]==sub_idx" :data="sub_item.data" :y-percent="sub_item.vtype && sub_item.vtype==1" :y-w="sub_item.vtype && sub_item.vtype==2"></chart-line>
                 </template>
                 <template v-else>
-                  <chart-line :data="item.data" :y-percent="item.vtype && item.vtype==1"></chart-line>
+                  <chart-line :data="item.data" :y-percent="item.vtype && item.vtype==1" :y-w="item.vtype && item.vtype==2"></chart-line>
                 </template>
               </div>
             </li>

@@ -30,7 +30,7 @@ Vue.use(ToastPlugin);
 Vue.use(LoadingPlugin);
 Vue.use(ConfirmPlugin);
 
-console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
+// console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
 
 if (process.env.NODE_ENV !== 'production') {
   require('./services/mock').default.bootstrap();
@@ -132,7 +132,9 @@ let rel = router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title;
   }
-  console.log('URL查询对象', to.query);
+
+  // console.log('URL查询对象', to.query);
+
   // 从路由的元信息中获取 title 属性
   to.query.appVersion && Cookie.set('t8t-it-appVersion', to.query.appVersion);
   to.query.appType && Cookie.set('t8t-it-appType', to.query.appType);
