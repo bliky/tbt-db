@@ -1,8 +1,8 @@
 <template>
 <div style="overflow: hidden; width: 100%;">
   <v-chart :data="chartData" ref="chart">
-    <v-scale x :tick-count="5" :sortable='false' :formatter="xAxisFormatter" />
-    <v-scale y :tick-count="5" alias="数值" :formatter="yAxisFormatter" />
+    <v-scale x :tick-count="5" :nice="true" :sortable='false' :formatter="xAxisFormatter" />
+    <v-scale y :tick-count="5" :nice="true" :min='0' :formatter="yAxisFormatter" />
     <v-line :colors="colorLine"/>
     <v-area :colors="colorArea"/>
     <v-tooltip :options="tooltip" />
