@@ -1,6 +1,6 @@
 <script>
 import { Group, CellBox, Cell, Checker, CheckerItem, Tab,TabItem, PopupPicker } from 'vux'
-import { Funnel as ChartFunnel, Line as ChartLine } from '../../common/chart'
+import { Funnel as ChartFunnel } from '../../common/chart'
 import { tabRadio } from '../../common/tab'
 import '../../common/icon'
 import { exceptionScript } from '../../../common/exception'
@@ -15,6 +15,15 @@ import Vue from 'vue'
 import { DatetimePlugin } from 'vux'
 Vue.use(DatetimePlugin)
 
+const funnelResetData = [
+        {class_id: 1, class_name: '发起', value: [0,0,0]}, 
+        {class_id: 2, class_name: '新增', value: [0,0,0]},
+        {class_id: 3, class_name: '可售', value: [0,0,0]},
+        {class_id: 4, class_name: '分派', value: [0,0,0]},
+        {class_id: 5, class_name: '扣款', value: [0,0,0]},
+        {class_id: 6, class_name: '签约', value: [0,0,0]}
+      ];
+
 export default {
   components: {
     Group,
@@ -26,7 +35,6 @@ export default {
     TabItem,
     PopupPicker,
     ChartFunnel,
-    ChartLine,
     tabRadio
   },
   filters: {
@@ -35,25 +43,18 @@ export default {
   },
   data () {
     let startDay = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
-    let lastDay = moment().subtract(1, 'days');
+    let lastDay = moment().subtract(1, 'days').format('YYYY-MM-DD');
     let lastMonth = moment().subtract(1, 'months');
     return {
       startDay,
-      endDay: lastDay.format('YYYY-MM-DD'),
+      endDay: lastDay,
       endMonth: lastMonth.format('YYYY-MM-DD'),
       weeks: [],
       showWeekPicker: false,
-      currentDay: lastDay.format('YYYY-MM-DD'),
+      currentDay: lastDay,
       currentMonth: lastMonth.format('YYYY-MM'),
       currentWeek: [],
-      funnel: [
-        {class_id: 1, class_name: '发起', value: [100,0,0]}, 
-        {class_id: 2, class_name: '新增', value: [73,0,0]},
-        {class_id: 3, class_name: '可售', value: [54,0,0]},
-        {class_id: 4, class_name: '分派', value: [32,0,0]},
-        {class_id: 5, class_name: '扣款', value: [24,0,0]},
-        {class_id: 6, class_name: '签约', value: [3,0,0]}
-      ],
+      funnel: funnelResetData,
       tabs: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  // 支持10组数据的tab切换
       trends: []
     }
@@ -86,6 +87,12 @@ export default {
     }
   },
   methods: {
+    resetFunnel () {
+      this.funnel = funnelResetData;
+    },
+    resetTrends () {
+      this.trends = [];
+    },
     localCache (param, data) {
       let qs = buildQuery(param);
       if (!data) {
@@ -140,7 +147,7 @@ export default {
           item.children.forEach(item => {
             let id = String(item.id);
             let trd = trendsRes[kp].children;
-            trd.push({ id, name: trendsName[id]||item.name, data: trendsTemp[id]||[] });
+            trd.push({ id, name: item.name||trendsName[id], data: trendsTemp[id]||[] });
             if (item.vtype) {
               trd[trd.length-1]['vtype'] = item.vtype;
             }
@@ -148,7 +155,7 @@ export default {
         } else {
           let id = String(item.id);
 
-          trendsRes.push({ id, name: trendsName[id]||item.name, data: trendsTemp[id]||[] });
+          trendsRes.push({ id, name: item.name||trendsName[id], data: trendsTemp[id]||[] });
           if (item.vtype) {
             trendsRes[trendsRes.length-1]['vtype'] = item.vtype;
           }
@@ -202,7 +209,13 @@ export default {
           this.$vux.toast.text('API接口返回数据,无相关字段~');
           throw '漏斗数据接口字段格式有误，请检查相关字段。file: mixin.vue line:165 。';
         }
-        if (!funnel.length) {
+
+        /**
+          @comment: 漏斗转化数据为空，自动获取最近一个日期的数据，产品经理要求去掉这个功能，所以暂时注释，如果需要去掉注释即可
+          @author: ken.li
+          @date: 2018-07-18
+        */
+        /*if (!funnel.length) {
           confirm.call(this, '当前日期(' + this.currentDate + ')暂无转化率数据~', '是否获取最近一个有效日期的数据？')
                 .then(() => {
                   this.autoFetchLastedData().then(res => {
@@ -224,13 +237,27 @@ export default {
                   console.log('取消获取最近的数据');
                 });
           return false;
+        }*/
+        if (funnel.length) {
+          this.funnel = funnel;
+        } else {
+          this.resetFunnel();
+        }
+        if (trends.length) {
+          this.trends = this.parseTrends(trends);
+        }  else {
+          this.resetTrends();
         }
         if (!trends.length) {
           this.$vux.toast.text('趋势数据为空!');
+        }
+        if (!funnel.length) {
+          this.$vux.toast.text('漏斗数据为空!');
+        }
+        if (!funnel.length || !trends.length) {
           return false;
         }
-        this.funnel = funnel;
-        this.trends = this.parseTrends(trends);
+        return true;
       } catch (err) {
         exceptionScript(err);
         return false;

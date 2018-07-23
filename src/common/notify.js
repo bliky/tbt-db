@@ -31,6 +31,10 @@ const confirm = function (title, content='') {
   });
 }
 
+const toast = function (content='') {
+  this.$vux.toast.text(content);
+}
+
 export {
   info,
   success,
@@ -38,5 +42,6 @@ export {
   error,
   login,
   loading,
-  confirm
+  confirm,
+  toast
 }

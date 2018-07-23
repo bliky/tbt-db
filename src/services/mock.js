@@ -25,7 +25,7 @@ import moment from 'moment';
         })
 }*/
 
-const trendName = ['0', '1', '2', '3', '4', '5', '6', '7', '新增线索', '新增/发起线索', '可售信息数', '可售/新增', '分派', '分派/可售', '扣款信息数', '扣款金额', '订单数', '订单金额', '签约/扣款', '客单价'];
+const trendName = ['0', '1', '2', '3', '4', '5', '6', '发起次数', '新增线索', '新增/发起线索', '可售信息数', '可售/新增', '分派', '分派/可售', '扣款信息数', '扣款金额', '订单数', '订单金额', '签约/扣款', '客单价', '扣款/分派', 'UV', '发起/UV'];
 
 function genTrendData (dt, id) {
   return {
@@ -64,13 +64,16 @@ export default {
       let cdy;
       let class_id = 8;
 
+      let class_ids = mode == 1 ? [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22] :
+                                 [3, 6, 9, 12];
+
       switch (gra) {
         case 'day':
           // 过去30天的数据
           cdy = moment(dt);
           for (let i=0; i<30; i++) {
-            for (let j=8; j<=19; j++) {
-              trends.push(genTrendData(cdy.format('YYYY-MM-DD'), j));
+            for (let j=0; j<class_ids.length; j++) {
+              trends.push(genTrendData(cdy.format('YYYY-MM-DD'), class_ids[j]));
             }
             cdy.subtract(1, 'days');
           }
@@ -81,8 +84,8 @@ export default {
           for (let i=0; i<12; i++) {
             let st = cdy.format('YYYY-MM-DD');
             let end = moment(st).add(6, 'days').format('YYYY-MM-DD')
-            for (let j=8; j<=19; j++) {
-              trends.push(genTrendData(st + '~' + end, j));
+            for (let j=0; j<class_ids.length; j++) {
+              trends.push(genTrendData(st + '~' + end, class_ids[j]));
             }
             cdy.subtract(1, 'week');
           }
@@ -91,8 +94,8 @@ export default {
           // 过去13个月的数据
           cdy = moment(dt);
           for (let i=0; i<13; i++) {
-            for (let j=8; j<=19; j++) {
-              trends.push(genTrendData(cdy.format('YYYY-MM'), j));
+            for (let j=0; j<class_ids.length; j++) {
+              trends.push(genTrendData(cdy.format('YYYY-MM'), class_ids[j]));
             }
             cdy.subtract(1, 'month');
           }
@@ -170,5 +173,20 @@ export default {
       });
     });
 
+    mock.onPost('/urlIsAccess').reply(config => {
+      let params = JSON.parse(config.data);
+      let resp = {
+        status: 200,
+        result: {
+          isAccess: 'true'
+        }
+      };
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, resp]);
+        }, Math.random() * 1000 + 1000);
+      });
+    });
   }
 };

@@ -17,6 +17,7 @@ export default {
     trace
   },
   mounted () {
+    // console.log(location.href, location, window, navigator);
   },
   methods: {
     

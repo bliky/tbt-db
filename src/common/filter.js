@@ -30,10 +30,10 @@ const filterXAxis = (timeCat) => {
     timeCat = timeCat.substr(5);
   } else if (weekGraReg.test(timeCat)) {
     // 周
-    timeCat = timeCat.replace(/\d{4}-\d{2}-/g, '');
+    timeCat = timeCat.substr(5, 5);
   } else if (monthGraReg.test(timeCat)) {
     // 月
-    timeCat = timeCat.substr(-2) + '月';
+    timeCat = timeCat.substr(2, 2) + '年' + timeCat.substr(-2) + '月';
   }
   //console.log(timeCat);
   return timeCat;
@@ -49,7 +49,7 @@ const filterYAxis = (num, suffix) => {
   let ret = num;
   if (num >= 100000000) {
     ret = (num / 100000000).toFixed(1) + '亿';
-  } else if (num >= 1000000) {
+  } else if (num >= 10000000) {
     ret = (num / 10000000).toFixed(1) + 'kw';
   } else if (num >= 100000) {
     ret = (num / 10000).toFixed(1) + 'w';

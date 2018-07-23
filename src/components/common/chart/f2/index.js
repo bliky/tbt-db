@@ -4,8 +4,7 @@ import line from './line';
 import area from './area';
 import scale from './scale';
 import legend from './legend';
-
-
+import tooltip from './tooltip';
 
 export {
   chart as VChart,
@@ -13,5 +12,6 @@ export {
   line as VLine,
   area as VArea,
   scale as VScale,
-  legend as VLegend
+  legend as VLegend,
+  tooltip as VTooltip
 }

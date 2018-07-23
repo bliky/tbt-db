@@ -9,9 +9,8 @@ import Cookie from 'js-cookie';
 import axios from 'axios';
 import { ConfigPlugin, ConfirmPlugin, LoadingPlugin, ToastPlugin } from 'vux';
 import App from './App';
-// import Home from './components/Home';
+import Home from './components/Home';
 import Apply from './components/apply/Apply';
-import Board from './components/board/Board';
 import DataBoard from './components/board/DataBoard';
 import EditInd from './components/board/EditInd';
 import MyInds from './components/my/MyInds';
@@ -25,15 +24,18 @@ import Dashboard from './components/dashboard';
 import Roi from './components/roi';
 import utils from './utils/utils.js';
 
+// new VConsole();
+
 Vue.use(ToastPlugin);
 Vue.use(LoadingPlugin);
 Vue.use(ConfirmPlugin);
+
+console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
 
 if (process.env.NODE_ENV !== 'production') {
   require('./services/mock').default.bootstrap();
 }
 
-// new VConsole()
 Vue.prototype.$http = http;
 Vue.use(VueRouter, F2, Vue, utils, ConfigPlugin, {
   $layout: 'VIEW_BOX'
@@ -44,12 +46,16 @@ FastClick.attach(document.body);
 // 控制路由
 const routes = [
   {
+    path: '/',
+    redirect: '/bdc-prd-dbd/board'
+  },
+  {
     path: '/dbd',
     redirect: '/bdc-prd-dbd/board'
   },
   {
     path: '/bdc-prd-dbd/board',
-    component: Board
+    component: Home
   },
   {
     path: '/bdc-prd-dbd/dataBoard',
@@ -126,17 +132,17 @@ let rel = router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title;
   }
+  console.log('URL查询对象', to.query);
   // 从路由的元信息中获取 title 属性
-  // Cookie.set('t8t-it-ticket', to.query.ticket)
-  Cookie.set('t8t-it-appVersion', to.query.appVersion);
-  Cookie.set('t8t-it-appType', to.query.appType);
-  Cookie.set('t8t-it-deviceId', to.query.deviceId);
-  Cookie.set('t8t-it-version', to.query.version);
-  Cookie.set('t8t-it-accountId', to.query.accountId);
-  Cookie.set('t8t-it-ticket', to.query.tickets);
-  Cookie.set('t8t-it-token', to.query.token);
-  Cookie.set('t8t-it-uid', to.query.uid);
-  Cookie.set('t8t-it-uname', to.query.uname);
+  to.query.appVersion && Cookie.set('t8t-it-appVersion', to.query.appVersion);
+  to.query.appType && Cookie.set('t8t-it-appType', to.query.appType);
+  to.query.deviceId && Cookie.set('t8t-it-deviceId', to.query.deviceId);
+  to.query.version && Cookie.set('t8t-it-version', to.query.version);
+  to.query.accountId && Cookie.set('t8t-it-accountId', to.query.accountId);
+  to.query.tickets && Cookie.set('t8t-it-ticket', to.query.tickets);
+  to.query.token && Cookie.set('t8t-it-token', to.query.token);
+  to.query.uid && Cookie.set('t8t-it-uid', to.query.uid);
+  to.query.uName && Cookie.set('t8t-it-uname', to.query.uName);
   rel();
   next();
 });

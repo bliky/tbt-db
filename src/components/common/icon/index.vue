@@ -19,4 +19,8 @@
 .tbt-icon-de {
   background-image: url(../../../assets/image/dow@2x.png);
 }
+
+.tbt-icon-info {
+  background-image: url(../../../assets/image/infor@2x.png);
+}
 </style>
