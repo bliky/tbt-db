@@ -3,8 +3,8 @@
   <v-chart :data="chartData" ref="chart">
     <v-scale x :tick-count="5" :nice="true" :sortable='false' :formatter="xAxisFormatter" />
     <v-scale y :tick-count="5" :nice="true" :min='0' :formatter="yAxisFormatter" />
-    <v-line :colors="colorLine"/>
-    <v-area :colors="colorArea"/>
+    <v-line shape="smooth" :colors="colorLine"/>
+    <v-area shape="smooth" :colors="colorArea"/>
     <v-tooltip :options="tooltip" />
   </v-chart>
 </div>
@@ -48,7 +48,7 @@ export default {
       tooltip: {
         showItemMarker: false,
         showTooltipMarker: true,
-        offsetY: 25,
+        offsetY: 35,
         showCrosshairs: true,
         onShow: function (ev) {
           let currentData = ev.items[0];

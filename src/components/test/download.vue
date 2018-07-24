@@ -4,6 +4,7 @@
 
 <script>
 import { XButton } from 'vux'
+import { openFile } from '../../utils/utils'
 
 export default {
   components: {
@@ -23,7 +24,7 @@ export default {
   },
   methods: {
     download () {
-      window.open("/static/doc.docx");
+      openFile("/static/doc.pdf");
     }
   }
 }

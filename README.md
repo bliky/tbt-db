@@ -32,8 +32,8 @@ sn | path | module | status | author | description
 sn | path | module | status | author | description
 -- | -- | -- | -- | -- | --
 1 | bdc-prd-dbd/editInd | board/EditInd | ok | richard.luo | 编辑指标
-2 | bdc-prd-dbd/indesc | my/Indesc | ok | richard.luo | 总况(GMV，装企收入)，流量（新访客数，PV，APP启动次数）
-3 | bdc-prd-dbd/nounDesc | my/NounDesc | ok | richard.luo | 日同比，日环比
+2 | bdc-prd-dbd/indesc | my/Indesc | ok | richard.luo | 指标释义
+3 | bdc-prd-dbd/nounDesc | my/NounDesc | ok | richard.luo | 名词释义
 4 | bdc-prd-dbd/selInd | apply/selInd | error | richard.luo | 空白
 5 | bdc-prd-dbd/selDim | apply/selDim | ok | richard.luo | 外呼转化率
 6 | bdc-prd-dbd/apply/ind | apply/Ind | empty | richard.luo | 空白

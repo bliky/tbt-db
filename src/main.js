@@ -5,7 +5,7 @@ import FastClick from 'fastclick';
 import VueRouter from 'vue-router';
 import http from './utils/http.js';
 import Cookie from 'js-cookie';
-import VConsole from 'vconsole'
+// import VConsole from 'vconsole'
 import axios from 'axios';
 import { ConfigPlugin, ConfirmPlugin, LoadingPlugin, ToastPlugin } from 'vux';
 import App from './App';
@@ -28,14 +28,14 @@ import test from './components/test';
 
 import utils from './utils/utils.js';
 
-new VConsole();
+// new VConsole();
 
 Vue.use(ToastPlugin);
 Vue.use(LoadingPlugin);
 Vue.use(ConfirmPlugin);
 
 // console.log('process.env.NODE_ENV: ', process.env.NODE_ENV);
-console.log('location.href: ', location.href);
+// console.log('location.href: ', location.href);
 
 if (process.env.NODE_ENV !== 'production') {
   require('./services/mock').default.bootstrap();
@@ -93,10 +93,12 @@ const routes = [
     path: '/bdc-prd-dbd/apply/ind',
     component: Ind
   },
+  // 指标释义
   {
     path: '/bdc-prd-dbd/indesc',
     component: Indesc
   },
+  // 名词释义
   {
     path: '/bdc-prd-dbd/nounDesc',
     component: NounDesc
@@ -137,9 +139,9 @@ const store = new Vuex.Store({
 
 let rel = router.beforeEach((to, from, next) => {
   // 从路由的元信息中获取 title 属性
-  if (to.meta.title) {
+/*  if (to.meta.title) {
     document.title = to.meta.title;
-  }
+  }*/
 
   console.log('URL查询对象', to.query);
 
