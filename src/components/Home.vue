@@ -18,6 +18,13 @@
     </div>
   </div>
 
+   <div class="tbt-nav-g">
+    <div class="tbt-nav-t">测试</div>
+    <div class="tbt-nav-grid">
+      <div @click="navTo('download')" class="tbt-nav-grid-item"><img src="../assets/image/indDescGreen@2x.png"><p>下载</p></div>
+    </div>
+  </div>
+
   <div style="position: absolute; bottom: 30px; left: 0; width: 100%; z-index: 600;">
     <div style="font: 13px/18px PingFangSC-Regular; color: #C1C1C1; letter-spacing: 0; text-align: center; width: 160px; margin: 0 auto;"><divider >土巴兔大数据</divider></div>
   </div>
@@ -36,7 +43,8 @@ const routData = {
   roi: { url: baseUrl + '/bdc-prd-dbd/roi', title:'ROI分析' },
   indView: { url: baseUrl + '/bdc-prd-dbd/dataBoard', title:'指标看板' },
   indApply: { url: baseUrl + '/bdc-prd-dbd/apply', title:'指标申请' },
-  indAnnotation: { url: baseUrl + '/bdc-prd-dbd/MyInds', title:'指标释义' }
+  indAnnotation: { url: baseUrl + '/bdc-prd-dbd/MyInds', title:'指标释义' },
+  download: { url: baseUrl + '/test', title:'测试' },
 };
 function callNative (typeId, data) {
   let jsonData = {}; // 初始化
