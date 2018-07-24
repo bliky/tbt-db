@@ -54,5 +54,5 @@ export const navTo = is_dev ?
   function (name) { callNative(1007, routData[name]) };
 
 export const openFile = is_dev ?
-  function (path) { window.open(path); } :
-  function (path) { callNative(1007, { url: 'https://dbdbigdata.to8to.com' + path, title:'下载资料' }) };
+  function (path, title='') { window.open(path); } :
+  function (path, title='') { callNative(1007, { url: 'https://dbdbigdata.to8to.com' + path, title }) };

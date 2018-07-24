@@ -2,7 +2,7 @@
 <div class="indesc" style="-webkit-overflow-scrolling:touch;">
   <div style="margin: 15px 20px;">
     <div class="btn-download" @click="handleOnClickDownload">
-      <i class="tbt-icon tbt-icon-download" style="position: relative; left: 3px; top: 3px; margin-right: 20px;"></i>
+      <!-- <i class="tbt-icon tbt-icon-download" style="position: relative; left: 3px; top: 3px; margin-right: 20px;"></i> -->
       数据指标白皮书
     </div>
   </div>
@@ -65,7 +65,7 @@ export default {
                 });
     },
     handleOnClickDownload () {
-      openFile("/static/doc.pdf");
+      openFile("/static/doc.pdf", '数据指标白皮书');
     }
   }
 }
