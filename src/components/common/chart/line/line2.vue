@@ -48,7 +48,7 @@ export default {
       tooltip: {
         showItemMarker: false,
         showTooltipMarker: true,
-        offsetY: 50,
+        offsetY: 25,
         showCrosshairs: true,
         onShow: function (ev) {
           let currentData = ev.items[0];

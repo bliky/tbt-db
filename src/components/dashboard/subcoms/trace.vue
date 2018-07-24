@@ -46,7 +46,11 @@
     </div>
 
     <div class="tbt-pannel">
-      <div class="tbt-pannel_title"><div class="tbt-pannel_tittle-inner">转化率趋势<span class="tbt-pannel_title-append">({{trendsStartDate}}&nbsp;到&nbsp;{{trendsEndDate}})</span></div></div>
+      <div class="tbt-pannel_title">
+        <div class="tbt-pannel_tittle-inner">转化率趋势
+          <!-- <span class="tbt-pannel_title-append">({{trendsStartDate}}&nbsp;到&nbsp;{{trendsEndDate}})</span> -->
+        </div>
+      </div>
       <div class="tbt-pannel_bd">
         <ul class="tbt-trend-list">
           <template v-if="trends.length">
