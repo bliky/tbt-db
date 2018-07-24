@@ -95,7 +95,7 @@ export default [
       },
       {
         id: 17,
-        name: '订单金额(元)',
+        name: '装企GMV(元)',
         vtype: 2,
         data: []
       },
