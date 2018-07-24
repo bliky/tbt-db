@@ -1,14 +1,14 @@
 <template>
 <div class="indesc" style="-webkit-overflow-scrolling:touch;">
-  <div style="margin: 15px 20px;">
+<!--   <div style="margin: 15px 20px;">
     <div class="btn-download" @click="handleOnClickDownload">
-      <!-- <i class="tbt-icon tbt-icon-download" style="position: relative; left: 3px; top: 3px; margin-right: 20px;"></i> -->
+      <i class="tbt-icon tbt-icon-download" style="position: relative; left: 3px; top: 3px; margin-right: 20px;"></i>
       数据指标白皮书
     </div>
-  </div>
+  </div> -->
 
   <!-- <divider>指标释义</divider> -->
-  <div  class="div-table" style="padding: 0px 15px 80px;">
+  <div  class="div-table" style="padding: 20px 15px 80px;">
     <div v-for="(item,index) in listdata" :key="index">
       <div class="x-title1">{{item.className}}</div>
       <div v-for="(item,indexs) in item.childNode" :key="indexs">
@@ -25,7 +25,6 @@
 <script>
 import { Divider } from 'vux'
 import Cookie from 'js-cookie'
-import { openFile } from '../../utils/utils'
 import '../common/icon'
 
 export default {
@@ -63,9 +62,6 @@ export default {
                  }, (response) => {
                     console.log('error====='+response.error);
                 });
-    },
-    handleOnClickDownload () {
-      openFile("/static/doc.pdf", '数据指标白皮书');
     }
   }
 }
@@ -73,7 +69,7 @@ export default {
 </script>
 
 <style scoped>
-.btn-download {
+/*.btn-download {
   color: #06C792;
   font: 17px/24px PingFangSC-Regular;
   background: #FFFFFF;
@@ -81,7 +77,7 @@ export default {
   border-radius: 2px;
   text-align: center;
   padding: 10px 0;
-}
+}*/
 
 .x-title1 {
   padding-top: 20px;

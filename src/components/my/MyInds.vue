@@ -12,6 +12,12 @@
         is-link
          @click.native="navTo('indDesc')">
       </cell>
+
+      <cell
+        :title="('数据指标白皮书')"
+        is-link
+         @click.native="handleOnClickDownload">
+      </cell>
     </group>
  </div> 
 </template>
@@ -27,7 +33,7 @@
 
 <script>
 import { Cell, Group } from 'vux'
-import { navTo } from '../../utils/utils'
+import { navTo, openFile } from '../../utils/utils'
 
 export default {
   components: {
@@ -37,6 +43,9 @@ export default {
   methods: {
     navTo(name) {
       navTo.call(this, name);
+    },
+    handleOnClickDownload () {
+      openFile("/static/doc.pdf", '数据指标白皮书');
     }
   }
 }
