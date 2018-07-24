@@ -44,7 +44,7 @@ const routData = {
   indView: { url: baseUrl + '/bdc-prd-dbd/dataBoard', title:'指标看板' },
   indApply: { url: baseUrl + '/bdc-prd-dbd/apply', title:'指标申请' },
   indAnnotation: { url: baseUrl + '/bdc-prd-dbd/MyInds', title:'指标释义' },
-  download: { url: baseUrl + '/test', title:'测试' },
+  download: { url: baseUrl + '/static/doc.docx', title:'下载资料' },
 };
 function callNative (typeId, data) {
   let jsonData = {}; // 初始化
