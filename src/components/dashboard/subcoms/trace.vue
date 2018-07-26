@@ -19,7 +19,24 @@
     </div>
 
     <div class="tbt-pannel">
-      <div class="tbt-pannel_title"><div class="tbt-pannel_tittle-inner">漏斗转化<span class="tbt-pannel_title-append">({{ currentDate }})</span></div></div>
+      <div class="tbt-pannel_title">
+        <div class="tbt-pannel_tittle-inner">漏斗转化
+          <span class="tbt-pannel_title-append">({{ currentDate }})</span>
+          <div class="tbt-pannel_title-rt">
+            <div class="tbt-tooltip-wrapper">
+              <i @click="funnelTooltipShow=true" class="tbt-icon tbt-icon-info" style="position: relative; right: 2px;" />
+              <div v-show="funnelTooltipShow" v-click-outside="()=>{funnelTooltipShow=false}" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
+                <div class="tbt-tooltip-arrow-up"></div>
+                <table class="tbt-tooltip-table">
+                  <tr><td valign="top">日同比：</td><td>对比上周同日，如上周三对比上周同日</td></tr>
+                  <tr><td valign="top">周同比：</td><td>对比上个月同期，往回推四周，如本月第一周，对比上月第一周</td></tr>
+                  <tr><td valign="top">月同比：</td><td>对比去年同期</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="tbt-pannel_bd">
         <!-- <chart-funnel></chart-funnel> -->
         <div style="height: 280px; overflow: hidden; position: relative;">
@@ -48,6 +65,19 @@
     <div class="tbt-pannel">
       <div class="tbt-pannel_title">
         <div class="tbt-pannel_tittle-inner">转化率趋势
+          <div class="tbt-pannel_title-rt">
+            <div class="tbt-tooltip-wrapper">
+              <i @click="trendsTooltipShow=true" class="tbt-icon tbt-icon-info" style="position: relative; right: 2px;" />
+              <div v-show="trendsTooltipShow" v-click-outside="()=>{trendsTooltipShow=false}" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
+                <div class="tbt-tooltip-arrow-up"></div>
+                <table class="tbt-tooltip-table">
+                  <tr><td valign="top">日同比：</td><td>对比上周同日，如上周三对比上周同日</td></tr>
+                  <tr><td valign="top">周同比：</td><td>对比上个月同期，往回推四周，如本月第一周，对比上月第一周</td></tr>
+                  <tr><td valign="top">月同比：</td><td>对比去年同期</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
           <!-- <span class="tbt-pannel_title-append">({{trendsStartDate}}&nbsp;到&nbsp;{{trendsEndDate}})</span> -->
         </div>
       </div>

@@ -21,6 +21,9 @@
 }
 
 .tbt-icon-info {
+  width: 14px;
+  height: 14px;
+  background-size: auto 14px;
   background-image: url(../../../assets/image/infor@2x.png);
 }
 
