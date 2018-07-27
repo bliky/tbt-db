@@ -375,13 +375,13 @@ export default {
     },
     clickFunnelTooltipOutside (e) {
       let _class = e.target._prevClass;
-      if (_class !== 'tbt-icon tbt-icon-info' && this.funnelTooltipShow) {
+      if (_class !== 'tbt-icon tbt-icon-info js-fn' && this.funnelTooltipShow) {
         this.funnelTooltipShow = false; 
       }
     },
     clickTrendsTooltipOutside (e) {
       let _class = e.target._prevClass;
-      if (_class !== 'tbt-icon tbt-icon-info' && this.trendsTooltipShow) {
+      if (_class !== 'tbt-icon tbt-icon-info js-tr' && this.trendsTooltipShow) {
         this.trendsTooltipShow = false; 
       }
     }

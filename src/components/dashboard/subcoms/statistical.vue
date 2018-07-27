@@ -24,14 +24,12 @@
           <span class="tbt-pannel_title-append">({{currentDate }})</span>
           <div class="tbt-pannel_title-rt">
             <div class="tbt-tooltip-wrapper">
-              <a @click.stop="funnelTooltipShow=!funnelTooltipShow" class="tbt-icon tbt-icon-info" style="position: relative; right: 2px;" /></a>
+              <a @click.stop="funnelTooltipShow=!funnelTooltipShow" class="tbt-icon tbt-icon-info js-fn" style="position: relative; right: 2px;" /></a>
               <div v-show="funnelTooltipShow" v-click-outside="clickFunnelTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
                 <div class="tbt-tooltip-arrow-up"></div>
-                <table class="tbt-tooltip-table">
-                  <tr><td valign="top">日同比：</td><td>对比上周同日，如上周三对比上周同日</td></tr>
-                  <tr><td valign="top">周同比：</td><td>对比上个月同期，往回推四周，如本月第一周，对比上月第一周</td></tr>
-                  <tr><td valign="top">月同比：</td><td>对比去年同期</td></tr>
-                </table>
+                <p>
+                  选择日期范围内，实际发生的发起线索、新增线索、可售、分派、扣款、签约全流程的漏斗转化数据。其中日、周、月粒度，分别为当日、当周、当月实际发生的统计数
+                </p>
               </div>
             </div>
           </div>
@@ -67,13 +65,13 @@
         <div class="tbt-pannel_tittle-inner">指标趋势
           <div class="tbt-pannel_title-rt">
             <div class="tbt-tooltip-wrapper">
-              <a @click.stop="trendsTooltipShow=!trendsTooltipShow" class="tbt-icon tbt-icon-info" style="position: relative; right: 2px;"></a>
+              <a @click.stop="trendsTooltipShow=!trendsTooltipShow" class="tbt-icon tbt-icon-info js-tr" style="position: relative; right: 2px;"></a>
               <div v-show="trendsTooltipShow" v-click-outside="clickTrendsTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
                 <div class="tbt-tooltip-arrow-up"></div>
                 <table class="tbt-tooltip-table">
-                  <tr><td valign="top">日同比：</td><td>对比上周同日，如上周三对比上周同日</td></tr>
-                  <tr><td valign="top">周同比：</td><td>对比上个月同期，往回推四周，如本月第一周，对比上月第一周</td></tr>
-                  <tr><td valign="top">月同比：</td><td>对比去年同期</td></tr>
+                  <tr><td valign="top">日报：</td><td>以日为单位展示指标的日趋势</td></tr>
+                  <tr><td valign="top">周报：</td><td>以周为单位展示指标的周趋势</td></tr>
+                  <tr><td valign="top">月报：</td><td>以月为单位展示指标的月趋势</td></tr>
                 </table>
               </div>
             </div>
