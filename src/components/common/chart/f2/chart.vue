@@ -6,7 +6,7 @@
       height: height + 'px'
     }"
     @touchstart="onTouchstart">
-    <canvas height="260" class="noselect" ref="chart"></canvas>
+    <canvas :height="height" class="noselect" ref="chart"></canvas>
     <slot></slot>
   </div>
 </template>

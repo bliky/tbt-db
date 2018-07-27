@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div class="tbt-pannel">
-      <div class="tbt-cell" style="height: 40px;">
+    <div class="tbt-pannel" style="padding: 0;">
+      <div class="tbt-cell" style="box-sizing: border-box; height: 40px;">
         <div class="tbt-cell_hd">时间粒度</div>
         <div class="tbt-cell_bd">
           <tab-radio noday v-model="granularity"></tab-radio>
         </div>
       </div>
 
-      <div class="tbt-cell" style="height: 40px;">
+      <div class="tbt-cell" style="box-sizing: border-box; height: 40px;">
         <div class="tbt-cell_hd">时间范围</div>
         <div class="tbt-cell_bd">
-          <div style="margin-left: 15px; color: #333;" @click="handleOnClickDateSelect">
+          <div style="margin-left: 12px; font-size:15px; line-height: 20px; color: #333;" @click="handleOnClickDateSelect">
             {{ currentDate }} <i class="tbt-icon tbt-icon-down" style="position: relative; top: 3px;"></i>
           </div>
         </div>
@@ -20,7 +20,7 @@
 
     <div class="tbt-pannel">
       <div class="tbt-pannel_title">
-        <div class="tbt-pannel_tittle-inner">漏斗转化
+        <div class="tbt-pannel_tittle-inner"><span style="float: left">漏斗转化</span>
           <span class="tbt-pannel_title-append">({{ currentDate }})</span>
           <div class="tbt-pannel_title-rt">
             <div class="tbt-tooltip-wrapper">
@@ -35,7 +35,7 @@
           </div>
         </div>
       </div>
-      <div class="tbt-pannel_bd">
+      <div class="tbt-pannel_bd" style="margin-top: 10px;">
         <!-- <chart-funnel></chart-funnel> -->
         <div style="height: 280px; overflow: hidden; position: relative;">
           <div style="position: absolute; top: 40px; left: 50%;">

@@ -19,7 +19,7 @@
   </div>
 
   <div style="position: absolute; bottom: 30px; left: 0; width: 100%; z-index: 600;">
-    <div style="font: 13px/18px PingFangSC-Regular; color: #C1C1C1; letter-spacing: 0; text-align: center; width: 160px; margin: 0 auto;"><divider >土巴兔大数据</divider></div>
+    <div style="font: 13px/18px PingFangSC-Regular; color: #C1C1C1; letter-spacing: 0; text-align: center; width: 160px; margin: 0 auto;"><divider style="color: #c1c1c1;">土巴兔大数据</divider></div>
   </div>
 </div>
 </template>
