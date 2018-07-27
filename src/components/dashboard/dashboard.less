@@ -1,4 +1,5 @@
 @import '../common/var.less';
+@import '../common/mixin.less';
 
 .nomargin .weui-cells {
   margin-top: 0;
@@ -146,6 +147,12 @@
   width: 14px;
   height: 20px;
   line-height: 20px;
+  a.tbt-icon-info {
+    .setTapColor();
+    &:active {
+        background-color: #ECECEC;
+    }
+  }
 }
 
 .tbt-tooltip-content {

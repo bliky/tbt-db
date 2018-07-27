@@ -24,8 +24,8 @@
           <span class="tbt-pannel_title-append">({{currentDate }})</span>
           <div class="tbt-pannel_title-rt">
             <div class="tbt-tooltip-wrapper">
-              <i @click="funnelTooltipShow=true" class="tbt-icon tbt-icon-info" style="position: relative; right: 2px;" />
-              <div v-show="funnelTooltipShow" v-click-outside="()=>{funnelTooltipShow=false}" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
+              <a @click.stop="funnelTooltipShow=!funnelTooltipShow" class="tbt-icon tbt-icon-info" style="position: relative; right: 2px;" /></a>
+              <div v-show="funnelTooltipShow" v-click-outside="clickFunnelTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
                 <div class="tbt-tooltip-arrow-up"></div>
                 <table class="tbt-tooltip-table">
                   <tr><td valign="top">日同比：</td><td>对比上周同日，如上周三对比上周同日</td></tr>
@@ -67,8 +67,8 @@
         <div class="tbt-pannel_tittle-inner">指标趋势
           <div class="tbt-pannel_title-rt">
             <div class="tbt-tooltip-wrapper">
-              <i @click="trendsTooltipShow=true" class="tbt-icon tbt-icon-info" style="position: relative; right: 2px;" />
-              <div v-show="trendsTooltipShow" v-click-outside="()=>{trendsTooltipShow=false}" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
+              <a @click.stop="trendsTooltipShow=!trendsTooltipShow" class="tbt-icon tbt-icon-info" style="position: relative; right: 2px;"></a>
+              <div v-show="trendsTooltipShow" v-click-outside="clickTrendsTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
                 <div class="tbt-tooltip-arrow-up"></div>
                 <table class="tbt-tooltip-table">
                   <tr><td valign="top">日同比：</td><td>对比上周同日，如上周三对比上周同日</td></tr>

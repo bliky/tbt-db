@@ -372,6 +372,18 @@ export default {
     },
     handleOnChangeWeek (val) {
       this.fetchData(val[0]);
+    },
+    clickFunnelTooltipOutside (e) {
+      let _class = e.target._prevClass;
+      if (_class !== 'tbt-icon tbt-icon-info' && this.funnelTooltipShow) {
+        this.funnelTooltipShow = false; 
+      }
+    },
+    clickTrendsTooltipOutside (e) {
+      let _class = e.target._prevClass;
+      if (_class !== 'tbt-icon tbt-icon-info' && this.trendsTooltipShow) {
+        this.trendsTooltipShow = false; 
+      }
     }
   }
 }

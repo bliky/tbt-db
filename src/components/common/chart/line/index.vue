@@ -95,7 +95,7 @@ export default {
           let value = currentData.value;
           let average = that.yPercent ? filterYAxis(that.average, '%') :
                         that.yW ? filterYAxis(that.average, 'w') : filterYAxis(that.average);
-          ev.items[0].value = title + ':\n数值 ' + value + "\n均值 " + average;
+          ev.items[0].value = title + ':\n数值 ' + value + "\n均值 " + parseFloat(average).toFixed(1);
         }
       }
     }
@@ -110,7 +110,7 @@ export default {
 
       let average = sum/this.data.length;
 
-      return parseInt(average);
+      return average;
     }
   },
   methods: {
