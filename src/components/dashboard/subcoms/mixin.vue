@@ -41,11 +41,29 @@ export default {
     filterAbs,
     filterNumber
   },
+  directives: {
+    ClickOutside : {
+      bind: function (el, { value }) {
+        let onClickOutside = value
+        el.handler = function (e) {
+          if (el && !el.contains(e.target)) {
+            onClickOutside(e)
+          }
+        }
+        document.addEventListener('click', el.handler, true)
+      },
+      unbind: function (el) {
+        document.removeEventListener('click', el.handler, true)
+        el.handler = null
+      }
+    }
+  },
   data () {
     let startDay = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
     let lastDay = moment().subtract(1, 'days').format('YYYY-MM-DD');
     let lastMonth = moment().subtract(1, 'months');
     return {
+      winW: window.innerWidth,
       startDay,
       endDay: lastDay,
       endMonth: lastMonth.format('YYYY-MM-DD'),
@@ -56,7 +74,9 @@ export default {
       currentWeek: [],
       funnel: funnelResetData,
       tabs: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  // 支持10组数据的tab切换
-      trends: []
+      trends: [],
+      funnelTooltipShow: false,
+      trendsTooltipShow: false
     }
   },
   watch: {
@@ -352,6 +372,18 @@ export default {
     },
     handleOnChangeWeek (val) {
       this.fetchData(val[0]);
+    },
+    clickFunnelTooltipOutside (e) {
+      let _class = e.target._prevClass;
+      if (_class !== 'tbt-icon tbt-icon-info js-fn' && this.funnelTooltipShow) {
+        this.funnelTooltipShow = false; 
+      }
+    },
+    clickTrendsTooltipOutside (e) {
+      let _class = e.target._prevClass;
+      if (_class !== 'tbt-icon tbt-icon-info js-tr' && this.trendsTooltipShow) {
+        this.trendsTooltipShow = false; 
+      }
     }
   }
 }

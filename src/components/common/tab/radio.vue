@@ -1,5 +1,5 @@
 <template>
-  <div class="tbt-tabs-radio" style="margin-left: 15px;">
+  <div class="tbt-tabs-radio">
     <div v-if="!noday" class="tbt-tab" :class="{checked: currentValue==0}" @click.stop="handleOnClick(0)">日</div>
     <div class="tbt-tab" :class="{checked: currentValue==1}" @click.stop="handleOnClick(1)">周</div>
     <div class="tbt-tab" :class="{checked: currentValue==2}" @click.stop="handleOnClick(2)">月</div>  
@@ -37,19 +37,22 @@ export default {
 @import '../var.less';
 
 .tbt-tabs-radio {
-  padding: 0 10px;
+  overflow: hidden;
+  margin-left: 12px;
 }
 
 .tbt-tab {
+  box-sizing: border-box;
   cursor: pointer;
-  color: @color-text;
-  font-size: @font-size-main;
+  font: 12px/18px PingFangSC-Regular;
+  color: #999999;
   float: left;
-  padding: 0 20px;
+  padding: 0;
   text-align: center;
   border: 1px solid @color-border;
-  height: 22px;
-  line-height: 22px;
+  width: 45px;
+  height: 20px;
+  line-height: 18px;
   border-radius: 100px;
   &+.tbt-tab {
     margin-left: 10px;

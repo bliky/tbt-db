@@ -4,9 +4,7 @@ import Cookie from 'js-cookie';
 import {toast} from '../common/notify';
 import Vue from 'vue';
 
-var is_dev = process.env.NODE_ENV !== 'production';
-
-is_dev = false;
+const is_dev = process.env.NODE_ENV !== 'production';
 
 const apis = {
   dashboard: 'dsa/dataBoard/dashboard',

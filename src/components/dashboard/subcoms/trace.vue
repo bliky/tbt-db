@@ -1,17 +1,17 @@
 <template>
   <div>
-    <div class="tbt-pannel">
-      <div class="tbt-cell" style="height: 40px;">
+    <div class="tbt-pannel" style="padding: 0;">
+      <div class="tbt-cell" style="box-sizing: border-box; height: 40px;">
         <div class="tbt-cell_hd">时间粒度</div>
         <div class="tbt-cell_bd">
           <tab-radio noday v-model="granularity"></tab-radio>
         </div>
       </div>
 
-      <div class="tbt-cell" style="height: 40px;">
+      <div class="tbt-cell" style="box-sizing: border-box; height: 40px;">
         <div class="tbt-cell_hd">时间范围</div>
         <div class="tbt-cell_bd">
-          <div style="margin-left: 15px; color: #333;" @click="handleOnClickDateSelect">
+          <div style="margin-left: 12px; font-size:15px; line-height: 20px; color: #333;" @click="handleOnClickDateSelect">
             {{ currentDate }} <i class="tbt-icon tbt-icon-down" style="position: relative; top: 3px;"></i>
           </div>
         </div>
@@ -19,8 +19,23 @@
     </div>
 
     <div class="tbt-pannel">
-      <div class="tbt-pannel_title"><div class="tbt-pannel_tittle-inner">漏斗转化<span class="tbt-pannel_title-append">({{ currentDate }})</span></div></div>
-      <div class="tbt-pannel_bd">
+      <div class="tbt-pannel_title">
+        <div class="tbt-pannel_tittle-inner"><span style="float: left">漏斗转化</span>
+          <span class="tbt-pannel_title-append">({{ currentDate }})</span>
+          <div class="tbt-pannel_title-rt">
+            <div class="tbt-tooltip-wrapper">
+              <a @click.stop="funnelTooltipShow=!funnelTooltipShow" class="tbt-icon tbt-icon-info js-fn"></a>
+              <div v-show="funnelTooltipShow" v-click-outside="clickFunnelTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
+                <div class="tbt-tooltip-arrow-up"></div>
+                <p>
+                  选择日期范围内，实际发生的发起线索数、新增线索数，在今日0点前产生的可售、分派、扣款、签约的漏斗转化数据
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tbt-pannel_bd" style="margin-top: 10px;">
         <!-- <chart-funnel></chart-funnel> -->
         <div style="height: 280px; overflow: hidden; position: relative;">
           <div style="position: absolute; top: 40px; left: 50%;">
@@ -46,7 +61,22 @@
     </div>
 
     <div class="tbt-pannel">
-      <div class="tbt-pannel_title"><div class="tbt-pannel_tittle-inner">转化率趋势<span class="tbt-pannel_title-append">({{trendsStartDate}}&nbsp;到&nbsp;{{trendsEndDate}})</span></div></div>
+      <div class="tbt-pannel_title">
+        <div class="tbt-pannel_tittle-inner">转化率趋势
+          <div class="tbt-pannel_title-rt">
+            <div class="tbt-tooltip-wrapper">
+              <a @click.stop="trendsTooltipShow=!trendsTooltipShow" class="tbt-icon tbt-icon-info js-tr"></a>
+              <div v-show="trendsTooltipShow" v-click-outside="clickTrendsTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
+                <div class="tbt-tooltip-arrow-up"></div>
+                <p>
+                  展示各个重要环节的7（30）天跟踪转化率的日趋势，如7月1日可售/新增的7天转化率，代表7月1日产生的新增线索数，在后续7天（到7月7日）的转化，即7月8日0点更新7月1日的7天转化率；同理签约/扣款的30天转化率，当天扣款信息数在30天内转化为签约订单数的转化率
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- <span class="tbt-pannel_title-append">({{trendsStartDate}}&nbsp;到&nbsp;{{trendsEndDate}})</span> -->
+        </div>
+      </div>
       <div class="tbt-pannel_bd">
         <ul class="tbt-trend-list">
           <template v-if="trends.length">
