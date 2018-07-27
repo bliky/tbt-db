@@ -62,7 +62,7 @@
 
 .tbt-pannel_title-rt {
   position: absolute;
-  right: 5px;
+  right: 0;
   top: 0;
 }
 
@@ -144,10 +144,14 @@
 
 .tbt-tooltip-wrapper {
   position: relative;
-  width: 14px;
-  height: 20px;
-  line-height: 20px;
+  top: -5px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
   a.tbt-icon-info {
+    height: 100%;
+    width: 100%;
     .setTapColor();
     &:active {
         background-color: #ECECEC;
@@ -166,6 +170,7 @@
   box-sizing: border-box;
   background-color: rgba(0,0,0,.8);
   z-index: 1000;
+  text-align: left;
   p {
     font: 13px/18px PingFangSC-Regular,sans-serif;
   }
@@ -180,7 +185,7 @@
   border-bottom: 9px solid rgba(0,0,0,.8);
   position: absolute;
   top: -9px;
-  right: 9px;
+  right: 15px;
 }
 
 .tbt-tooltip-table {
