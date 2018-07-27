@@ -72,6 +72,7 @@
                   <tr><td valign="top">日报：</td><td>以日为单位展示指标的日趋势</td></tr>
                   <tr><td valign="top">周报：</td><td>以周为单位展示指标的周趋势</td></tr>
                   <tr><td valign="top">月报：</td><td>以月为单位展示指标的月趋势</td></tr>
+                  <tr><td valign="top">指标：</td><td>UV为土巴兔总UV，即土巴兔PC+H5+APP之和，除UV外，其他指标统计口径与指标看板解释一致，均可在指标看板-指标释义查看</td></tr>
                 </table>
               </div>
             </div>
