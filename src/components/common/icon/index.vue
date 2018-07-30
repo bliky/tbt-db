@@ -33,4 +33,25 @@
   background-size: auto 16px;
   background-image: url(../../../assets/image/download@2x.png);
 }
+
+.tbt-icon-sort {
+  width: 12px;
+  height: 12px;
+  background-size: auto 12px;
+  background-image: url(../../../assets/image/compositor_nor@2x.png);
+}
+
+.tbt-icon-sort-up {
+  width: 12px;
+  height: 12px;
+  background-size: auto 12px;
+  background-image: url(../../../assets/image/compositor_up@2x.png);
+}
+
+.tbt-icon-sort-down {
+  width: 12px;
+  height: 12px;
+  background-size: auto 12px;
+  background-image: url(../../../assets/image/compositor_dow@2x.png);
+}
 </style>

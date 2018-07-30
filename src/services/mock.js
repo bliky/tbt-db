@@ -188,5 +188,66 @@ export default {
         }, Math.random() * 1000 + 1000);
       });
     });
+
+    // 获取ROI数据
+    mock.onPost('/roi').reply(config => {
+      let params = JSON.parse(config.data);
+      let resp = {
+        status: 200,
+        result: {
+          all: {
+            input: 13565000,
+            income: 10519000,
+            roi: 1.61,
+            input_m_ratio: 8,
+            input_y_ratio: -25,
+            income_m_ratio: 8,
+            income_y_ratio: -25,
+            roi_m_ratio: 8,
+            roi_y_ratio: -25
+          },
+          city: [
+            {
+              name: '广州市',
+              input: 800080,
+              income: 1231605.15,
+              roi: 1.54
+            },
+            {
+              name: '深圳市',
+              input: 781521,
+              income: 1677375.05,
+              roi: 2.15
+            }
+          ],
+          ch10: [
+            {
+              name: '搜索类_百度',
+              input: 5553884,
+              income: 1231605.15,
+              roi: 1.54
+            },
+            {
+              name: '信息流_今日头条',
+              input: 2922477,
+              income: 1677375.05,
+              roi: 2.15
+            },
+            {
+              name: '信息流_今日头条信息流_今日头条信息流_今日头条',
+              input: 2922477,
+              income: 1677375.05,
+              roi: 2.15
+            }
+          ]
+        }
+      };
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, resp]);
+        }, Math.random() * 1000 + 1000);
+      });
+    });
   }
 };

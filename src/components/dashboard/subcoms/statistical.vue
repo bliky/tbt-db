@@ -21,7 +21,7 @@
     <div class="tbt-pannel">
       <div class="tbt-pannel_title">
         <div class="tbt-pannel_tittle-inner"><span style="float: left">漏斗转化</span>
-          <span class="tbt-pannel_title-append">({{currentDate }})</span>
+          <span class="tbt-pannel_title-append">({{ currentDate }})</span>
           <div class="tbt-pannel_title-rt">
             <div class="tbt-tooltip-wrapper">
               <a @click.stop="funnelTooltipShow=!funnelTooltipShow" class="tbt-icon tbt-icon-info js-fn"></a>
