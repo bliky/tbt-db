@@ -28,7 +28,7 @@
               <div v-show="funnelTooltipShow" v-click-outside="clickFunnelTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
                 <div class="tbt-tooltip-arrow-up"></div>
                 <p>
-                  选择日期范围内，实际发生的发起线索、新增线索、可售、分派、扣款、签约全流程的漏斗转化数据。其中日、周、月粒度，分别为当日、当周、当月实际发生的统计数
+                  选择日期范围内，实际发生的发起线索次数、新增线索数、可售、分派、扣款、签约全流程的漏斗转化数据。其中日、周、月粒度，分别为当日、当周、当月实际发生的统计数
                 </p>
               </div>
             </div>

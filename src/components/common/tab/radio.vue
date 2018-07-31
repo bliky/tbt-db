@@ -39,27 +39,27 @@ export default {
 .tbt-tabs-radio {
   overflow: hidden;
   margin-left: 12px;
-}
 
-.tbt-tab {
-  box-sizing: border-box;
-  cursor: pointer;
-  font: 12px/18px PingFangSC-Regular;
-  color: #999999;
-  float: left;
-  padding: 0;
-  text-align: center;
-  border: 1px solid @color-border;
-  width: 45px;
-  height: 20px;
-  line-height: 18px;
-  border-radius: 100px;
-  &+.tbt-tab {
-    margin-left: 10px;
-  }
-  &.checked {
-    color: @color-primary;
-    border-color: @color-primary;
+  .tbt-tab {
+    box-sizing: border-box;
+    cursor: pointer;
+    font: 12px/18px PingFangSC-Regular;
+    color: #999999;
+    float: left;
+    padding: 0;
+    text-align: center;
+    border: 1px solid @color-border;
+    width: 45px;
+    height: 20px;
+    line-height: 18px;
+    border-radius: 100px;
+    &+.tbt-tab {
+      margin-left: 10px;
+    }
+    &.checked {
+      color: @color-primary;
+      border-color: @color-primary;
+    }
   }
 }
 </style>

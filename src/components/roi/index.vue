@@ -17,11 +17,11 @@
           <p><b>{{roi.all.input/10000|filter-number('0,0.0', '', '万')}}</b></p>
           <p>
             <span class="rh">环比</span>
-            <span class="ld" :class="{increase: roi.all.input_m_ratio>0, decrease: roi.all.input_m_ratio<0}">{{roi.all.input_m_ratio|filter-number('0,0', '', '%')}}</span>
+            <span class="ld" :class="{increase: roi.all.input_m_ratio>0, decrease: roi.all.input_m_ratio<0}">{{roi.all.input_m_ratio|filter-number('0,0', '+', '%')}}</span>
           </p>
           <p>
             <span class="rh">同比</span>
-            <span class="ld" :class="{increase: roi.all.input_y_ratio>0, decrease: roi.all.input_y_ratio<0}">{{roi.all.input_y_ratio|filter-number('0,0', '', '%')}}</span>
+            <span class="ld" :class="{increase: roi.all.input_y_ratio>0, decrease: roi.all.input_y_ratio<0}">{{roi.all.input_y_ratio|filter-number('0,0', '+', '%')}}</span>
           </p>
         </div>
       </div>
@@ -31,11 +31,11 @@
           <p><b>{{roi.all.income/10000|filter-number('0,0.0', '', '万')}}</b></p>
           <p>
             <span class="rh">环比</span>
-            <span class="ld" :class="{increase: roi.all.income_m_ratio>0, decrease: roi.all.income_m_ratio<0}">{{roi.all.income_m_ratio|filter-number('0,0', '', '%')}}</span>
+            <span class="ld" :class="{increase: roi.all.income_m_ratio>0, decrease: roi.all.income_m_ratio<0}">{{roi.all.income_m_ratio|filter-number('0,0', '+', '%')}}</span>
           </p>
           <p>
             <span class="rh">同比</span>
-            <span class="ld" :class="{increase: roi.all.income_y_ratio>0, decrease: roi.all.income_y_ratio<0}">{{roi.all.income_y_ratio|filter-number('0,0', '', '%')}}</span>
+            <span class="ld" :class="{increase: roi.all.income_y_ratio>0, decrease: roi.all.income_y_ratio<0}">{{roi.all.income_y_ratio|filter-number('0,0', '+', '%')}}</span>
           </p>
         </div>
       </div>
@@ -45,25 +45,24 @@
           <p><b>{{roi.all.roi}}</b></p>
           <p>
             <span class="rh">环比</span>
-            <span class="ld" :class="{increase: roi.all.roi_m_ratio>0, decrease: roi.all.roi_m_ratio<0}">{{roi.all.roi_m_ratio|filter-number('0,0', '', '%')}}</span>
+            <span class="ld" :class="{increase: roi.all.roi_m_ratio>0, decrease: roi.all.roi_m_ratio<0}">{{roi.all.roi_m_ratio|filter-number('0,0', '+', '%')}}</span>
           </p>
           <p>
             <span class="rh">同比</span>
-            <span class="ld" :class="{increase: roi.all.roi_y_ratio>0, decrease: roi.all.roi_y_ratio<0}">{{roi.all.roi_y_ratio|filter-number('0,0', '', '%')}}</span>
+            <span class="ld" :class="{increase: roi.all.roi_y_ratio>0, decrease: roi.all.roi_y_ratio<0}">{{roi.all.roi_y_ratio|filter-number('0,0', '+', '%')}}</span>
           </p>
         </div>
       </div>
     </div>
 
     <!-- 城市分析与渠道分析 -->
-    <tab :line-width="2"  v-model="index" active-color="#06C792">
-      <tab-item :selected="index === 0" @click="index = 0">城市分析</tab-item>
-      <tab-item :selected="index === 1" @click="index = 1">渠道分析</tab-item>
-    </tab>
-    <keep-alive>
-      <city v-if="index === 0"></city>
-      <ch10 v-else></ch10>
-    </keep-alive>
+    <div style="background-color: #fff;">
+      <tab :tabs="['城市分析', '渠道分析']"  v-model="index" style="margin-bottom: 3px;"></tab>
+      <keep-alive>
+        <city v-if="index === 0"></city>
+        <ch10 v-else></ch10>
+      </keep-alive>
+    </div>
   </div>
 </template>
 

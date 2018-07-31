@@ -2,19 +2,21 @@
   <div class="tbt-pannel" style="padding: 0;">
     <table class="tbt-roi-table">
       <tr>
-        <th>{{title}}</th>
+        <th style="width: 100px;">{{title}}</th>
         <th @click.stop="sortBy(0)">现金<i class="tbt-icon" :class="sortClass0" /></th>
         <th @click.stop="sortBy(1)">收入<i class="tbt-icon" :class="sortClass1" /></th>
         <th @click.stop="sortBy(2)" style="width: 40px;">ROI<i class="tbt-icon" :class="sortClass2" /></th>
       </tr>
       <tr v-for="row in tableData">
-        <td>{{ row.name }}</td><td>{{ row.input }}</td><td>{{ row.income }}</td><td>{{ row.roi }}</td>
+        <td>{{ row.name }}</td><td>{{ row.input|filter-number('0,0.0') }}</td><td>{{ row.income|filter-number('0,0.0') }}</td><td>{{ row.roi|filter-number('0,0.00') }}</td>
       </tr>
     </table>
   </div>
 </template>
 
 <script>
+import { filterNumber } from '../../../common/filter'
+
 export default {
   props: {
     title: String,
@@ -32,6 +34,9 @@ export default {
       sort1: 0,
       sort2: 0
     }
+  },
+  filters: {
+    filterNumber
   },
   watch: {
     data (val) {

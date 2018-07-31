@@ -1,5 +1,5 @@
 <template>
-  <roi-table title="Top10渠道排行" :data="$parent.roi.ch10"></roi-table>
+  <roi-table title="现金消费Top10" :data="$parent.roi.ch10"></roi-table>
 </template>
 
 <script>

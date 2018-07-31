@@ -1,5 +1,5 @@
 import vue from 'vue'
-import { Tab,TabItem } from 'vux'
+import { Tab } from '../common/tab'
 import moment from 'moment'
 import City from './subcoms/city'
 import Ch10 from './subcoms/ch10'
@@ -16,7 +16,7 @@ Vue.use(DatetimePlugin)
 export default {
   mixins: [mLoading],
   data () {
-    let lastMonth = moment().subtract(1, 'months');
+    let lastMonth = moment();
     let startDay = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
     return {
       index: 0,
@@ -42,7 +42,6 @@ export default {
   },
   components: {
     Tab,
-    TabItem,
     City,
     Ch10
   },
@@ -71,7 +70,6 @@ export default {
       return storage.set(qs, data);
     },
     checkData (res) {
-      console.log(res, res.all && res.city && res.city.length && res.ch10 && res.ch10.length);
       return res.all && res.city && res.city.length && res.ch10 && res.ch10.length;
     },
     fetchData (dt=this.currentDate) {
@@ -90,7 +88,7 @@ export default {
 
         if (this.checkData(data.result)) {
           this.roi = data.result;
-          console.log('roi data', this.roi);
+
           this.localCache(skey, data.result);
           this.$nextTick(() => {
             setTimeout(this.closeLoading(), 800);

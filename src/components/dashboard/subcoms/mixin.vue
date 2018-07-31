@@ -235,8 +235,8 @@ export default {
           @author: ken.li
           @date: 2018-07-18
         */
-        /*if (!funnel.length) {
-          confirm.call(this, '当前日期(' + this.currentDate + ')暂无转化率数据~', '是否获取最近一个有效日期的数据？')
+        if (!funnel.length) {
+          confirm.call(this, '当前日期(' + this.currentDate + ')数据未更新', '是否获取最近一个有效日期的数据？')
                 .then(() => {
                   this.autoFetchLastedData().then(res => {
                     if (typeof res === typeof '') {
@@ -257,7 +257,7 @@ export default {
                   console.log('取消获取最近的数据');
                 });
           return false;
-        }*/
+        }
         if (funnel.length) {
           this.funnel = funnel;
         } else {

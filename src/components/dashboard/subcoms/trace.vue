@@ -28,7 +28,7 @@
               <div v-show="funnelTooltipShow" v-click-outside="clickFunnelTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
                 <div class="tbt-tooltip-arrow-up"></div>
                 <p>
-                  选择日期范围内，实际发生的发起线索数、新增线索数，在今日0点前产生的可售、分派、扣款、签约的漏斗转化数据
+                  选择日期范围内，实际发生的发起线索次数、新增线索数，在今日0点前产生的可售、分派、扣款、签约的漏斗转化数据
                 </p>
               </div>
             </div>
@@ -69,7 +69,7 @@
               <div v-show="trendsTooltipShow" v-click-outside="clickTrendsTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px;`">
                 <div class="tbt-tooltip-arrow-up"></div>
                 <p>
-                  展示各个重要环节的7（30）天跟踪转化率的日趋势，如7月1日可售/新增的7天转化率，代表7月1日产生的新增线索数，在后续7天（到7月7日）的转化，即7月8日0点更新7月1日的7天转化率；同理签约/扣款的30天转化率，当天扣款信息数在30天内转化为签约订单数的转化率
+                  展示各个重要环节的7（30）天跟踪转化率的日趋势，如7月1日的可售/新增的7天转化率，代表7月1日产生的新增线索数，在后续7天（到7月7日）转为可售的转化率；同理7月1日签约/扣款的30天转化率，代表7月1日产生的扣款信息数，在后续30天（到7月30日）转为签约的转化率
                 </p>
               </div>
             </div>
