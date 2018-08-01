@@ -9,21 +9,12 @@ import { exceptionScript } from '../../common/exception'
 import storage from '../../common/storage'
 import { buildQuery } from '../../common/stringify'
 import mLoading from '../common/mixins/loading'
+import clickOutside from '../../directives/clickOutside'
 import Vue from 'vue'
 import { DatetimePlugin } from 'vux'
 Vue.use(DatetimePlugin)
 
-export default {
-  mixins: [mLoading],
-  data () {
-    let lastMonth = moment();
-    let startDay = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
-    return {
-      index: 0,
-      currentDate: lastMonth.format('YYYY-MM'),
-      startDay,
-      endMonth: lastMonth.format('YYYY-MM-DD'),
-      roi: {
+const resetRoiData = {
         all: {
           input: 0,
           income: 0,
@@ -37,8 +28,25 @@ export default {
         },
         city: [],
         ch10: []
-      }
+      };
+
+export default {
+  mixins: [mLoading],
+  data () {
+    let lastMonth = moment();
+    let startDay = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
+    return {
+      winW: window.innerWidth,
+      roiTooltipShow: false,
+      index: 0,
+      currentDate: lastMonth.format('YYYY-MM'),
+      startDay,
+      endMonth: lastMonth.format('YYYY-MM-DD'),
+      roi: resetRoiData
     }
+  },
+  directives: {
+    clickOutside
   },
   components: {
     Tab,
@@ -49,18 +57,15 @@ export default {
     filterAbs,
     filterNumber
   },
-  watch: {
-    roi (newVal, oldVal) {
-      console.log('roi change', newVal, oldVal);
-    }
-  },
   created () {
-    
-  },
-  mounted () {
     this.fetchData();
   },
+  mounted () {
+  },
   methods: {
+    resetRoi () {
+      this.roi = resetRoiData
+    },
     localCache (param, data) {
       let qs = buildQuery(param);
       if (!data) {
@@ -81,26 +86,25 @@ export default {
         return;
       }
 
-      console.log(skey);
       this.openLoading();
       fetchRoi({dt}).then(data => {
         if (data.status !== 200) return console.error('[fetchRoi]异常状态status: ', data.status);
 
         if (this.checkData(data.result)) {
           this.roi = data.result;
-
           this.localCache(skey, data.result);
           this.$nextTick(() => {
             setTimeout(this.closeLoading(), 800);
           });
         } else {
-          this.closeLoading();
-          alert('数据异常!');
+          this.resetRoi ();
+          this.closeLoading()
+          this.$vux.toast.text('当前日期(' + this.currentDate + ')数据未更新');
         }
       }).catch(err => {
         setTimeout(()=>{
           this.closeLoading();
-          alert('获取数据失败');
+          this.$vux.toast.text('服务器繁忙,请稍后再试');
         }, 800);
       });
     },
@@ -135,6 +139,12 @@ export default {
     },
     handleOnClickDateSelect () {
       this.graMonth();
+    },
+    clickRoiTooltipOutside (e) {
+      let _class = e.target._prevClass;
+      if (_class !== 'tbt-icon tbt-icon-info js-roi' && this.roiTooltipShow) {
+        this.roiTooltipShow = false; 
+      }
     }
   }
 }

@@ -3,7 +3,7 @@
     <table class="tbt-roi-table">
       <tr>
         <th style="width: 100px;">{{title}}</th>
-        <th @click.stop="sortBy(0)">现金<i class="tbt-icon" :class="sortClass0" /></th>
+        <th @click.stop="sortBy(0)">现金消费<i class="tbt-icon" :class="sortClass0" /></th>
         <th @click.stop="sortBy(1)">收入<i class="tbt-icon" :class="sortClass1" /></th>
         <th @click.stop="sortBy(2)" style="width: 40px;">ROI<i class="tbt-icon" :class="sortClass2" /></th>
       </tr>

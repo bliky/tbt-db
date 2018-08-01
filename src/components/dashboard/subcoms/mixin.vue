@@ -7,6 +7,7 @@ import { exceptionScript } from '../../../common/exception'
 import { buildQuery } from '../../../common/stringify'
 import { confirm } from '../../../common/notify'
 import { filterNumber, filterAbs } from '../../../common/filter'
+import clickOutside from '../../../directives/clickOutside'
 import storage from '../../../common/storage'
 import _ from 'lodash'
 import moment from 'moment'
@@ -42,21 +43,7 @@ export default {
     filterNumber
   },
   directives: {
-    ClickOutside : {
-      bind: function (el, { value }) {
-        let onClickOutside = value
-        el.handler = function (e) {
-          if (el && !el.contains(e.target)) {
-            onClickOutside(e)
-          }
-        }
-        document.addEventListener('click', el.handler, true)
-      },
-      unbind: function (el) {
-        document.removeEventListener('click', el.handler, true)
-        el.handler = null
-      }
-    }
+    clickOutside
   },
   data () {
     let startDay = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');

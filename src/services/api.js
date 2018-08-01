@@ -3,14 +3,14 @@ import http from '../utils/http.js';
 import Cookie from 'js-cookie';
 import {toast} from '../common/notify';
 import Vue from 'vue';
-import {roiViewModel} from './viewmodel';
+// import {roiViewModel} from './viewmodel';
 
 const is_dev = process.env.NODE_ENV !== 'production';
 
 const apis = {
   dashboard: 'dsa/dataBoard/dashboard',
   urlIsAccess: 'dsa/dataBoard/urlIsAccess',
-  roi: 'dsa/dataBoard/roi'
+  roi: 'dsa/dataBoard/roiList'
 };
 
 // 获取业绩总况统计数据
@@ -43,5 +43,5 @@ export const fetchRoi = params => {
     tickets: Cookie.get('t8t-it-ticket')
   };
   return (is_dev ? axios.post('/roi', params) :
-         http.fetch(apis.roi, Object.assign({}, baseParams, params)).then(res => roiViewModel(res))).then(res => res.data);
+         http.fetch(apis.roi, Object.assign({}, baseParams, params))).then(res => res.data);
 };
