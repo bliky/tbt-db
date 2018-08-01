@@ -654,8 +654,8 @@ export default {
 .inputDesc .selIndCon{
   padding-left:35px;
 }
-.subtn{
-  position: fixed;
+.subtn {
+  position: absolute;
   width: 270px;
   bottom: 0px;
   margin:20px 20px 15px 39px;

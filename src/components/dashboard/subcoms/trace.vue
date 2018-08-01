@@ -43,15 +43,20 @@
           </div>
           <div style="position: absolute; top: 0; left: 0; width: 100%;">
             <table class="tbt-funnel-table">
-              <tr><th style="width: 40%;">类别</th><th style="width: 20%;">转化率</th><th style="width: 20%;">数值</th><th style="width: 20%;">环比</th></tr>
+              <tr><th style="width: 40%;">类别</th>
+              <th style="width: 20%;">转化率</th>
+              <th style="width: 40%; text-align: right; padding-right: 20px;">数值</th>
+<!--               <th style="width: 20%;">环比</th></tr> -->
 
               <tr v-for="item in funnel">
-                <td>{{item.class_name}}</td><td>{{item.value[0]|filter-number('0.0', '', '%')}}</td><td>{{item.value[1]|filter-number}}</td>
-                <td :class="{increase: item.value[2]>0, decrease: item.value[2]<0}">
+                <td>{{item.class_name}}</td>
+                <td>{{item.value[0]|filter-number('0.0', '', '%')}}</td>
+                <td style="text-align: right; padding-right: 20px;">{{item.value[1]|filter-number}}</td>
+<!--                 <td :class="{increase: item.value[2]>0, decrease: item.value[2]<0}">
                   <i class="tbt-icon tbt-icon-in" style="position: relative; left: 3px; top: 3px;"></i>
                   <i class="tbt-icon tbt-icon-de" style="position: relative; left: 3px; top: 3px;"></i>
                   {{item.value[2]|filter-abs|filter-number('0.0', '', '%')}}
-                </td>
+                </td> -->
               </tr>
 
             </table>
