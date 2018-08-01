@@ -143,7 +143,7 @@ let rel = router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
   }*/
 
-  console.log('URL查询对象', to.query);
+  // console.log('URL查询对象', to.query);
 
   // 从路由的元信息中获取 title 属性
   to.query.appVersion && Cookie.set('t8t-it-appVersion', to.query.appVersion);
@@ -157,6 +157,11 @@ let rel = router.beforeEach((to, from, next) => {
   to.query.uName && Cookie.set('t8t-it-uname', to.query.uName);
   rel();
   next();
+  if (!to.query.uName) {
+    setTimeout(()=>{
+      alert('URL中的uName参数为空,这将导致后台查看接口调用的用户名为"-", 请与OA开发者协商, 在数据查看页面的URL中携带uName参数。');
+    }, 5000);
+  }
 });
 
 /* eslint-disable no-new */
