@@ -8,7 +8,7 @@
         <th @click.stop="sortBy(2)" style="width: 40px;">ROI<i class="tbt-icon" :class="sortClass2" /></th>
       </tr>
       <tr v-for="row in tableData">
-        <td>{{ row.name }}</td><td>{{ row.input|filter-number('0,0.0') }}</td><td>{{ row.income|filter-number('0,0.0') }}</td><td>{{ row.roi|filter-number('0,0.00') }}</td>
+        <td>{{ row.name }}</td><td>{{ row.input|filter-number('0,0.00') }}</td><td>{{ row.income|filter-number('0,0.00') }}</td><td>{{ row.roi|filter-number('0,0.00') }}</td>
       </tr>
     </table>
   </div>

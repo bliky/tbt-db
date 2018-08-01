@@ -41,7 +41,7 @@ export default {
       index: 0,
       currentDate: lastMonth.format('YYYY-MM'),
       startDay,
-      endMonth: lastMonth.format('YYYY-MM-DD'),
+      endDay: lastMonth.format('YYYY-MM-DD'),
       roi: resetRoiData
     }
   },
@@ -58,11 +58,40 @@ export default {
     filterNumber
   },
   created () {
-    this.fetchData();
+    this.openLoading();
+    this.autoFetchLastedData();
   },
   mounted () {
   },
   methods: {
+    isBeforeStartDay (dt) {
+      // 判断当前日期是否超出最早日期
+      return moment(dt).isBefore(this.startDay);
+    },
+    preDate () {
+      let cday = moment(this.endDay).subtract(1, 'days');
+      this.currentDate = cday.format('YYYY-MM');
+      this.endDay = cday.format('YYYY-MM-DD');
+      return !this.isBeforeStartDay(this.endDay);
+    },
+    autoFetchLastedData () {
+      let dt = this.currentDate;
+      return fetchRoi({dt}).then(data => {
+        if (this.checkData(data.result)) {
+          let skey = {app: 'roi', dt};
+          this.roi = data.result;
+          this.localCache(skey, data.result);
+          this.$nextTick(() => {
+            setTimeout(this.closeLoading(), 800);
+          });
+        } else {
+          if (!this.preDate()) {
+            return this.$vux.toast.text('超出起始日期！');
+          }
+          return this.autoFetchLastedData();
+        }
+      })
+    },
     resetRoi () {
       this.roi = resetRoiData
     },
@@ -113,7 +142,7 @@ export default {
         format: 'YYYY-MM',
         value: this.currentDate,
         startDate: this.startDay,
-        endDate: this.endMonth
+        endDate: this.endDay
       });
     },
     openDatePicker (opts) {

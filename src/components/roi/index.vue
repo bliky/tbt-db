@@ -28,7 +28,7 @@
       <div class="roi-gi">
         <div class="roi-gin" style="margin-right: 8px;">
           <p>现金消费</p>
-          <p><b>{{roi.all.input/10000|filter-number('0,0.0', '', '万')}}</b></p>
+          <p><b>{{roi.all.input/10000|filter-number('0,0.00', '', '万')}}</b></p>
           <!-- <p>
             <span class="rh">环比</span>
             <span class="ld" :class="{increase: roi.all.input_m_ratio>0, decrease: roi.all.input_m_ratio<0}">{{roi.all.input_m_ratio|filter-number('0,0', '+', '%')}}</span>
@@ -42,7 +42,7 @@
       <div class="roi-gi">
         <div class="roi-gin" style="margin: 0 4px;">
           <p>收入</p>
-          <p><b>{{roi.all.income/10000|filter-number('0,0.0', '', '万')}}</b></p>
+          <p><b>{{roi.all.income/10000|filter-number('0,0.00', '', '万')}}</b></p>
 <!--           <p>
             <span class="rh">环比</span>
             <span class="ld" :class="{increase: roi.all.income_m_ratio>0, decrease: roi.all.income_m_ratio<0}">{{roi.all.income_m_ratio|filter-number('0,0', '+', '%')}}</span>
@@ -56,7 +56,7 @@
       <div class="roi-gi">
         <div class="roi-gin" style="margin-left: 8px;">
           <p>ROI</p>
-          <p><b>{{roi.all.roi}}</b></p>
+          <p><b>{{roi.all.roi|filter-number('0,0.00')}}</b></p>
           <!-- <p>
             <span class="rh">环比</span>
             <span class="ld" :class="{increase: roi.all.roi_m_ratio>0, decrease: roi.all.roi_m_ratio<0}">{{roi.all.roi_m_ratio|filter-number('0,0', '+', '%')}}</span>
