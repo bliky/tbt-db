@@ -5,7 +5,7 @@ import FastClick from 'fastclick';
 import VueRouter from 'vue-router';
 import http from './utils/http.js';
 import Cookie from 'js-cookie';
-// import VConsole from 'vconsole'
+import VConsole from 'vconsole'
 import axios from 'axios';
 import { ConfigPlugin, ConfirmPlugin, LoadingPlugin, ToastPlugin } from 'vux';
 import App from './App';
@@ -28,7 +28,7 @@ import test from './components/test';
 
 import utils from './utils/utils.js';
 
-// new VConsole();
+new VConsole();
 
 Vue.use(ToastPlugin);
 Vue.use(LoadingPlugin);
@@ -143,7 +143,7 @@ let rel = router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
   }*/
 
-  // console.log('URL查询对象', to.query);
+  console.log('URL查询对象', to.query);
 
   // 从路由的元信息中获取 title 属性
   to.query.appVersion && Cookie.set('t8t-it-appVersion', to.query.appVersion);
@@ -159,13 +159,26 @@ let rel = router.beforeEach((to, from, next) => {
   next();
   if (!to.query.uName) {
     setTimeout(()=>{
-      alert('URL中的uName参数为空,这将导致后台查看接口调用的用户名为"-", 请与OA开发者协商, 在数据查看页面的URL中携带uName参数。');
-    }, 5000);
+      VueApp.$vux.toast.show({
+        type: 'warn',
+        text: 'URL中的uName参数为空,这将导致后台查看接口调用的用户名为"-", 请与OA开发者协商, 在数据查看页面的URL中携带uName参数。',
+        width: '80%',
+        time: 10000
+      })
+    }, 3000);
+  } else {
+    setTimeout(()=>{
+      VueApp.$vux.toast.show({
+        text: 'uName: ' + to.query.uName,
+        width: '80%',
+        time: 2000
+      });
+    }, 3000);
   }
 });
 
 /* eslint-disable no-new */
-new Vue({
+var VueApp = new Vue({
   router,
   store,
   render: h => h(App)

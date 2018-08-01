@@ -62,15 +62,12 @@ export default {
       let g = this.accessGroup[0].group;
 
       urlIsAccess({ url }).then(res => {
-        console.log('funnel is access', res);
-
         g['funnel'] = res.data.result.isAccess.toString() === 'true';
+
         url = '/bdc-prd-dbd/roi';
 
         return urlIsAccess({ url });
       }).then(res => {
-        console.log('roi is access', res);
-
         g['roi'] = res.data.result.isAccess.toString() === 'true';
       });
     },
