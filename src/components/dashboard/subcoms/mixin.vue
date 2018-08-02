@@ -127,7 +127,7 @@ export default {
       }).catch(err => {
         setTimeout(()=>{
           this.closeLoading();
-          alert('获取数据失败');
+          this.$vux.toast.text('服务器繁忙,请稍后重试或检查网络');
         }, 800);
       })
     },
@@ -205,6 +205,11 @@ export default {
         } else {
           return this.autoFetchLastedData();
         }
+      }).catch(err => {
+        setTimeout(()=>{
+          this.closeLoading();
+          this.$vux.toast.text('服务器繁忙,请稍后重试或检查网络');
+        }, 800);
       })
     },
     updateChart (data) {
