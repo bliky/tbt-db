@@ -196,50 +196,26 @@ export default {
         status: 200,
         result: {
           all: {
-            input: 13565000,
-            income: 10519000,
-            roi: 1.61,
-            input_m_ratio: 8,
-            input_y_ratio: -25,
-            income_m_ratio: 8,
-            income_y_ratio: -25,
-            roi_m_ratio: 8,
-            roi_y_ratio: -25
+            input: Mock.Random.float(200000, 10000000, 2, 2),
+            income: Mock.Random.float(200000, 10000000, 2, 2),
+            roi:  Mock.Random.float(0, 2, 2, 2)
           },
-          city: [
-            {
-              name: '广州市',
-              input: 800080,
-              income: 1231605.15,
-              roi: 1.54
-            },
-            {
-              name: '深圳市',
-              input: 781521,
-              income: 1677375.05,
-              roi: 2.15
-            }
-          ],
-          ch10: [
-            {
-              name: '搜索类_百度',
-              input: 5553884,
-              income: 1231605.15,
-              roi: 1.54
-            },
-            {
-              name: '信息流_今日头条',
-              input: 2922477,
-              income: 1677375.05,
-              roi: 2.15
-            },
-            {
-              name: '信息流_今日头条信息流_今日头条信息流_今日头条',
-              input: 2922477,
-              income: 1677375.05,
-              roi: 2.15
-            }
-          ]
+          city: Mock.mock({'city|100-200': [
+                            {
+                              name: '@city',
+                              input: '@float(10000, 1000000, 2, 2)',
+                              income: '@float(10000, 1000000, 2, 2)',
+                              roi: '@float(0, 2, 2, 2)'
+                            }
+                          ]}).city,
+          ch10: Mock.mock({'ch10|100-200': [
+                            {
+                              name: '@ctitle',
+                              input: '@float(10000, 1000000, 2, 2)',
+                              income: '@float(10000, 1000000, 2, 2)',
+                              roi: '@float(0, 2, 2, 2)'
+                            }
+                          ]}).ch10
         }
       };
 

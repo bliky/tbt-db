@@ -30,6 +30,7 @@ export default {
   data () {
     return {
       tableData: this.data,
+      lockInit: false,
       sort0: 1,
       sort1: 0,
       sort2: 0
@@ -41,6 +42,11 @@ export default {
   watch: {
     data (val) {
       this.tableData = val;
+      if (this.lockInit) {
+        this.lockInit = false;
+      } else {
+        this.init();
+      }
     }
   },
   computed: {
@@ -58,6 +64,11 @@ export default {
     }
   },
   methods: {
+    init () {
+      this.sort0 = 1;
+      this.sort1 = 0;
+      this.sort2 = 0;
+    },
     sortBy (idx) {
       let sortField = '';
       switch (idx) {
@@ -74,6 +85,8 @@ export default {
           this.sort0 = 0; this.sort1 = 0;
           break;
       }
+      // 过滤排序导致 watch date 变化
+      this.lockInit = true;
       this['sort'+idx] = this['sort'+idx] === 1  ? 2 : 1;
       return this['sort'+idx] == 2 ? this.tableData.sort((a, b) => a[sortField] - b[sortField])
                             : this.tableData.sort((a, b) => b[sortField] - a[sortField]);
