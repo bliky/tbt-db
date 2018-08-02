@@ -5,7 +5,7 @@ import FastClick from 'fastclick';
 import VueRouter from 'vue-router';
 import http from './utils/http.js';
 import Cookie from 'js-cookie';
-// import VConsole from 'vconsole'
+import VConsole from 'vconsole'
 import axios from 'axios';
 import { ConfigPlugin, ConfirmPlugin, LoadingPlugin, ToastPlugin } from 'vux';
 import App from './App';
@@ -30,7 +30,7 @@ import utils from './utils/utils';
 import localDb from './common/db';
 import { buildQuery } from './common/stringify';
 
-// new VConsole();
+new VConsole();
 
 Vue.use(ToastPlugin);
 Vue.use(LoadingPlugin);
@@ -145,7 +145,7 @@ let rel = router.beforeEach((to, from, next) => {
     document.title = to.meta.title;
   }*/
 
-  // console.log('URL查询对象', to.query);
+  console.log('URL查询对象', to.query);
 
   // 从路由的元信息中获取 title 属性
   to.query.appVersion && Cookie.set('t8t-it-appVersion', to.query.appVersion);
@@ -160,7 +160,8 @@ let rel = router.beforeEach((to, from, next) => {
 
   // 保存完整的URL查询字符串
   if (to.query.appVersion && to.query.appType && to.query.deviceId && to.query.version && to.query.tickets && to.query.token && to.query.uid && to.query.uName) {
-    localDb.set('urlQuery', buildQuery(to.query));
+    localDb.set('urlQuery', buildQuery({uName: to.query.uName}));
+    console.log('urlQuery', localDb.get('urlQuery'));
   }
 
   rel();
