@@ -26,7 +26,9 @@ import Ind from './components/apply/Ind';
 // 测试页面（开发用，不发布到生产环境）
 import test from './components/test';
 
-import utils from './utils/utils.js';
+import utils from './utils/utils';
+import localDb from './common/db';
+import { buildQuery } from './common/stringify';
 
 new VConsole();
 
@@ -155,6 +157,12 @@ let rel = router.beforeEach((to, from, next) => {
   to.query.token && Cookie.set('t8t-it-token', to.query.token);
   to.query.uid && Cookie.set('t8t-it-uid', to.query.uid);
   to.query.uName && Cookie.set('t8t-it-uname', to.query.uName);
+
+  // 保存完整的URL查询字符串
+  if (to.query.appVersion && to.query.appType && to.query.deviceId && to.query.version && to.query.accountId && to.query.tickets && to.query.token && to.query.uid && to.query.uName) {
+    localDb.set('urlQuery', buildQuery(to.query));
+  }
+
   rel();
   next();
   if (!to.query.uName) {

@@ -1,3 +1,5 @@
+import localDb from '../common/db';
+
 export const getImgUrl = src => {
   return `http://www.to8to.com/${src}`
 }
@@ -50,8 +52,8 @@ const routData = {
 };
 
 export const navTo = is_dev ?
-  function (name) { this.$router.push({ path: routData[name].url }) } :
-  function (name) { callNative(1007, routData[name]) };
+  function (name) { let urlQuery = localDb.get('urlQuery'); this.$router.push({ path: urlQuery ? routData[name].url + '?' + urlQuery : routData[name].url }) } :
+  function (name) { let rout = { ...routData[name] }; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {rout.url += '?'+urlQuery;} console.log('callNative rount', rout); callNative(1007, rout) };
 
 export const openFile = is_dev ?
   function (path, title='') { window.open(path); } :
