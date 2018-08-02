@@ -159,7 +159,7 @@ let rel = router.beforeEach((to, from, next) => {
   to.query.uName && Cookie.set('t8t-it-uname', to.query.uName);
 
   // 保存完整的URL查询字符串
-  if (to.query.appVersion && to.query.appType && to.query.deviceId && to.query.version && to.query.accountId && to.query.tickets && to.query.token && to.query.uid && to.query.uName) {
+  if (to.query.appVersion && to.query.appType && to.query.deviceId && to.query.version && to.query.tickets && to.query.token && to.query.uid && to.query.uName) {
     localDb.set('urlQuery', buildQuery(to.query));
   }
 

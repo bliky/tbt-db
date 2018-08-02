@@ -14,8 +14,10 @@ export const callNative = function(typeId, data){
   }
   let searchStr = window.location.search+""
   if(searchStr.indexOf('appType=1') !==-1){ //android
+    console.log('rabbitcircle.invoke', JSON.stringify(jsonData));
     rabbitcircle.invoke( JSON.stringify(jsonData) )
   }else{ //ios
+    console.log('callNative', 'to8to://www.oa.com/app/approve?json=' + JSON.stringify(jsonData));
     window.location.href = 'to8to://www.oa.com/app/approve?json=' + JSON.stringify(jsonData)
   }
 
@@ -52,7 +54,7 @@ const routData = {
 };
 
 export const navTo = is_dev ?
-  function (name) { let urlQuery = localDb.get('urlQuery'); this.$router.push({ path: urlQuery ? routData[name].url + '?' + urlQuery : routData[name].url }) } :
+  function (name) { let url = routData[name].url; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {url += '?'+urlQuery;} console.log('this.$router.push', url); this.$router.push({ path: url }) } :
   function (name) { let rout = { ...routData[name] }; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {rout.url += '?'+urlQuery;} console.log('callNative rount', rout); callNative(1007, rout) };
 
 export const openFile = is_dev ?
