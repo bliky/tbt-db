@@ -9,6 +9,10 @@ const filterNumber = (num, format, prefix, suffix) => {
   var prefix = prefix || '';
   var suffix = suffix || '';
 
+  if (prefix === '+' && num <= 0) {
+    prefix = '';
+  }
+
   return prefix + numeral(num).format(format) + suffix;
 }
 

@@ -7,6 +7,7 @@ import { exceptionScript } from '../../../common/exception'
 import { buildQuery } from '../../../common/stringify'
 import { confirm } from '../../../common/notify'
 import { filterNumber, filterAbs } from '../../../common/filter'
+import clickOutside from '../../../directives/clickOutside'
 import storage from '../../../common/storage'
 import _ from 'lodash'
 import moment from 'moment'
@@ -42,21 +43,7 @@ export default {
     filterNumber
   },
   directives: {
-    ClickOutside : {
-      bind: function (el, { value }) {
-        let onClickOutside = value
-        el.handler = function (e) {
-          if (el && !el.contains(e.target)) {
-            onClickOutside(e)
-          }
-        }
-        document.addEventListener('click', el.handler, true)
-      },
-      unbind: function (el) {
-        document.removeEventListener('click', el.handler, true)
-        el.handler = null
-      }
-    }
+    clickOutside
   },
   data () {
     let startDay = moment().subtract(1, 'years').startOf('year').format('YYYY-MM-DD');
@@ -140,7 +127,7 @@ export default {
       }).catch(err => {
         setTimeout(()=>{
           this.closeLoading();
-          alert('获取数据失败');
+          this.$vux.toast.text('服务器繁忙,请稍后重试或检查网络');
         }, 800);
       })
     },
@@ -218,6 +205,11 @@ export default {
         } else {
           return this.autoFetchLastedData();
         }
+      }).catch(err => {
+        setTimeout(()=>{
+          this.closeLoading();
+          this.$vux.toast.text('服务器繁忙,请稍后重试或检查网络');
+        }, 800);
       })
     },
     updateChart (data) {
@@ -235,8 +227,8 @@ export default {
           @author: ken.li
           @date: 2018-07-18
         */
-        /*if (!funnel.length) {
-          confirm.call(this, '当前日期(' + this.currentDate + ')暂无转化率数据~', '是否获取最近一个有效日期的数据？')
+        if (!funnel.length) {
+          confirm.call(this, '当前日期(' + this.currentDate + ')数据未更新', '是否获取最近一个有效日期的数据？')
                 .then(() => {
                   this.autoFetchLastedData().then(res => {
                     if (typeof res === typeof '') {
@@ -257,7 +249,7 @@ export default {
                   console.log('取消获取最近的数据');
                 });
           return false;
-        }*/
+        }
         if (funnel.length) {
           this.funnel = funnel;
         } else {

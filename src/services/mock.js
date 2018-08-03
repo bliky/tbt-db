@@ -188,5 +188,42 @@ export default {
         }, Math.random() * 1000 + 1000);
       });
     });
+
+    // 获取ROI数据
+    mock.onPost('/roi').reply(config => {
+      let params = JSON.parse(config.data);
+      let resp = {
+        status: 200,
+        result: {
+          all: {
+            input: Mock.Random.float(200000, 10000000, 2, 2),
+            income: Mock.Random.float(200000, 10000000, 2, 2),
+            roi:  Mock.Random.float(0, 2, 2, 2)
+          },
+          city: Mock.mock({'city|100-200': [
+                            {
+                              name: '@city',
+                              input: '@float(10000, 1000000, 2, 2)',
+                              income: '@float(10000, 1000000, 2, 2)',
+                              roi: '@float(0, 2, 2, 2)'
+                            }
+                          ]}).city,
+          ch10: Mock.mock({'ch10|100-200': [
+                            {
+                              name: '@ctitle',
+                              input: '@float(10000, 1000000, 2, 2)',
+                              income: '@float(10000, 1000000, 2, 2)',
+                              roi: '@float(0, 2, 2, 2)'
+                            }
+                          ]}).ch10
+        }
+      };
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, resp]);
+        }, Math.random() * 1000 + 1000);
+      });
+    });
   }
 };

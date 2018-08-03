@@ -1,5 +1,7 @@
-import radio from './radio.vue';
+import radio from './radio';
+import Tab from './tab';
 
 export {
-  radio as tabRadio
+  radio as tabRadio,
+  Tab
 };
