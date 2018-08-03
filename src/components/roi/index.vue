@@ -78,7 +78,7 @@
       </keep-alive>
     </div>
 
-<!--     <totop></totop> -->
+    <totop></totop>
   </div>
 </template>
 

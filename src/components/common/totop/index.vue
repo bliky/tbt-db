@@ -1,5 +1,5 @@
 <template>
-  <div class="tbt-top">
+  <div @click="handleOnClick" class="tbt-top" v-show="show">
     Top
   </div>
 </template>
@@ -10,15 +10,32 @@ export default {
 
   },
   mounted () {
+    let that = this;
+    let app = document.getElementById('vux_view_box_body');
+    app.onscroll = scroll;
 
+    function scroll(e) {
+      if (this.scrollTop > 0) {
+        that.show = true;
+      } else if (this.scrollTop == 0) {
+        that.show = false;
+      }
+      // 注意: window.innerWidth 和 window.innerHeight 可以获得页面可见区域的宽和高.
+    }
   },
   data () {
     return {
-
+      show: false
     }
   },
   methods: {
-
+    handleOnClick () {
+      this.moveTop();
+    },
+    moveTop () {
+      let container = document.getElementById('vux_view_box_body');
+      container.scrollTop = 0;
+    }
   }
 };
 </script>
