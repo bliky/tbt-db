@@ -5,23 +5,24 @@
 </template>
 
 <script>
+
+// 注意: window.innerWidth 和 window.innerHeight 可以获得页面可见区域的宽和高.
+const winH = window.innerHeight;
+const winW = window.innerWidth;
+
 export default {
   props: {
 
   },
   mounted () {
-    let that = this;
-    let app = document.getElementById('vux_view_box_body');
-    app.onscroll = scroll;
-
-    function scroll(e) {
-      if (this.scrollTop > 0) {
-        that.show = true;
-      } else if (this.scrollTop == 0) {
-        that.show = false;
-      }
-      // 注意: window.innerWidth 和 window.innerHeight 可以获得页面可见区域的宽和高.
-    }
+    this.bind(true);
+  },
+  deactivated () {
+  },
+  beforeDestroy () {
+  },
+  destroyed () {
+    this.bind(false);
   },
   data () {
     return {
@@ -29,6 +30,24 @@ export default {
     }
   },
   methods: {
+    onScroll (e) {
+      let app = document.getElementById('vux_view_box_body');
+      // 滚动超出一个可视区域高度时 出现返回顶部按钮
+      if (app.scrollTop > winH) {
+        this.show = true;
+      } else if (app.scrollTop <= winH) {
+        this.show = false;
+      }
+    },
+    bind (bd) {
+      let app = document.getElementById('vux_view_box_body');
+
+      if (bd) {
+        app.addEventListener('scroll', this.onScroll);
+      } else {
+        app.removeEventListener('scroll', this.onScroll);
+      }
+    },
     handleOnClick () {
       this.moveTop();
     },
