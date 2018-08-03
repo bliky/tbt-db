@@ -1,5 +1,6 @@
 import vue from 'vue'
 import { Tab } from '../common/tab'
+import '../common/icon'
 import Totop from '../common/totop'
 import moment from 'moment'
 import City from './subcoms/city'
