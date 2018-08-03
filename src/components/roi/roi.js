@@ -1,5 +1,6 @@
 import vue from 'vue'
 import { Tab } from '../common/tab'
+import Totop from '../common/totop'
 import moment from 'moment'
 import City from './subcoms/city'
 import Ch10 from './subcoms/ch10'
@@ -50,6 +51,7 @@ export default {
   },
   components: {
     Tab,
+    Totop,
     City,
     Ch10
   },

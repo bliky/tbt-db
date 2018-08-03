@@ -165,7 +165,7 @@ let rel = router.beforeEach((to, from, next) => {
 
   rel();
   next();
-  if (!to.query.uName) {
+  /* if (!to.query.uName) {
     setTimeout(()=>{
       VueApp.$vux.toast.show({
         type: 'warn',
@@ -174,7 +174,7 @@ let rel = router.beforeEach((to, from, next) => {
         time: 10000
       })
     }, 3000);
-  } /*else {
+  } else {
     setTimeout(()=>{
       VueApp.$vux.toast.show({
         text: 'uName: ' + to.query.uName,
@@ -182,7 +182,7 @@ let rel = router.beforeEach((to, from, next) => {
         time: 2000
       });
     }, 3000);
-  }*/
+  } */
 });
 
 /* eslint-disable no-new */
