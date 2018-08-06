@@ -35,7 +35,7 @@ export default {
       // 滚动超出一个可视区域高度时 出现返回顶部按钮
       if (app.scrollTop > winH) {
         this.show = true;
-      } else if (app.scrollTop <= winH) {
+      } else if (app.scrollTop <= 0) {
         this.show = false;
       }
     },
