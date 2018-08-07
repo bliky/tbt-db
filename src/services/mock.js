@@ -202,6 +202,7 @@ export default {
           },
           city: Mock.mock({'city|100-200': [
                             {
+                              id: '@increment',
                               name: '@city',
                               input: '@float(10000, 1000000, 2, 2)',
                               income: '@float(10000, 1000000, 2, 2)',
@@ -210,6 +211,7 @@ export default {
                           ]}).city,
           ch10: Mock.mock({'ch10|100-200': [
                             {
+                              id: '@increment',
                               name: '@ctitle',
                               input: '@float(10000, 1000000, 2, 2)',
                               income: '@float(10000, 1000000, 2, 2)',
@@ -225,5 +227,77 @@ export default {
         }, Math.random() * 1000 + 1000);
       });
     });
+
+    // 获取 ROI 城市分析数据
+    mock.onPost('/roiCity').reply(config => {
+      let params = JSON.parse(config.data);
+      console.log('传参', params);
+      let resp = {
+        status: 200,
+        result: {
+          all: {
+            input: Mock.Random.float(200000, 10000000, 2, 2),
+            income: Mock.Random.float(200000, 10000000, 2, 2),
+            roi:  Mock.Random.float(0, 2, 2, 2),
+            saleable: Mock.Random.float(10000, 200000, 2, 2),
+            liangfang: Mock.Random.float(2000, 8000, 2, 2),
+            order: Mock.Random.float(1000, 50000, 2, 2),
+            order_per_assignment: Mock.Random.float(0, 99, 2, 2),
+            unit_price: Mock.Random.float(10000, 500000, 2, 2)
+          },
+          top10: [
+            Mock.mock({'data|10': [
+                            {
+                              name: '@ctitle',
+                              value: '@float(10000, 1000000, 2, 2)'
+                            }
+                          ]}).data,
+            Mock.mock({'data|10': [
+                            {
+                              name: '@ctitle',
+                              value: '@float(10000, 1000000, 2, 2)'
+                            }
+                          ]}).data,
+            Mock.mock({'data|10': [
+                            {
+                              name: '@ctitle',
+                              value: '@float(0, 2, 2, 2)'
+                            }
+                          ]}).data
+          ],
+          trends: [
+            Mock.mock({'data|10': [
+                            {
+                              dt: '@date("yyyy-MM-dd")',
+                              val: '@float(10000, 1000000, 2, 2)'
+                            }
+                          ]}).data,
+            Mock.mock({'data|10': [
+                            {
+                              dt: '@date("yyyy-MM-dd")',
+                              val: '@float(10000, 1000000, 2, 2)'
+                            }
+                          ]}).data,
+            Mock.mock({'data|10': [
+                            {
+                              dt: '@date("yyyy-MM-dd")',
+                              val: '@float(0, 2, 2, 2)'
+                            }
+                          ]}).data
+          ]
+        }
+      };
+
+      console.log('响应', resp);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, resp]);
+        }, Math.random() * 1000 + 1000);
+      });
+    });
   }
 };
+
+function genNumber() {
+  return Mock.Random.natural(500, 15000);
+}

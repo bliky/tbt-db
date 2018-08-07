@@ -9,6 +9,7 @@ import { fetchRoi } from '../../services/api'
 import { filterNumber, filterAbs } from '../../common/filter'
 import { exceptionScript } from '../../common/exception'
 import storage from '../../common/storage'
+import localDb from '../../common/db'
 import { buildQuery } from '../../common/stringify'
 import mLoading from '../common/mixins/loading'
 import clickOutside from '../../directives/clickOutside'
@@ -84,6 +85,12 @@ export default {
           let skey = {app: 'roi', dt};
           this.roi = data.result;
           this.localCache(skey, data.result);
+          // 提取城市和渠道数据 保存到localDb 可用作详情页 下拉选择组件的选项数据
+          this.saveCityCh();
+          // 将当期日期保存到 localDb 用于详情页 初始化当前选择日期
+          localDb.set('roi_cdt', dt);
+          // 保存数据最近更新日期到 localDb 用于详情页 初始化日期结束日
+          localDb.set('roi_endday', this.endDay);
           this.$nextTick(() => {
             setTimeout(this.closeLoading(), 800);
           });
@@ -96,7 +103,7 @@ export default {
       })
     },
     resetRoi () {
-      this.roi = resetRoiData
+      this.roi = resetRoiData;
     },
     localCache (param, data) {
       let qs = buildQuery(param);
@@ -125,6 +132,8 @@ export default {
         if (this.checkData(data.result)) {
           this.roi = data.result;
           this.localCache(skey, data.result);
+          // 提取城市和渠道数据 保存到localDb 可用作详情页 下拉选择组件的选项数据
+          this.saveCityCh();
           this.$nextTick(() => {
             setTimeout(this.closeLoading(), 800);
           });
@@ -159,8 +168,9 @@ export default {
           dayRow: '{value}日',
           onConfirm (value) {
             that.currentDate = value;
-
             that.fetchData(value);
+            // 将当期选择日期保存到 localDb 用于详情页 初始化当前选择日期
+            localDb.set('roi_cdt', value);
           }
         };
         var opts = typeof opts === 'object' ? Object.assign({}, def, opts) : def;
@@ -177,6 +187,20 @@ export default {
       if (_class !== 'tbt-icon tbt-icon-info js-roi' && this.roiTooltipShow) {
         this.roiTooltipShow = false; 
       }
+    },
+    saveCityCh () {
+      this.saveCity();
+      this.saveCh();
+    },
+    // 保存城市数据到localDb
+    saveCity () {
+      let citys = this.roi.city.map(item => { return { value: item.id, name: item.name } });
+      localDb.set('citys', citys);
+    },
+    // 保存渠道数据到localDb
+    saveCh () {
+      let chs = this.roi.ch10.map(item => { return { value: item.id, name: item.name } });
+      localDb.set('channels', chs);
     }
   }
 }

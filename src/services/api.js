@@ -10,7 +10,8 @@ const is_dev = process.env.NODE_ENV !== 'production';
 const apis = {
   dashboard: 'dsa/dataBoard/dashboard',
   urlIsAccess: 'dsa/dataBoard/urlIsAccess',
-  roi: 'dsa/dataBoard/roiList'
+  roi: 'dsa/dataBoard/roiList',
+  roiCity: 'dsa/dataBoard/roiCityList'
 };
 
 // 获取业绩总况统计数据
@@ -44,4 +45,15 @@ export const fetchRoi = params => {
   };
   return (is_dev ? axios.post('/roi', params) :
          http.fetch(apis.roi, Object.assign({}, baseParams, params))).then(res => res.data);
+};
+
+// 获取通过城市ID和日期获取 ROI 城市分析数据: 总况 Top10渠道 一个月趋势
+export const fetchRoiCity = params => {
+  var baseParams = {
+    uid: Cookie.get('t8t-it-uid'),
+    uname: Cookie.get('t8t-it-uname') || '-',
+    tickets: Cookie.get('t8t-it-ticket')
+  };
+  return (is_dev ? axios.post('/roiCity', params) :
+         http.fetch(apis.roiCity, Object.assign({}, baseParams, params))).then(res => res.data);
 };
