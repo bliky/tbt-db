@@ -153,7 +153,7 @@ const store = new Vuex.Store({
 
 let rel = router.beforeEach((to, from, next) => {
   // 从路由的元信息中获取 title 属性
-/*  if (to.meta.title) {
+  /* if (to.meta.title) {
     document.title = to.meta.title;
   }*/
 

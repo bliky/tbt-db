@@ -54,8 +54,9 @@ export default {
           let currentData = ev.items[0];
 
           currentData.name = null;
-          let titleArr = currentData.title.split('-');
-          let title = titleArr[0]+'月'+titleArr[1]+'日';
+          /*let titleArr = currentData.title.split('-');
+          let title = titleArr[0]+'月'+titleArr[1]+'日';*/
+          let title = currentData.title;
           let value = currentData.value;
 
           ev.items[0].value = title + ' ' + value;

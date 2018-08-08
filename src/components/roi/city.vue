@@ -34,8 +34,8 @@
         </div>
         <div class="roi-gi">
           <div class="roi-gin">
-            <p>次数量房率</p>
-            <p><b>{{roi.all.liangfang/10000|filter-number('0,0.00', '', '万')}}</b></p>
+            <p>次数浪费率</p>
+            <p><b>{{roi.all.waste|filter-number('0,0.00', '', '%')}}</b></p>
           </div>
         </div>
         <div class="roi-gi">
@@ -61,8 +61,8 @@
     
     <!-- 城市分析：渠道top10，分消费，收入，ROI -->
     <city-ch-top10></city-ch-top10>
-    <!-- 城市分析：一个月趋势，分消费，收入，ROI -->
-    <city-month-trends :city="currentSeled"></city-month-trends>
+    <!-- 城市分析：12个月趋势，分消费，收入，ROI -->
+    <month-trends :city="currentSeled"></month-trends>
 
     <popup-picker style="max-width: 100%; display: none;" cancel-text="取消" confirm-text="确认" :show.sync="showSelector" :columns="1" :show-cell="false" title="选择城市" :data="opts" v-model="id" @on-change="handleOnSelectorChange"></popup-picker>
   </div>
@@ -75,7 +75,7 @@ import { buildQuery } from '../../common/stringify'
 import mLoading from '../common/mixins/loading'
 import { filterNumber } from '../../common/filter'
 import cityChTop10 from './subcoms/cityChTop10'
-import cityMonthTrends from './subcoms/cityMonthTrends'
+import monthTrends from './subcoms/monthTrends'
 import moment from 'moment'
 import { fetchRoiCity } from '../../services/api'
 import { PopupPicker } from 'vux'
@@ -92,20 +92,14 @@ const resetRoiData = {
           unit_price: 0
         },
         top10: [
-          [
-            {
-              name: '搜索类_百度',
-              value: 0
-            }
-          ]
+          [{ name: '', value: 0 }],
+          [{ name: '', value: 0 }],
+          [{ name: '', value: 0 }]
         ],
         trends: [
-          [
-            {
-              dt: '2018-07-01',
-              val: 0
-            }
-          ]
+          [{ dt: '', val: 0 }],
+          [{ dt: '', val: 0 }],
+          [{ dt: '', val: 0 }]
         ]
       };
 
@@ -133,7 +127,7 @@ export default {
   components: {
     PopupPicker,
     cityChTop10,
-    cityMonthTrends
+    monthTrends
   },
   filters: {
     filterNumber

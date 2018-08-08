@@ -233,19 +233,76 @@ export default {
       let params = JSON.parse(config.data);
       console.log('传参', params);
       let resp = {
-        status: 200,
-        result: {
+        status: 200
+      };
+      resp.result = genRoiDetail(params.dt);
+      resp.result.top10 = genCityTop10Ch();
+
+      console.log('响应', resp);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, resp]);
+        }, Math.random() * 1000 + 1000);
+      });
+    });
+
+    // 获取 ROI 渠道分析数据
+    mock.onPost('/roiCh').reply(config => {
+      let params = JSON.parse(config.data);
+      console.log('传参', params);
+      let resp = {
+        status: 200
+      };
+      resp.result = genRoiDetail(params.dt);
+
+      console.log('响应', resp);
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, resp]);
+        }, Math.random() * 1000 + 1000);
+      });
+    });
+  }
+};
+
+function genRoiDetail (dt) {
+  var dt = dt || moment().format('YYYY-MM');
+
+  function last12MonthRoiTrends (dt, desStr='@float(10000, 1000000, 2, 2)') {
+    let cdy = moment(dt);
+    let trends = [];
+    for (let i=0; i<13; i++) {
+      trends.push(Mock.mock({
+        dt: cdy.format('YYYY-MM'),
+        val: desStr
+      }));
+      cdy.subtract(1, 'month');
+    }
+    trends.reverse();
+    return trends;
+  }
+
+  return {
           all: {
             input: Mock.Random.float(200000, 10000000, 2, 2),
             income: Mock.Random.float(200000, 10000000, 2, 2),
             roi:  Mock.Random.float(0, 2, 2, 2),
             saleable: Mock.Random.float(10000, 200000, 2, 2),
-            liangfang: Mock.Random.float(2000, 8000, 2, 2),
+            waste: Mock.Random.float(0, 99, 2, 2),
             order: Mock.Random.float(1000, 50000, 2, 2),
             order_per_assignment: Mock.Random.float(0, 99, 2, 2),
             unit_price: Mock.Random.float(10000, 500000, 2, 2)
           },
-          top10: [
+          trends: [
+            last12MonthRoiTrends(dt),
+            last12MonthRoiTrends(dt),
+            last12MonthRoiTrends(dt, '@float(0, 2, 2, 2)')
+          ]
+        };
+}
+
+function genCityTop10Ch () {
+  return  [
             Mock.mock({'data|10': [
                             {
                               name: '@ctitle',
@@ -264,39 +321,8 @@ export default {
                               value: '@float(0, 2, 2, 2)'
                             }
                           ]}).data
-          ],
-          trends: [
-            Mock.mock({'data|10': [
-                            {
-                              dt: '@date("yyyy-MM-dd")',
-                              val: '@float(10000, 1000000, 2, 2)'
-                            }
-                          ]}).data,
-            Mock.mock({'data|10': [
-                            {
-                              dt: '@date("yyyy-MM-dd")',
-                              val: '@float(10000, 1000000, 2, 2)'
-                            }
-                          ]}).data,
-            Mock.mock({'data|10': [
-                            {
-                              dt: '@date("yyyy-MM-dd")',
-                              val: '@float(0, 2, 2, 2)'
-                            }
-                          ]}).data
-          ]
-        }
-      };
-
-      console.log('响应', resp);
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          resolve([200, resp]);
-        }, Math.random() * 1000 + 1000);
-      });
-    });
-  }
-};
+          ];
+}
 
 function genNumber() {
   return Mock.Random.natural(500, 15000);
