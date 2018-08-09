@@ -12,7 +12,19 @@
 
 <script>
 import { VChart, VLine, VArea, VScale, VTooltip } from '../f2'
-import { filterXAxis, filterYAxis } from '../../../../common/filter'
+import { filterXAxis } from '../../../../common/filter'
+import numeral from 'numeral'
+
+const filterYAxis = (num, suffix) => {
+  if (isNaN(parseFloat(num))) {
+    return '-';
+  }
+
+  if (suffix === '%') return numeral(num).format('0,0.00') + suffix;
+  if (suffix === 'w' && num >= 10000) return  numeral(num/10000).format('0,0.00') + '万';
+
+  return numeral(num).format('0,0.00');
+}
 
 export default {
   props: {
@@ -75,7 +87,7 @@ export default {
     },
     yAxisFormatter (val) {
       if (this.yPercent) return filterYAxis(val, '%');
-      return filterYAxis(val);
+      return filterYAxis(val, 'w');
     }
   }
 }
