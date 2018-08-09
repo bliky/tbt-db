@@ -97,7 +97,7 @@ export default {
       text-overflow: ellipsis;
       white-space: nowrap;
       // word-break: break-all;
-      font-size: 12px;
+      font-size: 10px;
     }
     td:nth-child(2) {
       // width: 274px;
