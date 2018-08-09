@@ -90,18 +90,21 @@ export default {
       // vertical-align: middle;
     }
     td:first-child {
+      padding-top: 0;
+      padding-bottom: 0;
       padding-left: 10px;
       padding-right: 7px;
       text-align: right;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      // white-space: nowrap;
       // word-break: break-all;
       font-size: 10px;
+      line-height: 13px;
     }
     td:nth-child(2) {
-      // width: 274px;
-      width: 180px;
+      width: 274px;
+      // width: 230px;
       padding-right: 10px;
     }
   }
