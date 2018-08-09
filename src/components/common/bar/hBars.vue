@@ -97,7 +97,6 @@ export default {
       text-align: right;
       overflow: hidden;
       text-overflow: ellipsis;
-      // white-space: nowrap;
       word-break: break-all;
       font-size: 10px;
       line-height: 13px;
