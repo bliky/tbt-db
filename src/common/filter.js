@@ -2,7 +2,7 @@ import numeral from 'numeral'
 
 const filterNumber = (num, format, prefix, suffix) => {
   if (isNaN(parseFloat(num))) {
-    return num;
+    return '-' || num;
   }
 
   var format = format || '0,0';

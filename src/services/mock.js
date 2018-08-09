@@ -293,35 +293,35 @@ function genRoiDetail (dt) {
             order_per_assignment: Mock.Random.float(0, 99, 2, 2),
             unit_price: Mock.Random.float(10000, 500000, 2, 2)
           },
-          trends: [
-            last12MonthRoiTrends(dt),
-            last12MonthRoiTrends(dt),
-            last12MonthRoiTrends(dt, '@float(0, 2, 2, 2)')
-          ]
+          trends: {
+            input: last12MonthRoiTrends(dt),
+            income: last12MonthRoiTrends(dt),
+            roi: last12MonthRoiTrends(dt, '@float(0, 2, 2, 2)')
+          }
         };
 }
 
 function genCityTop10Ch () {
-  return  [
-            Mock.mock({'data|10': [
+  return  {
+            input: Mock.mock({'data|10': [
                             {
                               name: '@ctitle',
                               value: '@float(10000, 1000000, 2, 2)'
                             }
                           ]}).data,
-            Mock.mock({'data|10': [
+            income: Mock.mock({'data|10': [
                             {
                               name: '@ctitle',
                               value: '@float(10000, 1000000, 2, 2)'
                             }
                           ]}).data,
-            Mock.mock({'data|10': [
+            roi: Mock.mock({'data|10': [
                             {
                               name: '@ctitle',
                               value: '@float(0, 2, 2, 2)'
                             }
                           ]}).data
-          ];
+          };
 }
 
 function genNumber() {

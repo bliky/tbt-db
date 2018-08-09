@@ -91,16 +91,16 @@ const resetRoiData = {
           order_per_assignment: 0,
           unit_price: 0
         },
-        top10: [
-          [{ name: '', value: 0 }],
-          [{ name: '', value: 0 }],
-          [{ name: '', value: 0 }]
-        ],
-        trends: [
-          [{ dt: '', val: 0 }],
-          [{ dt: '', val: 0 }],
-          [{ dt: '', val: 0 }]
-        ]
+        top10: {
+          input: [{ name: '', value: 0 }],
+          income: [{ name: '', value: 0 }],
+          roi: [{ name: '', value: 0 }]
+        },
+        trends: {
+          input: [{ dt: '', val: 0 }],
+          income: [{ dt: '', val: 0 }],
+          roi: [{ dt: '', val: 0 }]
+        }
       };
 
 export default {
@@ -148,7 +148,15 @@ export default {
       return storage.set(qs, data);
     },
     checkData (res) {
-      return res.all && res.top10 && res.top10.length && res.trends && res.trends.length;
+      return res.all &&
+             res.top10 &&
+             res.top10.input && res.top10.input.length &&
+             res.top10.income && res.top10.income.length &&
+             res.top10.roi && res.top10.roi.length &&
+             res.trends &&
+             res.trends.input && res.trends.input.length &&
+             res.trends.income && res.trends.income.length &&
+             res.trends.roi && res.trends.roi.length;
     },
     fetchData (id=this.id[0], dt=this.currentDate) {
       let skey = {  app: 'roiCity', dt, id };

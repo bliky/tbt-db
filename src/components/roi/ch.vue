@@ -88,11 +88,11 @@ const resetRoiData = {
           order_per_assignment: 0,
           unit_price: 0
         },
-        trends: [
-          [{ dt: '', val: 0 }],
-          [{ dt: '', val: 0 }],
-          [{ dt: '', val: 0 }]
-        ]
+        trends: {
+          input: [{ dt: '', val: 0 }],
+          income: [{ dt: '', val: 0 }],
+          roi: [{ dt: '', val: 0 }]
+        }
       };
 
 export default {
@@ -139,7 +139,11 @@ export default {
       return storage.set(qs, data);
     },
     checkData (res) {
-      return res.all && res.trends && res.trends.length;
+      return res.all &&
+             res.trends &&
+             res.trends.input && res.trends.input.length &&
+             res.trends.income && res.trends.income.length &&
+             res.trends.roi && res.trends.roi.length;
     },
     fetchData (id=this.id[0], dt=this.currentDate) {
       let skey = {  app: 'roiChannel', dt, id };

@@ -3,16 +3,16 @@ import http from '../utils/http.js';
 import Cookie from 'js-cookie';
 import {toast} from '../common/notify';
 import Vue from 'vue';
-// import {roiViewModel} from './viewmodel';
 
-const is_dev = process.env.NODE_ENV !== 'production';
+const force_production = false;  // 强制使用生产模式: 本地开发时，调用测试接口时打开，提交代码前设置为false
+const is_dev = !force_production && process.env.NODE_ENV !== 'production';
 
 const apis = {
   dashboard: 'dsa/dataBoard/dashboard',
   urlIsAccess: 'dsa/dataBoard/urlIsAccess',
   roi: 'dsa/dataBoard/roiList',
   roiCity: 'dsa/dataBoard/roiCityList',
-  roiCh: 'dsa/dataBoard/roiChList'
+  roiCh: 'dsa/dataBoard/roiChannelList'
 };
 
 // 获取业绩总况统计数据

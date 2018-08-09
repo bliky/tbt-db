@@ -23,6 +23,11 @@ const buildBarW = bars => {
   let newBars = [...bars];  // 拷贝一个新的数组 以免排序造成 数据源watch 无限调用
   let max = newBars.sort((a, b) => parseFloat(b.value) - parseFloat(a.value))[0].value;
 
+  if (max == 0) {
+      return newBars.map(bar => {
+        return { ...bar, w: 0 }
+      })
+  }
   // max = max < 5000 ? 5000 : max;
 
   return newBars.map(bar => {
@@ -74,6 +79,7 @@ export default {
   table {
     border-collapse: collapse;
     border-spacing: 0;
+    table-layout:fixed;
     width: 100%;
     td {
       font: 13px/18px PingFangSC-Regular,sans-serif;
@@ -86,6 +92,10 @@ export default {
       padding-left: 10px;
       padding-right: 7px;
       text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      // white-space: nowrap;
+      word-break: break-all;
     }
     td:nth-child(2) {
       width: 274px;

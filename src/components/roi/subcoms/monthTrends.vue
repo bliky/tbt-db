@@ -4,9 +4,9 @@
       <div class="tbt-pannel_title-rt s1"><btn-tab :tabs="tabs" v-model="tabIndex"></btn-tab></div>
     </div>
     <div style="overflow: hidden; min-height:  240px;">
-      <chart-line v-if="tabLines.length > 0" v-show="tabIndex==0" :data="tabLines[0]"></chart-line>
-      <chart-line v-if="tabLines.length > 1" v-show="tabIndex==1" :data="tabLines[1]"></chart-line>
-      <chart-line v-if="tabLines.length > 2" v-show="tabIndex==2" :data="tabLines[2]"></chart-line>
+      <chart-line v-if="tabLines.input.length" v-show="tabIndex==0" :data="tabLines.input"></chart-line>
+      <chart-line v-if="tabLines.income.length" v-show="tabIndex==1" :data="tabLines.income"></chart-line>
+      <chart-line v-if="tabLines.roi.length" v-show="tabIndex==2" :data="tabLines.roi"></chart-line>
     </div>
   </div>
 </template>
@@ -26,7 +26,8 @@ export default {
     return {
       currentCity: this.city,
       tabIndex: 0,
-      tabs: ['消费', '收入', 'ROI']
+      tabs: ['消费', '收入', 'ROI'],
+      keys: ['input', 'income', 'roi']
     }
   },
   watch: {
