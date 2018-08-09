@@ -35,6 +35,9 @@ export default {
   watch: {
     data (newval) { 
       this.chartData = newval;
+      this.$nextTick(() => {
+        this.$refs.chart.render();
+      });
     }
   },
   mounted () {

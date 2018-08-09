@@ -1,6 +1,6 @@
 <template>
   <div class="tbt-pannel s1">
-    <div class="tbt-pannel_title">{{ currentCity }}趋势
+    <div class="tbt-pannel_title">趋势
       <div class="tbt-pannel_title-rt s1"><btn-tab :tabs="tabs" v-model="tabIndex"></btn-tab></div>
     </div>
     <div style="overflow: hidden; min-height:  240px;">

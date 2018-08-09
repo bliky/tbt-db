@@ -31,7 +31,8 @@ const buildBarW = bars => {
   // max = max < 5000 ? 5000 : max;
 
   return newBars.map(bar => {
-    return { ...bar, w: parseFloat(bar.value)*80/max }
+    if (bar.name) { bar.name = bar.name.replace(/.*==/g, ''); }
+    return { ...bar, w: parseFloat(bar.value)*70/max }
   })
 };
 
@@ -94,11 +95,13 @@ export default {
       text-align: right;
       overflow: hidden;
       text-overflow: ellipsis;
-      // white-space: nowrap;
-      word-break: break-all;
+      white-space: nowrap;
+      // word-break: break-all;
+      font-size: 12px;
     }
     td:nth-child(2) {
-      width: 274px;
+      // width: 274px;
+      width: 180px;
       padding-right: 10px;
     }
   }
