@@ -50,12 +50,17 @@ const routData = {
   indApply: { url: baseUrl + '/bdc-prd-dbd/apply', title:'指标申请' },
   indAnnotation: { url: baseUrl + '/bdc-prd-dbd/MyInds', title:'指标释义' },
   indDesc: { url: baseUrl + '/bdc-prd-dbd/indesc', title:'指标释义' },
-  nounDesc: { url: baseUrl + '/bdc-prd-dbd/nounDesc', title:'名词释义' }
+  roiCity: id => { return { url: baseUrl + '/bdc-prd-dbd/roi-city/' + id, title:'ROI城市分析详情' } },
+  roiCh: id => { return { url: baseUrl + '/bdc-prd-dbd/roi-ch/' + id, title:'ROI渠道分析详情' } }
 };
 
 export const navTo = is_dev ?
   function (name) { let url = routData[name].url; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {url += '?'+urlQuery;} /*console.log('this.$router.push', url);*/ this.$router.push({ path: url }) } :
   function (name) { let rout = { ...routData[name] }; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {rout.url += '?'+urlQuery;} /*console.log('callNative rount', rout);*/ callNative(1007, rout) };
+
+export const navToId = is_dev ?
+  function (name, id) { let url = routData[name](id).url; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {url += '?'+urlQuery;} /*console.log('this.$router.push', url);*/ this.$router.push({ path: url }) } :
+  function (name, id) { let rout = { ...routData[name](id) }; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {rout.url += '?'+urlQuery;} /*console.log('callNative rount', rout);*/ callNative(1007, rout) };
 
 export const openFile = is_dev ?
   function (path, title='') { window.open(path); } :

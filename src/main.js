@@ -13,6 +13,8 @@ import App from './App';
 import Home from './components/Home';           // 首页
 import Dashboard from './components/dashboard'; // 转化漏斗
 import Roi from './components/roi';             // ROI分析
+import RoiCity from './components/roi/city';    // ROI城市分析
+import RoiCh from './components/roi/ch';        // ROI渠道分析
 import DataBoard from './components/board/DataBoard'; // 指标看板
 import Apply from './components/apply/Apply';         // 指标申请
 import MyInds from './components/my/MyInds';          // 指标释义
@@ -87,6 +89,25 @@ const routes = [
     path: '/bdc-prd-dbd/myinds',
     component: MyInds
   },
+  // 3.1 三级入口：ROI城市分析详情
+  {
+    path: '/bdc-prd-dbd/roi-city/:id',
+    component: RoiCity
+  },
+  // 3.2 三级入口：ROI渠道分析详情
+  {
+    path: '/bdc-prd-dbd/roi-ch/:id',
+    component: RoiCh
+  },
+  {
+    path: '/bdc-prd-dbd/editInd',
+    component: EditInd
+  },
+  {
+    path: '/bdc-prd-dbd/apply/ind',
+    component: Ind
+  },
+  // 指标释义
   {
     path: '/bdc-prd-dbd/editInd',
     component: EditInd
@@ -141,7 +162,7 @@ const store = new Vuex.Store({
 
 let rel = router.beforeEach((to, from, next) => {
   // 从路由的元信息中获取 title 属性
-/*  if (to.meta.title) {
+  /* if (to.meta.title) {
     document.title = to.meta.title;
   }*/
 
@@ -159,7 +180,8 @@ let rel = router.beforeEach((to, from, next) => {
   to.query.uName && Cookie.set('t8t-it-uname', to.query.uName);
 
   // 保存完整的URL查询字符串
-  if (to.query.appVersion && to.query.appType && to.query.deviceId && to.query.version && to.query.tickets && to.query.token && to.query.uid && to.query.uName) {
+  //if (to.query.appVersion && to.query.appType && to.query.deviceId && to.query.version && to.query.tickets && to.query.token && to.query.uid && to.query.uName) {
+  if (to.query.uName) {
     localDb.set('urlQuery', buildQuery({uName: to.query.uName}));
   }
 

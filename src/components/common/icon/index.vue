@@ -54,4 +54,11 @@
   background-size: auto 12px;
   background-image: url(../../../assets/image/compositor_dow@2x.png);
 }
+
+.tbt-icon-totop {
+  width: 50px;
+  height: 50px;
+  background-size: 50px 50px;
+  background-image: url(../../../assets/image/totop.png);
+}
 </style>

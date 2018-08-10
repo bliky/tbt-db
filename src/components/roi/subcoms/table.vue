@@ -7,7 +7,7 @@
         <th @click.stop="sortBy(1)">收入<i class="tbt-icon" :class="sortClass1" /></th>
         <th @click.stop="sortBy(2)" style="width: 40px;">ROI<i class="tbt-icon" :class="sortClass2" /></th>
       </tr>
-      <tr v-for="row in tableData">
+      <tr v-for="row in tableData" @click="$emit('onClickRow', row)">
         <td>{{ row.name }}</td><td>{{ row.input|filter-number('0,0.00') }}</td><td>{{ row.income|filter-number('0,0.00') }}</td><td>{{ row.roi|filter-number('0,0.00') }}</td>
       </tr>
     </table>

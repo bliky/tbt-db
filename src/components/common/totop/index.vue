@@ -1,6 +1,6 @@
 <template>
   <div @click="handleOnClick" class="tbt-top" v-show="show">
-    Top
+    <i class="tbt-icon tbt-icon-totop" />
   </div>
 </template>
 
@@ -35,7 +35,7 @@ export default {
       // 滚动超出一个可视区域高度时 出现返回顶部按钮
       if (app.scrollTop > winH) {
         this.show = true;
-      } else if (app.scrollTop <= winH) {
+      } else if (app.scrollTop <= 0) {
         this.show = false;
       }
     },
@@ -62,15 +62,9 @@ export default {
 <style lang="less">
 .tbt-top {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  box-sizing: border-box;
-  border-radius: 30px;
-  line-height: 56px;
-  text-align: center;
-  background-color: #fff;
-  border: 2px solid #06C792;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
 }
 </style>

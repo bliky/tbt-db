@@ -2,7 +2,7 @@ import numeral from 'numeral'
 
 const filterNumber = (num, format, prefix, suffix) => {
   if (isNaN(parseFloat(num))) {
-    return num;
+    return '-' || num;
   }
 
   var format = format || '0,0';
@@ -75,8 +75,23 @@ const filterYAxis = (num, suffix) => {
   return numeral(num).format('0,0');
 }
 
+
+// 单位万过滤器：超出一万的数字自动加上单位 万
+const filterWan = (num, format) => {
+  if (isNaN(parseFloat(num))) {
+    return '-';
+  }
+
+  var format = format || '0,0.00';
+
+  if (num >= 10000) return  numeral(num/10000).format(format) + '万';
+
+  return numeral(num).format(format);
+}
+
 export {
   filterNumber,
+  filterWan,
   filterAbs,
   filterXAxis,
   filterYAxis
