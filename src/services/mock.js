@@ -289,9 +289,9 @@ function genRoiDetail (dt) {
             roi:  Mock.Random.float(0, 2, 2, 2),
             saleable: Mock.Random.float(10000, 200000, 2, 2),
             waste: Mock.Random.float(0, 99, 2, 2),
-            order: Mock.Random.float(1000, 50000, 2, 2),
+            orders: Mock.Random.float(1000, 50000, 2, 2),
             order_per_assignment: Mock.Random.float(0, 99, 2, 2),
-            unit_price: Mock.Random.float(10000, 500000, 2, 2)
+            cansold_unit_price: Mock.Random.float(10000, 500000, 2, 2)
           },
           trends: {
             input: last12MonthRoiTrends(dt),

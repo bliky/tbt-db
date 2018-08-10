@@ -7,7 +7,7 @@
           <div class="tbt-h-bar">
             <div class="tbt-h-bar_inner" :style="{width: bar.w + '%'}">
             </div>
-            <div v-if="isShowWan" class="tbt-h-bar_label">{{ bar.value/10000|filter-number('0,0.00', '', '万') }}</div>
+            <div v-if="isShowWan" class="tbt-h-bar_label">{{ bar.value|filter-wan }}</div>
             <div v-else class="tbt-h-bar_label">{{ bar.value|filter-number('0,0.00') }}</div>
           </div>
         </td>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { filterNumber } from '../../../common/filter'
+import { filterNumber,filterWan } from '../../../common/filter'
 
 const buildBarW = bars => {
   let newBars = [...bars];  // 拷贝一个新的数组 以免排序造成 数据源watch 无限调用
@@ -42,7 +42,8 @@ export default {
     showWan: Boolean
   },
   filters: {
-    filterNumber
+    filterNumber,
+    filterWan
   },
   data () {
     return {

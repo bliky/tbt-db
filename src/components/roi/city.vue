@@ -11,25 +11,25 @@
         <div class="roi-gi">
           <div class="roi-gin">
             <p>现金消费</p>
-            <p><b>{{roi.all.input/10000|filter-number('0,0.00', '', '万')}}</b></p>
+            <p><b>{{ roi.all.input|filter-wan }}</b></p>
           </div>
         </div>
         <div class="roi-gi">
           <div class="roi-gin">
             <p>收入</p>
-            <p><b>{{roi.all.income/10000|filter-number('0,0.00', '', '万')}}</b></p>
+            <p><b>{{ roi.all.income|filter-wan }}</b></p>
           </div>
         </div>
         <div class="roi-gi">
           <div class="roi-gin">
             <p>ROI</p>
-            <p><b>{{roi.all.roi|filter-number('0,0.00')}}</b></p>
+            <p><b>{{ roi.all.roi|filter-number('0,0.00') }}</b></p>
           </div>
         </div>
         <div class="roi-gi">
           <div class="roi-gin">
             <p>可售信息数</p>
-            <p><b>{{roi.all.saleable/10000|filter-number('0,0.00', '', '万')}}</b></p>
+            <p><b>{{ roi.all.saleable|filter-wan('0,0') }}</b></p>
           </div>
         </div>
         <div class="roi-gi">
@@ -41,19 +41,19 @@
         <div class="roi-gi">
           <div class="roi-gin">
             <p>签约订单数</p>
-            <p><b>{{roi.all.order/10000|filter-number('0,0.00', '', '万')}}</b></p>
+            <p><b>{{ roi.all.orders|filter-wan('0,0') }}</b></p>
           </div>
         </div>
         <div class="roi-gi">
           <div class="roi-gin">
             <p>分派签约率</p>
-            <p><b>{{roi.all.order_per_assignment|filter-number('0,0.00', '', '%')}}</b></p>
+            <p><b>{{ roi.all.order_per_assignment|filter-number('0,0.00', '', '%') }}</b></p>
           </div>
         </div>
         <div class="roi-gi">
           <div class="roi-gin">
             <p>可售单价</p>
-            <p><b>{{roi.all.unit_price/10000|filter-number('0,0.00', '', '万')}}</b></p>
+            <p><b>{{ roi.all.cansold_unit_price|filter-wan }}</b></p>
           </div>
         </div>
       </div>
@@ -73,7 +73,7 @@ import localDb from '../../common/db'
 import storage from '../../common/storage'
 import { buildQuery } from '../../common/stringify'
 import mLoading from '../common/mixins/loading'
-import { filterNumber } from '../../common/filter'
+import { filterNumber,filterWan } from '../../common/filter'
 import cityChTop10 from './subcoms/cityChTop10'
 import monthTrends from './subcoms/monthTrends'
 import moment from 'moment'
@@ -86,10 +86,10 @@ const resetRoiData = {
           income: 0,
           roi: 0,
           saleable: 0,
-          liangfang: 0,
-          order: 0,
+          waste: 0,
+          orders: 0,
           order_per_assignment: 0,
-          unit_price: 0
+          cansold_unit_price: 0
         },
         top10: {
           input: [{ name: '', value: 0 }],
@@ -130,7 +130,8 @@ export default {
     monthTrends
   },
   filters: {
-    filterNumber
+    filterNumber,
+    filterWan
   },
   created () {
     this.fetchData();
