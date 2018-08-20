@@ -18,6 +18,13 @@
     </div>
   </div>
 
+  <div class="tbt-nav-g">
+    <div class="tbt-nav-t">指标看板(重构模块)</div>
+    <div class="tbt-nav-grid">
+      <div @click="navTo('indApplyNew')" class="tbt-nav-grid-item"><img src="../assets/image/apply@2x.png"><p>指标申请</p></div>
+    </div>
+  </div>
+
   <div style="position: absolute; bottom: 30px; left: 0; width: 100%; z-index: 600;">
     <div style="font: 13px/18px PingFangSC-Regular; color: #C1C1C1; letter-spacing: 0; text-align: center; width: 160px; margin: 0 auto;"><divider style="color: #c1c1c1;">土巴兔大数据</divider></div>
   </div>
@@ -62,13 +69,13 @@ export default {
       let g = this.accessGroup[0].group;
 
       urlIsAccess({ url }).then(res => {
-        g['funnel'] = res.data.result.isAccess.toString() === 'true';
+        g['funnel'] = res.result.isAccess.toString() === 'true';
 
         url = '/bdc-prd-dbd/roi';
 
         return urlIsAccess({ url });
       }).then(res => {
-        g['roi'] = res.data.result.isAccess.toString() === 'true';
+        g['roi'] = res.result.isAccess.toString() === 'true';
       });
     },
     navTo(name) {

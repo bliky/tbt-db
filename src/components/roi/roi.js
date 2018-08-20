@@ -81,6 +81,8 @@ export default {
     autoFetchLastedData () {
       let dt = this.currentDate;
       return fetchRoi({dt}).then(data => {
+        if (data.status !== 200) return console.error('[autoFetchLastedData]异常状态status: ', data.status, data.message||'');
+
         if (this.checkData(data.result)) {
           let skey = {app: 'roi', dt};
           this.roi = data.result;

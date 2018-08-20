@@ -61,4 +61,18 @@
   background-size: 50px 50px;
   background-image: url(../../../assets/image/totop.png);
 }
+
+.tbt-icon-checked {
+  width: 24px;
+  height: 24px;
+  background-size: 24px 24px;
+  background-image: url(../../../assets/image/icon/checked@2x.png);
+}
+
+.tbt-icon-close {
+  width: 16px;
+  height: 16px;
+  background-size: 16px 16px;
+  background-image: url(../../../assets/image/clean@2x.png);
+}
 </style>

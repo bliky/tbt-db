@@ -51,7 +51,8 @@ const routData = {
   indAnnotation: { url: baseUrl + '/bdc-prd-dbd/MyInds', title:'指标释义' },
   indDesc: { url: baseUrl + '/bdc-prd-dbd/indesc', title:'指标释义' },
   roiCity: id => { return { url: baseUrl + '/bdc-prd-dbd/roi-city/' + id, title:'ROI城市分析详情' } },
-  roiCh: id => { return { url: baseUrl + '/bdc-prd-dbd/roi-ch/' + id, title:'ROI渠道分析详情' } }
+  roiCh: id => { return { url: baseUrl + '/bdc-prd-dbd/roi-ch/' + id, title:'ROI渠道分析详情' } },
+  indApplyNew: { url: baseUrl + '/bdc-prd-dbd/newapply', title:'指标申请' }
 };
 
 export const navTo = is_dev ?

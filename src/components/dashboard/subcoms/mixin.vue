@@ -118,8 +118,8 @@ export default {
 
       this.openLoading();
       fetchDashboard(param).then(res => {
-        if (this.updateChart(res.data.result)) {
-          this.localCache(param, res.data.result);
+        if (this.updateChart(res.result)) {
+          this.localCache(param, res.result);
         }
         this.$nextTick(() => {
           setTimeout(this.closeLoading(), 800);
@@ -199,9 +199,9 @@ export default {
 
       this.openLoading();
       return fetchDashboard(param).then(res => {
-        let {funnel} = res.data.result;
+        let {funnel} = res.result;
         if (funnel && funnel.length) {
-          return res.data.result;
+          return res.result;
         } else {
           return this.autoFetchLastedData();
         }

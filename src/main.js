@@ -18,6 +18,7 @@ import RoiCh from './components/roi/ch';        // ROI渠道分析
 import DataBoard from './components/board/DataBoard'; // 指标看板
 import Apply from './components/apply/Apply';         // 指标申请
 import MyInds from './components/my/MyInds';          // 指标释义
+import NewApply from './components/newApply';         // 重构指标申请
 // 子页面
 import EditInd from './components/board/EditInd';
 import Indesc from './components/my/Indesc';
@@ -57,47 +58,82 @@ const routes = [
   // 重定向到首页
   {
     path: '/',
-    redirect: '/bdc-prd-dbd/board'
+    redirect: '/bdc-prd-dbd/board',
+    meta: {
+      title: '数据看板'
+    }
   },
   // 一级入口：数据看板首页
   {
     path: '/bdc-prd-dbd/board',
-    component: Home
+    component: Home,
+    meta: {
+      title: '数据看板'
+    }
   },
   // 1.1 二级入口：转化漏斗
   {
     path: '/bdc-prd-dbd/dashboard',
-    component: Dashboard
+    component: Dashboard,
+    meta: {
+      title: '转化漏斗'
+    }
   },
   // 1.2 二级入口：ROI分析
   {
     path: '/bdc-prd-dbd/roi',
-    component: Roi
+    component: Roi,
+    meta: {
+      title: 'ROI分析'
+    }
   },
   // 2.1 二级入口：指标看板
   {
     path: '/bdc-prd-dbd/dataBoard',
-    component: DataBoard
+    component: DataBoard,
+    meta: {
+      title: '指标看板'
+    }
   },
   // 2.2 二级入口：指标申请
   {
     path: '/bdc-prd-dbd/apply',
-    component: Apply
+    component: Apply,
+    meta: {
+      title: '指标申请'
+    }
   },
   // 2.3 二级入口：指标释义
   {
     path: '/bdc-prd-dbd/myinds',
-    component: MyInds
+    component: MyInds,
+    meta: {
+      title: '指标释义'
+    }
+  },
+  // 2.4 二级入口：重构指标申请
+  {
+    path: '/bdc-prd-dbd/newapply',
+    component: NewApply,
+    meta: {
+      title: '指标申请'
+    }
   },
   // 3.1 三级入口：ROI城市分析详情
   {
     path: '/bdc-prd-dbd/roi-city/:id',
-    component: RoiCity
+    component: RoiCity,
+    meta: {
+      title: 'ROI城市分析'
+    }
   },
   // 3.2 三级入口：ROI渠道分析详情
   {
     path: '/bdc-prd-dbd/roi-ch/:id',
-    component: RoiCh
+    component: RoiCh,
+    meta: {
+      title: 'ROI渠道分析'
+    }
   },
   {
     path: '/bdc-prd-dbd/editInd',
@@ -152,14 +188,8 @@ const store = new Vuex.Store({
 })
 
 let rel = router.beforeEach((to, from, next) => {
-  // 从路由的元信息中获取 title 属性
-  /* if (to.meta.title) {
-    document.title = to.meta.title;
-  }*/
-
   // console.log('URL查询对象', to.query);
 
-  // 从路由的元信息中获取 title 属性
   to.query.appVersion && Cookie.set('t8t-it-appVersion', to.query.appVersion);
   to.query.appType && Cookie.set('t8t-it-appType', to.query.appType);
   to.query.deviceId && Cookie.set('t8t-it-deviceId', to.query.deviceId);
@@ -196,6 +226,12 @@ let rel = router.beforeEach((to, from, next) => {
       });
     }, 3000);
   } */
+});
+
+router.afterEach((to, from) => {
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  }
 });
 
 /* eslint-disable no-new */
