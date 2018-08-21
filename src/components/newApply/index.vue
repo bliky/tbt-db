@@ -1,13 +1,13 @@
 <template>
-  <div style="background-color: #f6f6f6;">
+  <div style="padding: 10px 15px; margin-bottom: -50px;">
     <!-- 指标分类主面板 -->
     <div class="tbt-apply-main-pannel" :class="{active: applyActive}">
       <div class="tbt-apply-main-pannel_tilte">
         指标申请
-        <div class="tbt-apply-main-pannel_reset">清空重置</div>
+        <div class="tbt-apply-main-pannel_reset" @click="handleOnClickReset">清空重置</div>
       </div>
       <div class="tbt-apply-cells" style="margin: 20px 0 56px;">
-        <div class="tbt-apply-cell" :class="{ active: getIndContentByClassId(item.classId) }" v-for="(item, idx) in intClassList" @click="handleOnClickIndClass(item.classId, item.classCode)">
+        <div class="tbt-apply-cell" :class="{ active: getIndContentByClassId(item.classId) }" v-for="(item, idx) in indClassList" @click="handleOnClickIndClass(item.classId, item.classCode)">
           <div class="tbt-apply-cell_head">{{ item.className }}
             <div class="tbt-apply-cell_head-rt">
               <span class="tbt-apply-cell_arrow-left"></span>
