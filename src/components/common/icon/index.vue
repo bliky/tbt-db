@@ -75,4 +75,11 @@
   background-size: 16px 16px;
   background-image: url(../../../assets/image/clean@2x.png);
 }
+
+.tbt-icon-collect {
+  width: 26px;
+  height: 24px;
+  background-size: 26px 24px;
+  background-image: url(../../../assets/image/icon_collect@2x.png);
+}
 </style>
