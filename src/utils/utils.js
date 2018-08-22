@@ -54,7 +54,8 @@ const routData = {
   roiCh: id => { return { url: baseUrl + '/bdc-prd-dbd/roi-ch/' + id, title:'ROI渠道分析详情' } },
   indApplyNew: { url: baseUrl + '/bdc-prd-dbd/newapply', title:'指标申请' },
   applySelInd: id => { return { url: baseUrl + '/bdc-prd-dbd/apply-selind/' + id, title:'选择指标' } },
-  applySelDim: id => { return { url: baseUrl + '/bdc-prd-dbd/apply-seldim/' + id, title:'指标维度' } }
+  applySelDim: id => { return { url: baseUrl + '/bdc-prd-dbd/apply-seldim/' + id, title:'指标维度' } },
+  applySelCity: { url: baseUrl + '/bdc-prd-dbd/apply-selcity', title:'选择城市' }
 };
 
 export const navTo = is_dev ?
@@ -66,6 +67,10 @@ export const navToId = is_dev ?
   function (name, id) { let rout = { ...routData[name](id) }; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {rout.url += '?'+urlQuery;} /*console.log('callNative rount', rout);*/ callNative(1007, rout) };
 
 export const goToId = function (name, id) { let url = routData[name](id).url; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {url += '?'+urlQuery;} this.$router.push({ path: url }); };
+
+export const goTo = function (name) { let url = routData[name].url; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {url += '?'+urlQuery;} this.$router.push({ path: url }); };
+
+export const goBack = function () { this.$router.go(-1); };
 
 export const openFile = is_dev ?
   function (path, title='') { window.open(path); } :

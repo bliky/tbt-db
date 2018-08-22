@@ -82,4 +82,11 @@
   background-size: 26px 24px;
   background-image: url(../../../assets/image/icon_collect@2x.png);
 }
+
+.tbt-icon-chose {
+  width: 14px;
+  height: 14px;
+  background-size: 14px 14px;
+  background-image: url(../../../assets/image/icon_chose@2x.png);
+}
 </style>

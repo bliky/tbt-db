@@ -65,6 +65,31 @@ const fetchIndList = (commit, indClassId) => {
   })
 }
 
+const fetchDimList = (commit, indId) => {
+  let skey = {app: 'indApply', type: 'dim', indId};
+
+  let localCacheData = localCache(skey);
+  if (localCacheData) {
+    return new Promise((resolve, reject) => {
+      resolve(localCacheData);
+    });
+  }
+
+  commit('updateLoadingStatus', {isLoading: true}, { root: true });
+
+  return fetchDimAndAttr({
+    indId
+  }).then(data => {
+    if (!check(data)) { throw '指标维度数据为空或无效'; }
+
+    localCache(skey, data.result.rows);
+
+    setTimeout(commit('updateLoadingStatus', {isLoading: false}, { root: true }), 800);
+
+    return data.result.rows;
+  })
+}
+
 export default {
   namespaced: true,
   state: {
@@ -76,6 +101,10 @@ export default {
     }],
     // 指标列表对象 键:指标分类ID classId 值:指标列表 数组
     inds: {},
+    // 指标维度列表对象 键:指标ID indId 值:指标维度列表 数组
+    dims: {},
+    // 指标对象哈希表 键:指标ID indId 值:指标对象
+    indMap: {},
     applyFormData: {
       reason: '',       // 申请原因
       applyContent: ''  // 申请内容
@@ -104,6 +133,11 @@ export default {
 
       return indClass;
     },
+    getIndByIndId: state => indId => {
+      let ind = state.indMap[String(indId)];
+
+      return ind;
+    },
     applyActive (state) {
       return state.applyContentList.length;
     },
@@ -124,6 +158,14 @@ export default {
     },
     ['RESET_APPLY'] (state) {
       state.applyContentList = [];
+    },
+    ['PUSH_DIM_LIST'] (state, {indId, dimList}) {
+      Vue.set(state.dims, indId, dimList);
+    },
+    ['PUSH_IND_MAP'] (state, {indId, ind}) {
+      if (!state.indMap[String(indId)]) {
+        Vue.set(state.indMap, indId, ind);
+      }
     }
   },
   actions: {
@@ -137,6 +179,14 @@ export default {
         fetchIndList(commit, indClassId).then(indList => {
           commit('PUSH_IND_LIST', {indClassId, indList});
           resolve(indList);
+        })
+      });
+    },
+    getDimList ({ commit }, indId) {
+      return new Promise((resolve, reject) => {
+        fetchDimList(commit, indId).then(dimList => {
+          commit('PUSH_DIM_LIST', {indId, dimList});
+          resolve(dimList);
         })
       });
     }

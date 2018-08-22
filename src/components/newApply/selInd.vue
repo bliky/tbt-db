@@ -9,7 +9,7 @@
       </h2>
 
       <ul class="tbt-selind-list">
-        <li @click="handleOnClickInd(item.indId)" class="tbt-selind" :class="{seled: true}" v-for="(item, index) in indList">{{ index + '' + item.indName }}</li>
+        <li @click="handleOnClickInd(item.indId, item)" class="tbt-selind" :class="{seled: item.isummapply!='false'}" v-for="(item, index) in indList">{{ item.indName }}</li>
       </ul>
     </div>
 
@@ -44,6 +44,9 @@ export default {
     this.init();
   },
   methods: {
+    ...mapMutations('apply', {
+      pushIndMap: 'PUSH_IND_MAP'
+    }),
     ...mapActions('apply', ['getIndList']),
     init () {
       let classId = this.id;
@@ -56,7 +59,8 @@ export default {
         console.log('HTTP请求获取指标数据', indList);
       });
     },
-    handleOnClickInd (indId) {
+    handleOnClickInd (indId, ind) {
+      this.pushIndMap({indId, ind});
       goToId.call(this, 'applySelDim', indId);
     }
   }

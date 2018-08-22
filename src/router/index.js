@@ -15,6 +15,7 @@ import MyInds from '../components/my/MyInds';          // 指标释义
 import NewApply from '../components/newApply';         // 重构指标申请
 import ApplySelInd from '../components/newApply/selInd';       // 重构指标申请: 选择指标
 import ApplySelDim from '../components/newApply/selDim';       // 重构指标申请: 指标维度
+import ApplySelCity from '../components/newApply/selCity';     // 重构指标申请: 选择城市
 // 子页面
 import EditInd from '../components/board/EditInd';
 import Indesc from '../components/my/Indesc';
@@ -105,6 +106,14 @@ const routes = [
     component: ApplySelDim,
     meta: {
       title: '指标维度'
+    }
+  },
+  // 2.4.3 三级入口：重构指标申请/指标维度
+  {
+    path: '/bdc-prd-dbd/apply-selcity',
+    component: ApplySelCity,
+    meta: {
+      title: '选择城市'
     }
   },
   // 3.1 三级入口：ROI城市分析详情
