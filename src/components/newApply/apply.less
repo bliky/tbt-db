@@ -92,6 +92,7 @@ ul {
   color: #fff;
   background: #E3E3E3;
   border-radius: 2px;
+  cursor: pointer;
   &.active {
     background: #09C767;
   }
@@ -217,10 +218,24 @@ ul {
   border: 1px solid #E3E3E3;
   background: #FFF;
   color: #777;
-  &.seled {
+  position: relative;
+  .tbt-icon {
+    position: absolute;
+    right: 10px;
+    top: 13px;
+    display: none;
+  }
+  &.active {
     border-color: #09C767;
     background: #09C767;
     color: #fff;
+  }
+  &.disable {
+    color: #c4c4c4;
+    padding-right: 30px;
+    .tbt-icon {
+      display: block;
+    }
   }
 }
 
@@ -233,6 +248,7 @@ ul {
   background: #B7EFD3;
   color: #fff;
   text-align: center;
+  cursor: pointer;
 
   font: 18px/50px PingFangSC-Regular,sans-serif;;
   &.active {
@@ -358,12 +374,12 @@ ul {
   border-radius: 2px;
   text-align: center;
   font: 17px/48px  PingFangSC-Regular,sans-serif;
-  background: #09C767;
+  background: #B7EFD3;
   color: #fff;
-/*  &.active {
+  cursor: pointer;
+  &.active {
     background: #09C767;
-    color: #fff;
-  }*/
+  }
 }
 
 /* 城市选择 */
@@ -403,6 +419,25 @@ ul {
     color: #333333;
     margin: 0 5px 10px 0;
     padding: 0 25px;
+    position: relative;
+    .tbt-icon {
+      position: absolute;
+      right: 8px;
+      top: 10px;
+      display: none;
+    }
+    &.checked {
+      border-color: #09C767;
+      background: #09C767;
+      color: #fff;
+    }
+    &.disable {
+      // padding-right: 30px;
+      color: #c4c4c4;
+      .tbt-icon {
+        display: block;
+      }
+    }
   }
 }
 
@@ -420,8 +455,25 @@ ul {
       padding-left: 20px;
       font: 17px/50px PingFangSC-Regular,sans-serif;
       color: #333333;
+      position: relative;
       &+li {
         border-top: 1px solid #f6f6f6;
+      }
+      .tbt-icon {
+        position: absolute;
+        right: 30px;
+        top: 13px;
+        display: none;
+      }
+      &.checked {
+        .tbt-icon-checked {
+          display: block;
+        }
+      }
+      &.disable {
+        .tbt-icon-checkeded {
+          display: block;
+        }
       }
     }
   }
@@ -435,7 +487,7 @@ ul {
   width: 30px;
   overflow: hidden;
   text-align: center;
-  padding-top: 23px;
+  padding-top: 48px;
 
   font: 10px/14px PingFangSC-Medium,sans-serif;
   color: #999999;

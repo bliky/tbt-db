@@ -22,7 +22,7 @@
               <ul class="tbt-seldim-list">
                 <li v-for="attritem in item.dimAttrItem"
                     class="tbt-seldim"
-                    :class="{active: false, disable: attritem.isAttrApply!='false'}"
+                    :class="{active: isActive(attritem.attrId), disable: attritem.isAttrApply!='false'}"
                     @click="handleOnClickDimAttr(attritem)">
                   {{ attritem.dim_ind_name }}
                   <i class="tbt-icon tbt-icon-chose"></i></li>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="tbt-seldim-bot">
-      <div class="tbt-seldim-btn" :class="{active: true}">确认</div>
+      <div @click="handleOnClickConfirm" class="tbt-seldim-btn" :class="{active: checkedNum}">确认</div>
     </div>
   </div>
 </template>
@@ -48,17 +48,24 @@ import localDb from '../../common/db'
 export default {
   data () {
     return {
-      id: this.$route.params.id
+      id: this.$route.params.id,
+      indClass: localDb.get('indClass'),
+      classId: localDb.get('indClass').classId || '',
+      activeIds: []
     }
   },
   computed: {
     ...mapState('apply', ['dims']),
-    ...mapGetters('apply', ['getIndByIndId']),
+    ...mapGetters('apply', ['getIndByIndId', 'indDimIsActive']),
     ind () {
       return this.getIndByIndId(this.id);
     },
     dimList () {
       return this.dims[this.id];
+    },
+    // 选择的指标数目
+    checkedNum () {
+      return this.activeIds.length;
     }
   },
   mounted () {
@@ -66,6 +73,12 @@ export default {
   },
   methods: {
     ...mapActions('apply', ['getDimList']),
+    ...mapMutations('apply', {
+      addApply: 'ADD_APPLY_CONTENT',
+      delApply: 'DEL_APPLY_CONTENT',
+      addAttrToIndMap: 'PUSH_IND_DIM_ATTR',
+      dropAttrFromIndMap: 'DROP_IND_DIM_ATTR'
+    }),
     init () {
       let indId = this.id;
 
@@ -78,6 +91,17 @@ export default {
         console.log('HTTP请求获取指标维度数据', dimList);
       });
     },
+    isActive (id) {
+      let active = this.indDimIsActive(this.classId, id);
+      let idx = this.activeIds.indexOf(id);
+      if (active) {
+        idx === -1 && this.activeIds.push(id);
+      } else {
+        idx === -1 || this.activeIds.splice(idx, 1);
+      }
+
+      return active;
+    },
     handleOnClickCityMore (dim) {
       let hotCityList = dim.hotCityList;
       let otherCityList = dim.otherCityList;
@@ -87,10 +111,38 @@ export default {
       goTo.call(this, 'applySelCity');
     },
     handleOnClickCheckAll (dim) {
-      console.log('全选', dim.dimAttrItem);
+      dim.dimAttrItem.forEach(attr => {
+        if (attr.isAttrApply == 'false' && !this.isActive(attr.attrId)) {
+          this.addApply({
+            ...this.indClass,
+            id: attr.attrId,
+            name: attr.dim_ind_name
+          });
+          this.addAttrToIndMap({ indId: attr.indId, id: attr.attrId });
+        }
+      });
     },
     handleOnClickDimAttr (dimAttr) {
-      console.log('选择维度属性', dimAttr);
+      if (dimAttr.isAttrApply != 'false') return false;
+
+      if (this.isActive(dimAttr.attrId)) {
+        // 已经选择：删除维度
+        this.delApply({ classId: this.classId, id: dimAttr.attrId });
+        this.dropAttrFromIndMap({ indId: dimAttr.indId, id: dimAttr.attrId });
+      } else {
+        // 未选择：增加维度
+        this.addApply({
+          ...this.indClass,
+          id: dimAttr.attrId,
+          name: dimAttr.dim_ind_name
+        });
+        this.addAttrToIndMap({ indId: dimAttr.indId, id: dimAttr.attrId });
+      }
+    },
+    handleOnClickConfirm () {
+      if (!this.checkedNum) return false;
+
+      goBack.call(this);
     }
   }
 };

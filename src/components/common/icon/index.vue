@@ -69,6 +69,13 @@
   background-image: url(../../../assets/image/icon/checked@2x.png);
 }
 
+.tbt-icon-checkeded {
+  width: 24px;
+  height: 24px;
+  background-size: 24px 24px;
+  background-image: url(../../../assets/image/checked@2x.png);
+}
+
 .tbt-icon-close {
   width: 16px;
   height: 16px;

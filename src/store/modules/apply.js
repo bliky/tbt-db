@@ -109,24 +109,14 @@ export default {
       reason: '',       // 申请原因
       applyContent: ''  // 申请内容
     },
-    applyContentList: [
-      {
-        classId: 1,
-        className: '流量指标',
-        attrNameList: '北京外呼可售转化率，北京外呼可售转化率北京外呼可售转化率，北京外呼可售转化率，深圳登记，南京SEM，北京登记'
-      },
-      {
-        classId: 3,
-        className: '流量指标',
-        attrNameList: 'adf asdf'
-      }
-    ]
+    applyContentList: [],
+    indDimAttrCheckMap: {} // 指标ID获取 用户选择的维度属性数组
   },
   getters: {
     getIndContentByClassId: state => classId => {
       let indContent = state.applyContentList.find(item => item.classId == classId);
 
-      return indContent && indContent.attrNameList;
+      return indContent && indContent.indList.map(item => item.name).join('；');
     },
     getClassByClassId: state => classId => {
       let indClass = state.indClassList.find(item => item.classId == classId);
@@ -137,6 +127,20 @@ export default {
       let ind = state.indMap[String(indId)];
 
       return ind;
+    },
+    indDimIsActive: (state, getters) => (classId, id) => {
+      let applyContentList = state.applyContentList;
+      let idx = applyContentList.findIndex(applyItem => applyItem.classId == classId);
+
+      console.log('indDimIsActive', classId, id, idx);
+
+      if (idx === -1) return false;
+
+      let indList = applyContentList[idx].indList;
+      let idx2 = indList.findIndex(ind => ind.id == id);
+      if (idx2 === -1) return false;
+
+      return true;
     },
     applyActive (state) {
       return state.applyContentList.length;
@@ -158,6 +162,7 @@ export default {
     },
     ['RESET_APPLY'] (state) {
       state.applyContentList = [];
+      state.applyFormData.reason = '';
     },
     ['PUSH_DIM_LIST'] (state, {indId, dimList}) {
       Vue.set(state.dims, indId, dimList);
@@ -166,6 +171,55 @@ export default {
       if (!state.indMap[String(indId)]) {
         Vue.set(state.indMap, indId, ind);
       }
+    },
+    ['PUSH_IND_DIM_ATTR'] (state, {indId, id}) {
+      let indDimAttrCheckMap = state.indDimAttrCheckMap;
+      let attrList = indDimAttrCheckMap[String(indId)];
+      if (attrList) {
+        let idx = attrList.indexOf(id);
+        if (idx === -1) attrList.push(id);
+      } else {
+        indDimAttrCheckMap[String(indId)] = [id];
+      }
+    },
+    ['DROP_IND_DIM_ATTR'] (state, {indId, id}) {
+      let indDimAttrCheckMap = state.indDimAttrCheckMap;
+      let attrList = indDimAttrCheckMap[String(indId)];
+      if (attrList) {
+        let idx = attrList.indexOf(id);
+        if (idx !== -1) attrList.splice(idx, 1);
+      }
+    },
+    ['ADD_APPLY_CONTENT'] (state, { classId, className, id, name }) {
+      let applyContentList = state.applyContentList;
+      let idx = applyContentList.findIndex(applyItem => applyItem.classId == classId);
+
+      if (idx !== -1) {
+        let indList = applyContentList[idx].indList;
+        let idx2 = indList.findIndex(ind => ind.id == id);
+        if (idx2 === -1) {
+          indList.push({ id, name });
+        }
+      } else {
+        applyContentList.push({
+          classId,
+          className,
+          indList: [{ id, name }]
+        });
+      }
+    },
+    ['DEL_APPLY_CONTENT'] (state, { classId, id }) {
+      let applyContentList = state.applyContentList;
+      let idx = applyContentList.findIndex(applyItem => applyItem.classId == classId);
+
+      if (idx === -1)  return true;
+
+      let indList = applyContentList[idx].indList;
+      let idx2 = indList.findIndex(ind => ind.id == id);
+
+      if (idx2 === -1) return true;
+
+      indList.splice(idx2, 1);
     }
   },
   actions: {
@@ -187,6 +241,21 @@ export default {
         fetchDimList(commit, indId).then(dimList => {
           commit('PUSH_DIM_LIST', {indId, dimList});
           resolve(dimList);
+        })
+      });
+    },
+    submitApply ({ state, commit }) {
+      state.applyFormData.applyContent = state.applyContentList;
+      // 确认提交申请
+      commit('updateLoadingStatus', {isLoading: true, loadingText: '提交申请...'}, { root: true });
+
+      return new Promise((resolve, reject) => {
+        submitApply(state.applyFormData).then(data => {
+          resolve(data);
+          setTimeout(() => {
+            commit('updateLoadingStatus', {isLoading: false}, { root: true });
+            commit('RESET_APPLY');
+          }, 800);
         })
       });
     }

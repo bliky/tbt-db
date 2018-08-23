@@ -7,7 +7,7 @@
         <div class="tbt-apply-main-pannel_reset" @click="handleOnClickReset">清空重置</div>
       </div>
       <div class="tbt-apply-cells" style="margin: 20px 0 56px;">
-        <div class="tbt-apply-cell" :class="{ active: getIndContentByClassId(item.classId) }" v-for="(item, idx) in indClassList" @click="handleOnClickIndClass(item.classId, item.classCode)">
+        <div class="tbt-apply-cell" :class="{ active: getIndContentByClassId(item.classId) }" v-for="(item, idx) in indClassList" @click="handleOnClickIndClass(item)">
           <div class="tbt-apply-cell_head">{{ item.className }}
             <div class="tbt-apply-cell_head-rt">
               <span class="tbt-apply-cell_arrow-left"></span>
@@ -35,7 +35,7 @@
             <ul>
               <li v-for="item in applyContentList">
                 <h3>{{ item.className }}</h3>
-                <p>{{ item.attrNameList }}</p>
+                <p>{{ getIndContentByClassId(item.classId) }}</p>
               </li>
             </ul>
           </div>

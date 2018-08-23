@@ -4,7 +4,7 @@
       <router-view></router-view>
       <!-- <app-footer  slot="bottom"></app-footer> -->
     </view-box>
-    <loading text="数据加载中..." v-model="isLoading"></loading>
+    <loading :text="loadingText" v-model="isLoading"></loading>
   </div>
 </template>
 
@@ -72,9 +72,7 @@ export default {
   mounted () {
   },
   computed: {
-    ...mapState({
-      isLoading: state => state.isLoading
-    })
+    ...mapState(['isLoading', 'loadingText'])
   },
   data () {
     return {

@@ -412,6 +412,7 @@ export default {
           }
           this.insertApplyContent = applyContent;
           this.uname = Cookie.get('t8t-oa-username');
+          console.log('提交申请', {reason: this.textareaValue, applyContent: applyContent});
           this.$http.fetch(
             'dsa/dataBoard/submitApply',
             {
@@ -437,6 +438,7 @@ export default {
                   big_data_chargers = arr.big_data_chargers;
                 }
                 this.uname = Cookie.get('t8t-oa-username');
+                console.log('插入申请', {applyId: apply_id, reason: response.data, applyContent: applyContent});
                 this.$http.fetch(
                   'dsa/dataBoard/insertApply',
                   {
