@@ -3,6 +3,7 @@ import { goToId } from '../../utils/utils'
 import mLoading from '../common/mixins/loading'
 import { XDialog, Group, XTextarea, TransferDomDirective as TransferDom } from 'vux'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
+import localDb from '../../common/db'
 
 const winW = window.innerWidth;
 const winH = window.innerHeight;
@@ -36,14 +37,15 @@ export default {
     ...mapMutations('apply', {
       resetApply: 'RESET_APPLY'
     }),
-    ...mapActions('apply', ['getIndClassList']),
+    ...mapActions('apply', ['getIndClassList', 'submitApply']),
     handleOnClickReset () {
       confirm.call(this, '清空重置', '确定要清空所有指标吗?')
       .then(() => {
         this.resetApply();
       });
     },
-    handleOnClickIndClass (classId, classCode) {
+    handleOnClickIndClass ({classId, className}) {
+      localDb.set('indClass', {classId, className});
       goToId.call(this, 'applySelInd', classId);
     },
     handleOnClickSubmit () {
@@ -55,23 +57,15 @@ export default {
     },
     handleOnClickConfirm () {
       if (!this.applyValid) return false;
-      this.applyDialogShow = false;
+
+      this.submitApply().then(data => {
+        console.log('submitApply', data);
+        this.applyDialogShow = false;
+      });
     }
   },
   mounted () {
     this.getIndClassList();
-    // fetchDimAndAttr({
-    //   indId: ''
-    // }).then(data => {
-    //   console.log('fetchDimAndAttr', data);
-    // })
-
-    // submitApply({
-    //   reason: '',       // 申请原因
-    //   applyContent: ''  // 申请内容
-    // }).then(data => {
-    //   console.log('submitApply', data);
-    // })
 
     // insertApply({
     //   oapplyStatus: 200,

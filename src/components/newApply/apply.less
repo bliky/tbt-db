@@ -1,3 +1,7 @@
+ul {
+  list-style: none;
+}
+
 .tbt-apply-main-pannel {
   background: #fff;
   border: 1px solid #E3E3E3;
@@ -88,6 +92,7 @@
   color: #fff;
   background: #E3E3E3;
   border-radius: 2px;
+  cursor: pointer;
   &.active {
     background: #09C767;
   }
@@ -199,22 +204,37 @@
   list-style: none;
   padding-top: 20px;
   overflow: hidden;
-  .tbt-selind {
-    box-sizing: border-box;
-    height: 40px;
-    padding: 0 18px;
-    text-align: center;
-    border-radius: 100px;
-    float: left;
-    margin: 0 15px 20px 0;
-    font: 15px/38px PingFangSC-Regular,sans-serif;
-    border: 1px solid #E3E3E3;
-    background: #FFF;
-    color: #777;
-    &.seled {
-      border-color: #09C767;
-      background: #09C767;
-      color: #fff;
+}
+
+.tbt-selind {
+  box-sizing: border-box;
+  height: 40px;
+  padding: 0 18px;
+  text-align: center;
+  border-radius: 100px;
+  float: left;
+  margin: 0 15px 20px 0;
+  font: 15px/38px PingFangSC-Regular,sans-serif;
+  border: 1px solid #E3E3E3;
+  background: #FFF;
+  color: #777;
+  position: relative;
+  .tbt-icon {
+    position: absolute;
+    right: 10px;
+    top: 13px;
+    display: none;
+  }
+  &.active {
+    border-color: #09C767;
+    background: #09C767;
+    color: #fff;
+  }
+  &.disable {
+    color: #c4c4c4;
+    padding-right: 30px;
+    .tbt-icon {
+      display: block;
     }
   }
 }
@@ -228,9 +248,254 @@
   background: #B7EFD3;
   color: #fff;
   text-align: center;
+  cursor: pointer;
 
   font: 18px/50px PingFangSC-Regular,sans-serif;;
   &.active {
     background: #09C767;
+  }
+}
+
+.tbt-seldim-pannel {
+  padding-bottom: 30px;
+}
+
+.tbt-seldim-indinfo {
+  padding: 20px;
+}
+
+.tbt-seldim-indinfo_hd {
+  overflow: hidden;
+  .tbt-selind {
+    margin: 0;
+  }
+  &+.tbt-seldim-indinfo_bd {
+    margin-top: 10px;
+  }
+}
+
+.tbt-seldim-indinfo_bd {
+  p {
+    font: 12px/17px PingFangSC-Regular,sans-serif;
+    font-size: 12px;
+    color: #C1C1C1;
+  }
+}
+
+.tbt-seldim-glist {
+
+}
+
+.tbt-seldim_hd {
+  vertical-align: middle;
+  display: table;
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+  height: 22px;
+  font: 16px/22px PingFangSC-Medium,sans-serif;
+  color: #333333;
+  padding-left: 20px;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 4px;
+    height: 14px;
+    background: #09C767;
+  }
+}
+
+.tbt-seldim_hdrt {
+  position: absolute;
+  top: 0;
+  right: 20px;
+  height: 22px;
+  font: 14px/22px PingFangSC-Medium,sans-serif;
+  color: #09C767;
+}
+
+.tbt-seldim_bd {
+  padding: 15px 8px 25px 20px;
+}
+
+.tbt-seldim-list {
+  overflow: hidden;
+}
+
+.tbt-seldim {
+  float: left;
+  margin: 0 12px 15px 0;
+  padding: 0 15px;
+  border-radius: 100px;
+  box-sizing: border-box;
+  text-align: center;
+  height: 30px;
+  font: 12px/28px PingFangSC-Regular,sans-serif;
+  border: 1px solid #EEEEEE;
+  background: #FFF;
+  color: #777;
+  position: relative;
+  .tbt-icon {
+    position: absolute;
+    right: 4px;
+    top: 7px;
+    display: none;
+  }
+  &.active {
+    border-color: #09C767;
+    background: #09C767;
+    color: #fff;
+  }
+  &.disable {
+    padding-right: 22px;
+    color: #c4c4c4;
+    .tbt-icon {
+      display: block;
+    }
+  }
+}
+
+.tbt-seldim-bot {
+  border-top: 1px solid #f0f0f0;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 15px 20px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.tbt-seldim-btn {
+  height: 48px;
+  border-radius: 2px;
+  text-align: center;
+  font: 17px/48px  PingFangSC-Regular,sans-serif;
+  background: #B7EFD3;
+  color: #fff;
+  cursor: pointer;
+  &.active {
+    background: #09C767;
+  }
+}
+
+/* 城市选择 */
+.tbt-selcity {
+  padding: 20px 0 50px;
+  background: #f6f6f6;
+}
+
+.tbt-title-cell {
+  position: relative;
+  padding: 0 20px;
+  font: 14px/20px PingFangSC-Regular,sans-serif;
+  color: #999999;
+  margin-bottom: 5px;
+}
+
+.tbt-title-cell_rt {
+  position: absolute;
+  right: 30px;
+  top: 0;
+  font: 14px/20px PingFangSC-Regular,sans-serif;
+  color: #09C767;
+}
+
+.tbt-hotcity {
+  padding: 0 0 10px 15px;
+  overflow: hidden;
+  li {
+    float: left;
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    border-radius: 2px;
+    height: 35px;
+    text-align: center;
+    box-sizing: border-box;
+    font: 15px/33px PingFangSC-Regular,sans-serif;
+    color: #333333;
+    margin: 0 5px 10px 0;
+    padding: 0 25px;
+    position: relative;
+    .tbt-icon {
+      position: absolute;
+      right: 8px;
+      top: 10px;
+      display: none;
+    }
+    &.checked {
+      border-color: #09C767;
+      background: #09C767;
+      color: #fff;
+    }
+    &.disable {
+      // padding-right: 30px;
+      color: #c4c4c4;
+      .tbt-icon {
+        display: block;
+      }
+    }
+  }
+}
+
+.tbt-citylist {
+  background: #EEEEEE;
+  h3 {
+    padding: 0 20px;
+    font: 14px/24px PingFangSC-Regular,sans-serif;
+    color: #999999;
+  }
+  ul {
+    background: #fff;
+    li {
+      height: 50px;
+      padding-left: 20px;
+      font: 17px/50px PingFangSC-Regular,sans-serif;
+      color: #333333;
+      position: relative;
+      &+li {
+        border-top: 1px solid #f6f6f6;
+      }
+      .tbt-icon {
+        position: absolute;
+        right: 30px;
+        top: 13px;
+        display: none;
+      }
+      &.checked {
+        .tbt-icon-checked {
+          display: block;
+        }
+      }
+      &.disable {
+        .tbt-icon-checkeded {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+.tbt-letter-navsider {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  overflow: hidden;
+  text-align: center;
+  padding-top: 48px;
+
+  font: 10px/14px PingFangSC-Medium,sans-serif;
+  color: #999999;
+  ul {
+    li {
+      &+li {
+        margin-top: 10px;
+      }
+    }
   }
 }

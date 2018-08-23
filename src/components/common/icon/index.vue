@@ -69,6 +69,13 @@
   background-image: url(../../../assets/image/icon/checked@2x.png);
 }
 
+.tbt-icon-checkeded {
+  width: 24px;
+  height: 24px;
+  background-size: 24px 24px;
+  background-image: url(../../../assets/image/checked@2x.png);
+}
+
 .tbt-icon-close {
   width: 16px;
   height: 16px;
@@ -81,5 +88,12 @@
   height: 24px;
   background-size: 26px 24px;
   background-image: url(../../../assets/image/icon_collect@2x.png);
+}
+
+.tbt-icon-chose {
+  width: 14px;
+  height: 14px;
+  background-size: 14px 14px;
+  background-image: url(../../../assets/image/icon_chose@2x.png);
 }
 </style>

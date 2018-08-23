@@ -6,11 +6,13 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    isLoading: false
+    isLoading: false,
+    loadingText: '数据加载中...'
   },
   mutations: {
     updateLoadingStatus (state, payload) {
-      state.isLoading = payload.isLoading
+      state.isLoading = payload.isLoading;
+      state.loadingText = payload.loadingText || '数据加载中...';
     }
   },
   modules: {
