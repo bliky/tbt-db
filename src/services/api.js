@@ -4,7 +4,7 @@ import Cookie from 'js-cookie';
 import {toast} from '../common/notify';
 import Vue from 'vue';
 
-const force_production = true;  // 强制使用生产模式: 本地开发时，调用测试接口时打开，提交代码前设置为false
+const force_production = false;  // 强制使用生产模式: 本地开发时，调用测试接口时打开，提交代码前设置为false
 const is_dev = !force_production && process.env.NODE_ENV !== 'production';
 
 // API注册
@@ -33,6 +33,7 @@ const request = (apiName, params) => {
           let data = res.data;
           if (data.status != 200) {
             console.error('[request]异常状态status: ', data.status, data.message || '');
+            return Promise.reject(data);
           }
           return data
          });

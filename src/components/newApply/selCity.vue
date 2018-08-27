@@ -118,6 +118,9 @@ export default {
     handleOnClickCity (city) {
       if (city.isAttrApply == 'true') return false;
 
+      let { indId, dimId, dimName, attrId, dim_ind_name } = city;
+      let indItem = { indId, dimId, dimName, attrId, dim_ind_name };
+
       if (this.isActive(city.attrId)) {
         // 已经选择：删除维度
         this.delApply({ classId: this.classId, id: city.attrId });
@@ -126,7 +129,8 @@ export default {
         this.addApply({
           ...this.indClass,
           id: city.attrId,
-          name: city.dim_ind_name
+          name: city.dim_ind_name,
+          indItem
         });
       }
     },

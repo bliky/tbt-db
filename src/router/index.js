@@ -170,6 +170,7 @@ const router = new VueRouter({
 });
 
 let rel = router.beforeEach((to, from, next) => {
+  // console.log('beforeEach location.href', location.href);
   // console.log('URL查询对象', to.query);
 
   to.query.appVersion && Cookie.set('t8t-it-appVersion', to.query.appVersion);
@@ -211,6 +212,7 @@ let rel = router.beforeEach((to, from, next) => {
 });
 
 router.afterEach((to, from) => {
+  // console.log('afterEach location.href', location.href);
   if (to.meta.title) {
     document.title = to.meta.title;
   }

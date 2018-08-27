@@ -9,7 +9,8 @@
       </h2>
 
       <ul class="tbt-selind-list">
-        <li @click="handleOnClickInd(item)" class="tbt-selind" :class="{active: indActive(item), disable: item.isummapply=='true'}" v-for="(item, index) in indList">{{ item.indName }}
+        <!-- disable: item.isummapply=='true' isummapply 不代表 指标禁用 -->
+        <li @click="handleOnClickInd(item)" class="tbt-selind" :class="{ active: indActive(item), disable: false }" v-for="(item, index) in indList">{{ item.indName }}
           <i class="tbt-icon tbt-icon-chose"></i>
         </li>
       </ul>
@@ -66,16 +67,16 @@ export default {
     init () {
       let classId = this.id;
       if (this.inds[String(classId)]) {
-        console.log('内存读取指标数据', this.inds[String(classId)]);
+        // console.log('内存读取指标数据', this.inds[String(classId)]);
         return true;
       }
 
       this.getIndList(classId).then(indList => {
-        console.log('HTTP请求获取指标数据', indList);
+        // console.log('HTTP请求获取指标数据', indList);
       });
     },
     handleOnClickInd (ind) {
-      if (ind.isummapply=='true') return false;
+      // if (ind.isummapply=='true') return false;
 
       this.pushIndMap({indId: ind.indId, ind});
       goToId.call(this, 'applySelDim', ind.indId);

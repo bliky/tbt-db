@@ -1,6 +1,8 @@
 import Vue from 'vue'
+import axios from 'axios'
 import storage from '../../common/storage'
 import localDb from '../../common/db'
+import Cookie from 'js-cookie'
 import { buildQuery } from '../../common/stringify'
 import { fetchIndClass, fetchInd, fetchDimAndAttr, submitApply, insertApply } from '../../services/api'
 
@@ -132,7 +134,7 @@ export default {
       let applyContentList = state.applyContentList;
       let idx = applyContentList.findIndex(applyItem => applyItem.classId == classId);
 
-      console.log('indDimIsActive', classId, id, idx);
+      // console.log('indDimIsActive', classId, id, idx);
 
       if (idx === -1) return false;
 
@@ -190,7 +192,7 @@ export default {
         if (idx !== -1) attrList.splice(idx, 1);
       }
     },
-    ['ADD_APPLY_CONTENT'] (state, { classId, className, id, name }) {
+    ['ADD_APPLY_CONTENT'] (state, { classId, className, id, name, indItem }) {
       let applyContentList = state.applyContentList;
       let idx = applyContentList.findIndex(applyItem => applyItem.classId == classId);
 
@@ -198,13 +200,13 @@ export default {
         let indList = applyContentList[idx].indList;
         let idx2 = indList.findIndex(ind => ind.id == id);
         if (idx2 === -1) {
-          indList.push({ id, name });
+          indList.push({ id, name, ...indItem });
         }
       } else {
         applyContentList.push({
           classId,
           className,
-          indList: [{ id, name }]
+          indList: [{ id, name, ...indItem }]
         });
       }
     },
@@ -251,12 +253,56 @@ export default {
 
       return new Promise((resolve, reject) => {
         submitApply(state.applyFormData).then(data => {
-          resolve(data);
-          setTimeout(() => {
-            commit('updateLoadingStatus', {isLoading: false}, { root: true });
-            commit('RESET_APPLY');
-          }, 800);
-        })
+          let { apply_id, big_data_chargers, index_chargers } = data.result.rows[0];
+
+          return insertApply({
+            oapplyStatus: 200,
+            applyId: apply_id,
+            reason: data,                         // 提交OA返回状态
+            applyContent: state.applyContentList  // 申请内容
+          }).then(data => {
+            let oaContent = [];
+            state.applyContentList.forEach(item => {
+              oaContent.push({ classId: item.classId, className: item.className, indexes: item.indList });
+            });
+            // 提交OA流程
+            let uid = Cookie.get('t8t-it-uid') || '-';
+            let params = new URLSearchParams();
+
+            params.append('applyer_uid', uid);// 流程发起人uid
+            params.append('apply_id', apply_id);// 数据中心指标记录ID
+            params.append('apply_indexes', JSON.stringify(oaContent));// 申请指标内容
+            params.append('reason', state.applyFormData.reason);// 申请原因
+            params.append('index_chargers', index_chargers);// 指标负责人uids
+            params.append('big_data_chargers', big_data_chargers);// 数据中心审批人uids
+            let appVersion = Cookie.get('t8t-it-appVersion') || '-';
+            let appType = Cookie.get('t8t-it-appType') || '-';
+            let deviceId = Cookie.get('t8t-it-deviceId') || '-';
+            let version = Cookie.get('t8t-it-version') || '-';
+            let accountId = Cookie.get('t8t-it-accountId') || '-';
+            let token = Cookie.get('t8t-it-token') || '-';
+            let oappUrl = 'https://oapp.to8to.com/app/data-board/apply?uid=' + uid + '&token=' + token
+                            + '&appVersion=' + appVersion + '&appType=' + appType + '&deviceId=' + deviceId
+                            + '&version=' + version + '&accountId=' + accountId + '&token=' + token;
+            // 提交申请
+            let param = { applyer_uid: uid, apply_id: apply_id, apply_indexes: JSON.stringify(oaContent), reason: state.applyFormData.reason, index_chargers, big_data_chargers };
+
+            return axios.post(oappUrl, params).then(res => {
+              let data = res.data;
+              if (data.code != 200) {
+                console.error('[request]异常状态status: ', data.status, data.message || '');
+                reject(data);
+              } else {
+                commit('updateLoadingStatus', {isLoading: false}, { root: true });
+                commit('RESET_APPLY');
+                resolve(data);
+              }
+            }).catch(err => {
+              reject(err);
+              commit('updateLoadingStatus', {isLoading: false}, { root: true });
+            });
+          });
+        });
       });
     }
   }

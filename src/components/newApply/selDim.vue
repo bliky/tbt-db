@@ -83,12 +83,12 @@ export default {
       let indId = this.id;
 
       if (this.dims[String(indId)]) {
-        console.log('内存读取指标维度数据', this.dims[String(indId)]);
+        // console.log('内存读取指标维度数据', this.dims[String(indId)]);
         return true;
       }
 
       this.getDimList(indId).then(dimList => {
-        console.log('HTTP请求获取指标维度数据', dimList);
+        // console.log('HTTP请求获取指标维度数据', dimList);
       });
     },
     isActive (id) {
@@ -125,6 +125,9 @@ export default {
     handleOnClickDimAttr (dimAttr) {
       if (dimAttr.isAttrApply != 'false') return false;
 
+      let { indId, dimId, dimName, attrId, dim_ind_name } = dimAttr;
+      let indItem = { indId, dimId, dimName, attrId, dim_ind_name };
+
       if (this.isActive(dimAttr.attrId)) {
         // 已经选择：删除维度
         this.delApply({ classId: this.classId, id: dimAttr.attrId });
@@ -134,7 +137,8 @@ export default {
         this.addApply({
           ...this.indClass,
           id: dimAttr.attrId,
-          name: dimAttr.dim_ind_name
+          name: dimAttr.dim_ind_name,
+          indItem
         });
         this.addAttrToIndMap({ indId: dimAttr.indId, id: dimAttr.attrId });
       }

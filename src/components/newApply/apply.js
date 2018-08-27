@@ -59,21 +59,25 @@ export default {
       if (!this.applyValid) return false;
 
       this.submitApply().then(data => {
-        console.log('submitApply', data);
+        this.$vux.toast.show({
+          type: 'success',
+          text: '申请成功',
+          width: '80%',
+          time: 2000
+        });
+
         this.applyDialogShow = false;
+      }).catch(err => {
+        this.$vux.toast.show({
+          type: 'warn',
+          text: '提交OA申请失败' + '[' + (err.status || '') + ']' + (err.message || ''),
+          width: '80%',
+          time: 3000
+        });
       });
     }
   },
   mounted () {
     this.getIndClassList();
-
-    // insertApply({
-    //   oapplyStatus: 200,
-    //   applyId: '',
-    //   reason: '',      // 提交OA返回状态
-    //   applyContent: '' // 申请内容
-    // }).then(data => {
-    //   console.log('insertApply', data);
-    // })
   }
 }
