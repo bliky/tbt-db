@@ -1,0 +1,155 @@
+@import '../common/var.less';
+@import '../common/mixin.less';
+
+.tbt-search-bar {
+  height: 40px;
+  padding: 8px 12px;
+  position: relative;
+  &.focus {
+    .tbt-search {
+      margin-right: 45px;
+    }
+    .tbt-search-cannel {
+      display: block;
+    }
+  }
+}
+
+.tbt-search-result {
+  position: absolute;
+  z-index: 10;
+  top: 56px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f6f6f6;
+}
+
+.tbt-searchlist {
+  padding-left: 15px;
+  background: #fff;
+  li {
+    color: #666666;
+    position: relative;
+    height: 44px;
+    font: 14px/44px PingFangSC-Regular,sans-serif;
+    &+li {
+      border-top: 1px solid #f6f6f6;
+    }
+    .tbt-icon {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+    }
+    .tbt-icon-checked {
+      display: none;
+    }
+    &.checked {
+      .tbt-icon-uncheck {
+        display: none;
+      }
+      .tbt-icon-checked {
+        display: block;
+      }
+    }
+  }
+}
+
+.tbt-search {
+  background: #FFFFFF;
+  border: 1px solid #F3F3F3;
+  border-radius: 20px;
+  height: 40px;
+  position: relative;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  transition: margin .5s;
+}
+
+.tbt-search-cannel {
+  position: absolute;
+  right: 12px;
+  top: 18px;
+  font: 15px/20px PingFangSC-Regular,sans-serif;
+  color: #06C792;
+  transition: transform .5s;
+  display: none;
+}
+
+.tbt-search-icon {
+  position: absolute;
+  left: 20px;
+  top: 14px;
+  width: 13px;
+  height: 13px;
+}
+
+.tbt-clear-icon {
+  position: absolute;
+  right: 15px;
+  top: 7px;
+  width: 16px;
+  height: 16px;
+}
+
+.tbt-search-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 23px;
+  padding-right: 18px;
+  border: 0;
+  float: left;
+  height: 20px;
+  color: #666;
+  font: 14px/20px PingFangSC-Regular,sans-serif;
+  &:focus {
+    border: none;
+    outline: none;
+  }
+  &::-webkit-input-placeholder {
+    color: #999;
+  }
+  &:-moz-placeholder {
+    color: #999;
+  }
+  &::-moz-placeholder {
+    color: #999;
+  }
+  &:-ms-input-placeholder {
+    color: #999;
+  }
+}
+
+.tbt-sel-tag-list {
+  overflow: hidden;
+  margin-top: 10px;
+  padding-left: 15px;
+  li {
+    float: left;
+    text-align: center;
+    height: 35px;
+    font: 15px/35px PingFangSC-Regular,sans-serif;
+    color: #333;
+    padding: 0 17px;
+    border-radius: 100px;
+    border: 1px solid #EEEEEE;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    &.checked {
+      background: #06C792;
+      color: #fff;
+    }
+  }
+}
+
+.tbt-citylist ul li .tbt-icon.tbt-icon-uncheck {
+  display: block;
+}
+
+.tbt-citylist ul li.checked .tbt-icon.tbt-icon-uncheck {
+  display: none;
+}
+
+.tbt-letter-navsider.minspace ul li + li {
+    margin-top: 3px;
+}

@@ -6,6 +6,8 @@
       <div v-if="accessGroup[0].group.funnel" @click="navTo('funnel')" class="tbt-nav-grid-item"><img src="../assets/image/funnel@2x.png"><p>转化漏斗</p></div>
 
       <div v-if="accessGroup[0].group.roi" @click="navTo('roi')" class="tbt-nav-grid-item"><img src="../assets/image/roi@2x.png"><p>ROI分析</p></div>
+
+      <div v-if="accessGroup[0].group.roi" @click="navTo('promotion')" class="tbt-nav-grid-item"><img src="../assets/image/promotion@2x.png"><p>推广分析</p></div>
     </div>
   </div>
 
