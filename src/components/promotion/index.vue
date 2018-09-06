@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #f6f6f6;">
+  <div style="background-color: #f6f6f6;position: absolute;bottom: 0;top: 0;left: 0;right: 0;overflow: auto;">
     <div @click="handleOnClickDate" v-show="!isSelectChShow" style="height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
       数据更新至 {{ lastUpdateDate }}
       <div class="tbt-pannel_title-rt">
@@ -33,9 +33,9 @@
       <table class="tbt-promotion-table">
         <tr>
           <th style="width: 84px;">指标</th>
-          <th>9月</th>
-          <th>8月</th>
-          <th>7月</th>
+          <th>{{ months[0] }}</th>
+          <th>{{ months[1] }}</th>
+          <th>{{ months[2] }}</th>
         </tr>
         <tr v-for="row in tableData" @click="$emit('onClickRow', row)">
           <td>{{ row.class_name }}</td>
@@ -52,31 +52,29 @@
           <div class="flex-container" style="height: 315px;">
             <div style="width: 126px;background: #F7F9FD;">
               <ul class="v-menu-lt">
-                <li>全部渠道</li>
-                <li class="active">搜索类</li>
-                <li>信息流</li>
+                <li :class="{active: chCate==0}" @click="ch_cate(0)">全部渠道</li>
+                <li :class="{active: chCate==1}" @click="ch_cate(1)">搜索类</li>
+                <li :class="{active: chCate==2}" @click="ch_cate(2)">信息流</li>
               </ul>
             </div>
             <div class="flex-item" style="overflow-y: auto;">
-              <ul class="v-menu-rt">
+              <ul v-show="chCate==0" class="v-menu-rt">
+                <li>全部渠道</li>
+              </ul>
+              <ul v-show="chCate==1" class="v-menu-rt">
                 <li>全部搜索类</li>
-                <li>百度H5</li>
-                <li>百度PC</li>
-                <li>搜狗</li>
-                <li>神马</li>
-                <li>神马</li>
-                <li>神马</li>
-                <li>神马</li>
-                <li>神马</li>
-                <li>神马</li>
-                <li>神马</li>
-                <li>神马</li>
+                <li v-for="ch in chs.search">{{ ch.name }}</li>
+              </ul>
+              <ul v-show="chCate==2" class="v-menu-rt">
+                <li>全部信息流类</li>
+                <li v-for="ch in chs.feed">{{ ch.name }}</li>
               </ul>
             </div>
           </div>
           <div style="padding: 14px 20px 0;">
-            <div style="font: 17px/50px PingFangSC-Regular,sans-serif; background: #06C792;border: 1px solid #06C792;border-radius: 2px;color:#fff;text-align:center;">确定</div>
-            <div style="font: 17px/50px PingFangSC-Regular,sans-serif; color:#06C792; text-align:center;">取消</div>
+            <div @click="" style="font: 17px/50px PingFangSC-Regular,sans-serif; background: #06C792;border: 1px solid #06C792;border-radius: 2px;color:#fff;text-align:center;">确定</div>
+
+            <div @click="tog_sel_ch" style="font: 17px/50px PingFangSC-Regular,sans-serif; color:#06C792; text-align:center;">取消</div>
           </div>
         </div>
       </div>
