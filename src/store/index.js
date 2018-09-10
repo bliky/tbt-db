@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import apply from './modules/apply';
+import promotion from './modules/promotion';
 
 Vue.use(Vuex);
 
@@ -16,7 +17,8 @@ const store = new Vuex.Store({
     }
   },
   modules: {
-    apply
+    apply,
+    promotion
   }
 });
 

@@ -23,10 +23,11 @@ sn | path | module | status | author | description
 0 | bdc-prd-dbd/board | board/Board | ok | ken.li | 首页
 1 | bdc-prd-dbd/dashboard | dashboard/index | ok | ken.li | 转化漏斗
 2 | bdc-prd-dbd/roi | roi/index | ok | ken.li | ROI分析
-3 | bdc-prd-dbd/dataBoard | board/DataBoard | ok | richard.luo | 指标看板
-4 | bdc-prd-dbd/apply | apply/Apply | ok | richard.luo | 指标申请
-5 | bdc-prd-dbd/myinds | my/MyInds | ok | richard.luo | 指标释义
-6 | bdc-prd-dbd/newapply | newApply/index | dev | ken.li | 重构指标申请
+3 | bdc-prd-dbd/promotion | promotion/index | ok | ken.li | 推广分析
+4 | bdc-prd-dbd/dataBoard | board/DataBoard | ok | richard.luo | 指标看板
+5 | bdc-prd-dbd/apply | apply/Apply | ok | richard.luo | 指标申请
+6 | bdc-prd-dbd/myinds | my/MyInds | ok | richard.luo | 指标释义
+7 | bdc-prd-dbd/newapply | newApply/index | dev | ken.li | 重构指标申请
 
 ## 子页面
 

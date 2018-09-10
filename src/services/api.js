@@ -18,7 +18,11 @@ const apis = {
   ind: 'dsa/dataBoard/indList', // 指标申请页二级入口：获取指标列表
   dimAndAttr: 'dsa/dataBoard/dimAndAttrList', // 指标申请页三级入口：获取指标属性维度
   submitApply: 'dsa/dataBoard/submitApply', // 提交指标申请
-  insertApply: 'dsa/dataBoard/insertApply' // 插入指标申请
+  insertApply: 'dsa/dataBoard/insertApply', // 插入指标申请
+  promotionCh: 'dsa/dataBoard/promotion/getChannelList',  // 推广渠道
+  promotionCity: 'dsa/dataBoard/promotion/getCityList',   // 推广城市
+  promotion: 'dsa/dataBoard/promotion/getMainList', // 查询推广专题指标
+  promotionTrend: 'dsa/dataBoard/promotion/getTrendList'                // 查询推广专题趋势数据
 };
 
 // 服务请求
@@ -87,4 +91,24 @@ export const submitApply = params => {
 // 指标申请：插入申请
 export const insertApply = params => {
   return request('insertApply', params);
+};
+
+// 推广分析：获取推广渠道
+export const fetchPromotionCh = params => {
+  return request('promotionCh', params);
+};
+
+// 推广分析：获取推广城市
+export const fetchPromotionCity = params => {
+  return request('promotionCity', params);
+};
+
+// 推广分析：获取推广指标
+export const fetchPromotion = params => {
+  return request('promotion', params);
+};
+
+// 推广分析：获取推广趋势
+export const fetchPromotionTrend = params => {
+  return request('promotionTrend', params);
 };

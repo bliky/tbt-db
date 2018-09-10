@@ -1,12 +1,15 @@
 import VueRouter from 'vue-router';
 import Cookie from 'js-cookie';
 import localDb from '../common/db';
+import localStorage from '../common/storage';
 import { buildQuery } from '../common/stringify';
 
 // APP入口页面
 import Home from '../components/Home';           // 首页
 import Dashboard from '../components/dashboard'; // 转化漏斗
 import Roi from '../components/roi';             // ROI分析
+import Promotion from '../components/promotion'; // 推广分析
+import PromotionSelcity from '../components/promotion/selcity'; // 推广分析 选择城市
 import RoiCity from '../components/roi/city';    // ROI城市分析
 import RoiCh from '../components/roi/ch';        // ROI渠道分析
 import DataBoard from '../components/board/DataBoard'; // 指标看板
@@ -58,6 +61,38 @@ const routes = [
     component: Roi,
     meta: {
       title: 'ROI分析'
+    }
+  },
+  // 1.2.1 三级入口：ROI城市分析详情
+  {
+    path: '/bdc-prd-dbd/roi-city/:id',
+    component: RoiCity,
+    meta: {
+      title: 'ROI城市分析'
+    }
+  },
+  // 1.2.2 三级入口：ROI渠道分析详情
+  {
+    path: '/bdc-prd-dbd/roi-ch/:id',
+    component: RoiCh,
+    meta: {
+      title: 'ROI渠道分析'
+    }
+  },
+  // 1.3 二级入口：推广分析
+  {
+    path: '/bdc-prd-dbd/promotion',
+    component: Promotion,
+    meta: {
+      title: '推广分析'
+    }
+  },
+  // 1.3.1 三级入口：推广分析 选择城市
+  {
+    path: '/bdc-prd-dbd/promotion-selcity',
+    component: PromotionSelcity,
+    meta: {
+      title: '选择城市'
     }
   },
   // 2.1 二级入口：指标看板
@@ -116,22 +151,7 @@ const routes = [
       title: '选择城市'
     }
   },
-  // 3.1 三级入口：ROI城市分析详情
-  {
-    path: '/bdc-prd-dbd/roi-city/:id',
-    component: RoiCity,
-    meta: {
-      title: 'ROI城市分析'
-    }
-  },
-  // 3.2 三级入口：ROI渠道分析详情
-  {
-    path: '/bdc-prd-dbd/roi-ch/:id',
-    component: RoiCh,
-    meta: {
-      title: 'ROI渠道分析'
-    }
-  },
+  // 老模块 待重构
   {
     path: '/bdc-prd-dbd/editInd',
     component: EditInd
@@ -189,7 +209,31 @@ let rel = router.beforeEach((to, from, next) => {
     localDb.set('urlQuery', buildQuery({uName: to.query.uName}));
   }
 
-  rel();
+  // rel();
+
+  try {
+    if (router.app.$el) {
+      const _to = to.path
+      const _from = from.path
+      const scrollTop = router.app.$el.querySelector('#vux_view_box_body').scrollTop
+      const h = localStorage.get(_to)
+      if ((h && h.history) || (_from && _from.indexOf(_to) === 0)) {
+        router.app.$el.className = 'transition-reverse'
+        h.history = false
+        localStorage.set(_to, h)
+      } else {
+        localStorage.set(_from, {
+          scrollTop: scrollTop,
+          history: true
+        })
+        if (router.app.$el) router.app.$el.className = ''
+      }
+    }
+  } catch (e) {
+    // swallo error
+    console.log(e)
+  }
+
   next();
   /* if (!to.query.uName) {
     setTimeout(()=>{

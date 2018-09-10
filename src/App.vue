@@ -1,7 +1,9 @@
 <template>
   <div id="app" style="-webkit-overflow-scrolling: touch; height: 100%">
     <view-box ref="viewBox" body-padding-top="0px">
-      <router-view></router-view>
+      <transition name="slide">
+        <router-view></router-view>
+      </transition>
       <!-- <app-footer  slot="bottom"></app-footer> -->
     </view-box>
     <loading :text="loadingText" v-model="isLoading"></loading>

@@ -262,6 +262,92 @@ export default {
         }, Math.random() * 1000 + 1000);
       });
     });
+
+    // 推广分析：获取推广渠道
+    mock.onPost('/promotionCh').reply(config => {
+      let resp = {
+        status: 200
+      };
+      resp.result = {
+         search: Mock.mock({'search|100-200': [
+                            {
+                              id: '@increment',
+                              name: '@ctitle'
+                            }
+                          ]}).search,
+         feed: Mock.mock({'feed|100-200': [
+                            {
+                              id: '@increment',
+                              name: '@ctitle'
+                            }
+                          ]}).feed
+      }
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, resp]);
+        }, Math.random() * 1000 + 1000);
+      });
+    });
+
+    // 推广分析：获取推广城市
+    mock.onPost('/promotionCity').reply(config => {
+      let resp = {
+        status: 200
+      };
+
+      resp.result = { rows: genLetterCities() };
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, resp]);
+        }, Math.random() * 1000 + 1000);
+      });
+    });
+
+    // 推广分析：获取推广指标
+    mock.onPost('/promotion').reply(config => {
+      let params = JSON.parse(config.data);
+      let resp = {
+        status: 200
+      };
+      resp.result = {
+        update_time: moment().format('YYYY-MM-DD HH:mm:ss'),
+        rows: Mock.mock({'rows|11': [
+                            {
+                              class_id: '@increment',
+                              class_name: '@ctitle',
+                              this_month_value: '@float(10000, 1000000, 2, 2)',
+                              last_month_value: '@float(10000, 1000000, 2, 2)',
+                              last_two_month_value: '@float(10000, 1000000, 2, 2)'
+                            }
+                          ]}).rows
+      };
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, resp]);
+        }, Math.random() * 1000 + 1000);
+      });
+    });
+
+    // 推广分析：获取推广趋势
+    mock.onPost('/promotionTrend').reply(config => {
+      let params = JSON.parse(config.data);
+      let resp = {
+        status: 200
+      };
+      resp.result = {
+        day: genCommonTrendData(params.dt, 'day', 30, 10000, 20000),
+        month: genCommonTrendData(params.dt, 'month', 12, 10000, 20000)
+      };
+
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve([200, resp]);
+        }, Math.random() * 1000 + 1000);
+      });
+    });
   }
 };
 
@@ -326,4 +412,47 @@ function genCityTop10Ch () {
 
 function genNumber() {
   return Mock.Random.natural(500, 15000);
+}
+
+function genCommonTrendData (dt, dtMode, count=30, min, max, desStr) {
+  let cdy = moment(dt);
+  let trends = [];
+  let dateFormat = 'YYYY-MM-DD';
+  var desStr = desStr || `@float(${min}, ${max}, 2, 2)`;
+
+  switch (dtMode) {
+    case 'day':
+      dateFormat = 'YYYY-MM-DD';
+      break;
+    case 'month':
+      dateFormat = 'YYYY-MM';
+      break;
+  }
+
+  for (let i=0; i<count; i++) {
+    trends.push(Mock.mock({
+      dt: cdy.format(dateFormat),
+      val: desStr
+    }));
+    cdy.subtract(1, dtMode);
+  }
+  trends.reverse();
+  return trends;
+}
+
+function genLetterCities () {
+  let rows = [];
+  ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'].forEach(letter => {
+    rows.push({
+      letter: letter,
+      list: Mock.mock({'list|10-30': [
+                      {
+                        id: '@increment',
+                        name: '@city'
+                      }
+                    ]}).list
+    });
+  });
+
+  return rows;
 }
