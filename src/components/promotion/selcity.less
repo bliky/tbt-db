@@ -4,7 +4,12 @@
 .tbt-search-bar {
   height: 40px;
   padding: 8px 12px;
-  position: relative;
+  position: absolute;
+  background: #f6f6f6;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 5;
   &.focus {
     .tbt-search {
       margin-right: 45px;
@@ -21,7 +26,8 @@
   top: 56px;
   left: 0;
   right: 0;
-  bottom: 0;
+  bottom: 50px;
+  overflow: auto;
   background: #f6f6f6;
 }
 
@@ -150,6 +156,12 @@
   display: none;
 }
 
+.tbt-citylist ul li.disabled .tbt-icon {
+  &.tbt-icon-uncheck, &.tbt-icon-checked {
+    display: none;
+  }
+}
+
 .tbt-letter-navsider.minspace ul li + li {
     margin-top: 3px;
 }
@@ -157,6 +169,6 @@
 .search-empty {
   width: 300px;
   height: 260px;
-  margin: 40px auto;
+  margin: 40px auto 0;
   background: url(../../assets/image/search_empty@2x.png) center/300px 260px no-repeat;
 }

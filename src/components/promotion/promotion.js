@@ -18,7 +18,6 @@ export default {
       chartWidth: winW - 26,
       chartHeight: 171,
       winW: winW,
-      optsWidth: winW,
       dialogWidth: winW - 26,
       isTooltipShow: false,
       isTrendDialogShow: false,
@@ -32,18 +31,18 @@ export default {
         month: [
           { dt: '2018-09', val: 100 }
         ]
+      },
+      chsPicked: {
+        all: true,
+        all_search: false,
+        all_feed: false,
+        search: [],
+        feed: []
       }
     }
   },
-  watch: {
-    opts () {
-      this.$nextTick(() => {
-        this.getOptsWidth();
-      });
-    }
-  },
   computed: {
-    ...mapState('promotion', ['months', 'lastUpdateDate', 'tableData', 'trends', 'isSelectChShow', 'chCate', 'chs', 'opts']),
+    ...mapState('promotion', ['months', 'lastUpdateDate', 'tableData', 'trends', 'isSelectChShow', 'chCate', 'chs', 'opts', 'optsWidth', 'requestParams']),
     ...mapGetters('promotion', [])
   },
   filters: {
@@ -60,74 +59,83 @@ export default {
   },
   mounted () {
     this.init();
-    this.$on('onClickRow', row => {
-      // this.openLoading('加载趋势数据..');
-      // this.currentTrend.class_name = row.class_name;
-      // fetchPromotionTrend({ dt: '2018-09-06' }).then(data => {
-      //   let { day, month } = data.result;
-
-      //   this.currentTrend.day = day;
-      //   this.currentTrend.month = month;
-      //   this.isTrendDialogShow = true;
-      //   this.$nextTick(() => {
-      //     this.closeLoading();
-      //   });
-      // });
-    })
-    this.getOptsWidth();
   },
   methods: {
     ...mapMutations('promotion', {
       ch_cate: 'MOD_CH_CATE',
       add_opt: 'PUSH_OPT',
-      tog_sel_ch: 'TOG_SEL_CH'
+      tog_sel_ch: 'TOG_SEL_CH',
+      submit_ch_sel: 'SUBMIT_CH_SEL'
     }),
     ...mapActions('promotion', ['getChs', 'getPromotion', 'getPromotionTrend']),
     init () {
+      this.resetChSel();
       if (this.tableData.length) {
-        console.log('已有数据');
         return;
       }
-      this.getPromotion({
-        dt: '2018-09',
-        city_type: 0,
-        city_params: [],
-        ch_type: 0,
-        ch_params: {
-          search: [],
-          feed: []
-        }
-      }).then(data => {
-        console.log('推广数据', data);
-      });
+      this.getPromotion();
     },
-    getOptsWidth () {
-      let opts = document.getElementById('promotionOpts');
-      if (!opts) return 600;
+    // 初始重置渠道渠道选择
+    resetChSel () {
+      let { ch_type, ch_params } = this.requestParams;
+      let chsPicked = this.chsPicked;
 
-      let optsLens = [];
-
-      for (let i=0,len=opts.childNodes.length; i<len; i++) {
-        optsLens.push(opts.childNodes[i].offsetWidth + 10);
+      chsPicked.all = ch_type === 1;
+      chsPicked.all_search = ch_params.all_search;
+      chsPicked.all_feed = ch_params.all_feed;
+      chsPicked.search = [].concat(ch_params.search);
+      chsPicked.feed = [].concat(ch_params.feed);
+    },
+    // 提交渠道选择
+    submitChSel () {
+      this.submit_ch_sel(this.chsPicked);
+    },
+    pickCh (type, id) {
+      let chsPicked = this.chsPicked;
+      switch (type) {
+        case 'all':
+        case 'all_search':
+        case 'all_feed':
+          if (chsPicked[type]) chsPicked[type] = false;
+          else chsPicked[type] = true;
+          break;
+        case 'search':
+        case 'feed':
+          let idx = chsPicked[type].indexOf(id);
+          if (idx === -1) chsPicked[type].push(id);
+          else chsPicked[type].splice(idx, 1);
+          break;
       }
-
-      //let sum = opts.childNode.reduce((sum, item, idx, arr)=>{
-      //   console.log({sum, item, idx, arr});
-      //   return sum+item.offsetWidth;
-      // }, 0);
-      // console.log({sum});
-
-      let sum = optsLens.reduce((sum, item)=>{
-        return sum+item;
-      });
-
-      this.optsWidth = sum + 26;
-      return sum;
+      if (chsPicked.all || chsPicked.all_search) {
+        chsPicked.search = [];
+      }
+      if (chsPicked.all || chsPicked.all_feed) {
+        chsPicked.feed = [];
+      }
     },
     handleOnClickChSelect () {
       this.tog_sel_ch();
+      if (!this.isSelectChShow) {
+        this.resetChSel();
+      }
       if (this.chs.search.length) return;
       this.getChs();
+    },
+    handleOnChConfirm () {
+      this.tog_sel_ch();
+      this.submitChSel();
+      this.getPromotion();
+    },
+    handleOnChCancel () {
+      this.tog_sel_ch();
+      this.resetChSel();
+    },
+    handleOnClickRow (row) {
+      this.getPromotionTrend(row.class_id).then(data => {
+        let { day, month } = data;
+        this.isTrendDialogShow = true;
+        this.currentTrend = { class_name: row.class_name,  day, month };
+      });
     },
     handleOnClickCitySelect () {
       goTo.call(this, 'promotionSelcity');

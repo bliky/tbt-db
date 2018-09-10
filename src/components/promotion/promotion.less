@@ -161,3 +161,39 @@
     top: 0;
   }
 }
+
+.tbt-chlist ul li {
+  position: relative;
+  .tbt-icon {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    display: none;
+  }
+}
+
+.tbt-chlist ul li.checked {
+  .tbt-icon.tbt-icon-uncheck {
+    display: none;
+  }
+  .tbt-icon.tbt-icon-checked {
+    display: block;
+  }
+}
+
+.tbt-chlist ul li.disabled {
+  .tbt-icon.tbt-icon-uncheck {
+    display: none;
+  }
+  .tbt-icon.tbt-icon-checked {
+    display: none;
+  }
+}
+
+.tbt-chlist ul li .tbt-icon.tbt-icon-uncheck {
+  display: block;
+}
+
+
+
+

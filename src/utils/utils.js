@@ -46,7 +46,7 @@ const baseUrl = is_dev ? '' : 'https://dbdbigdata.to8to.com';
 const routData = {
   funnel: { url: baseUrl + '/bdc-prd-dbd/dashboard', title:'转化漏斗' },
   roi: { url: baseUrl + '/bdc-prd-dbd/roi', title:'ROI分析' },
-  promotion: { url: baseUrl + '/bdc-prd-dbd/promotion', title:'推广分析' },
+  promotion: { path: '/bdc-prd-dbd/promotion', url: baseUrl + '/bdc-prd-dbd/promotion', title:'推广分析' },
   promotionSelcity: { path: '/bdc-prd-dbd/promotion-selcity', url: baseUrl + '/bdc-prd-dbd/promotion-selcity', title:'选择城市' },
   indView: { url: baseUrl + '/bdc-prd-dbd/dataBoard', title:'指标看板' },
   indApply: { url: baseUrl + '/bdc-prd-dbd/apply', title:'指标申请' },

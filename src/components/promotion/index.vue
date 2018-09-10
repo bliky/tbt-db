@@ -8,7 +8,8 @@
           <div v-show="isTooltipShow" v-click-outside="clickTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px; bottom: -10px;`">
             <div class="tbt-tooltip-arrow-up"></div>
             <p>
-              选择日期范围内，实际发生的发起线索次数、新增线索数、可售、分派、扣款、签约全流程的漏斗转化数据。其中日、周、月粒度，分别为当日、当周、当月实际发生的统计数
+              1、每日14点左右更新数据的指标：消费现金、点击成本、新增成本、跟踪可售成本、发布可售成本、ROI、收入；<br>
+              2、其他指标于每日上午10点左右更新数据
             </p>
           </div>
         </div>
@@ -37,7 +38,7 @@
           <th>{{ months[1] }}</th>
           <th>{{ months[2] }}</th>
         </tr>
-        <tr v-for="row in tableData" @click="$emit('onClickRow', row)">
+        <tr v-for="row in tableData" @click="handleOnClickRow(row)">
           <td>{{ row.class_name }}</td>
           <td>{{ row.this_month_value|filter-number('0,0.00') }}</td>
           <td>{{ row.last_month_value|filter-number('0,0.00') }}</td>
@@ -57,30 +58,49 @@
                 <li :class="{active: chCate==2}" @click="ch_cate(2)">信息流</li>
               </ul>
             </div>
-            <div class="flex-item" style="overflow-y: auto;">
+            <div class="flex-item tbt-chlist" style="overflow-y: auto;">
               <ul v-show="chCate==0" class="v-menu-rt">
-                <li>全部渠道</li>
+                <li :class="{checked: chsPicked.all}" @click="pickCh('all', true)">
+                  全部渠道
+                  <i class="tbt-icon tbt-icon-checked"></i>
+                  <i class="tbt-icon tbt-icon-uncheck"></i>
+                </li>
               </ul>
               <ul v-show="chCate==1" class="v-menu-rt">
-                <li>全部搜索类</li>
-                <li v-for="ch in chs.search">{{ ch.name }}</li>
+                <li :class="{disabled: chsPicked.all, checked: chsPicked.all_search}" @click="pickCh('all_search', true)">
+                  全部搜索类
+                  <i class="tbt-icon tbt-icon-checked"></i>
+                  <i class="tbt-icon tbt-icon-uncheck"></i>
+                </li>
+                <li :class="{disabled: chsPicked.all || chsPicked.all_search, checked: chsPicked.search.indexOf(ch.id)!==-1}" @click="pickCh('search', ch.id)" v-for="ch in chs.search">
+                  {{ ch.name }}
+                  <i class="tbt-icon tbt-icon-checked"></i>
+                  <i class="tbt-icon tbt-icon-uncheck"></i>
+                </li>
               </ul>
               <ul v-show="chCate==2" class="v-menu-rt">
-                <li>全部信息流类</li>
-                <li v-for="ch in chs.feed">{{ ch.name }}</li>
+                <li :class="{disabled: chsPicked.all, checked: chsPicked.all_feed}" @click="pickCh('all_feed', true)">全部信息流类
+                  <i class="tbt-icon tbt-icon-checked"></i>
+                  <i class="tbt-icon tbt-icon-uncheck"></i>
+                </li>
+                <li :class="{disabled: chsPicked.all || chsPicked.all_feed, checked: chsPicked.feed.indexOf(ch.id)!==-1}" @click="pickCh('feed', ch.id)" v-for="ch in chs.feed">
+                  {{ ch.name }}
+                  <i class="tbt-icon tbt-icon-checked"></i>
+                  <i class="tbt-icon tbt-icon-uncheck"></i>
+                </li>
               </ul>
             </div>
           </div>
           <div style="padding: 14px 20px 0;">
-            <div @click="" style="font: 17px/50px PingFangSC-Regular,sans-serif; background: #06C792;border: 1px solid #06C792;border-radius: 2px;color:#fff;text-align:center;">确定</div>
+            <div @click="handleOnChConfirm" style="font: 17px/50px PingFangSC-Regular,sans-serif; background: #06C792;border: 1px solid #06C792;border-radius: 2px;color:#fff;text-align:center;">确定</div>
 
-            <div @click="tog_sel_ch" style="font: 17px/50px PingFangSC-Regular,sans-serif; color:#06C792; text-align:center;">取消</div>
+            <div @click="handleOnChCancel" style="font: 17px/50px PingFangSC-Regular,sans-serif; color:#06C792; text-align:center;">取消</div>
           </div>
         </div>
       </div>
     <!-- </transition> -->
 
-    <!-- 指标确认弹框 -->
+    <!-- 查看趋势图弹框 -->
     <div v-transfer-dom>
       <x-dialog v-model="isTrendDialogShow" :hide-on-blur="true" :dialog-style="{maxWidth: dialogWidth + 'px', width: dialogWidth + 'px', height: '255px', borderRadius: '3px'}">
         <div class="tbt-pro-dialog">

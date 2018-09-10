@@ -19,10 +19,10 @@ const apis = {
   dimAndAttr: 'dsa/dataBoard/dimAndAttrList', // 指标申请页三级入口：获取指标属性维度
   submitApply: 'dsa/dataBoard/submitApply', // 提交指标申请
   insertApply: 'dsa/dataBoard/insertApply', // 插入指标申请
-  promotionCh: '',          // 推广渠道
-  promotionCity: '',        // 推广城市
-  promotion: '',       // 查询推广专题指标
-  promotionTrend: ''   // 查询推广专题趋势数据
+  promotionCh: 'dsa/dataBoard/promotion/getChannelList',  // 推广渠道
+  promotionCity: 'dsa/dataBoard/promotion/getCityList',   // 推广城市
+  promotion: 'dsa/dataBoard/promotion/getMainList', // 查询推广专题指标
+  promotionTrend: 'dsa/dataBoard/promotion/getTrendList'                // 查询推广专题趋势数据
 };
 
 // 服务请求

@@ -1,7 +1,7 @@
 <template>
 <div style="overflow: hidden; width: 100%;">
   <v-chart :data="chartData" ref="chart" :width="width"  :height="height">
-    <v-scale x :tick-count="5" :nice="true" :sortable='false' :formatter="xAxisFormatter" />
+    <v-scale x :tick-count="4" :nice="true" :sortable='false' :formatter="xAxisFormatter" />
     <v-scale y :tick-count="5" :nice="true" :min='0' :formatter="yAxisFormatter" />
     <v-line shape="smooth" :colors="colorLine"/>
     <v-area shape="smooth" :colors="colorArea"/>
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { VChart, VLine, VArea, VScale, VTooltip } from '../f2'
+import { VChart, VGuide, VLine, VArea, VScale, VTooltip } from '../f2'
 import { filterXAxis } from '../../../../common/filter'
 import numeral from 'numeral'
 
@@ -41,6 +41,7 @@ export default {
   },
   components: {
     VChart,
+    VGuide,
     VArea,
     VLine,
     VScale,
@@ -51,6 +52,29 @@ export default {
       this.chartData = newval;
       this.$nextTick(() => {
         this.$refs.chart.render();
+        let chart = this.$refs.chart.chart;
+        // let point = chart.getPosition(newval[newval.length-1]);
+        // console.log('chart', chart, point);
+        // chart.showTooltip(point);
+        let lastVal = newval[newval.length-1].val;
+        chart.guide().tag({
+          direct: 'tl',
+          background: {
+            padding: [ 4, 6 ], // tag 内边距，用法同 css 盒模型的 padding
+            radius: 2, // tag 圆角
+            fill: '#1890FF', // tag 背景填充颜色
+            fillOpacity: 0.5
+          },
+          textStyle: {
+            fontSize: 12, // 字体大小
+            fill: '#fff' // 字体颜色
+          },
+          position () {
+            return ['max', lastVal];
+          },
+          content: lastVal
+        });
+        chart.render();
       });
     }
   },
@@ -58,6 +82,7 @@ export default {
   },
   data () {
     let that = this;
+    that.data[that.data.length-1];
     return {
       chartData: this.data,
       colorLine: [[0, '#00E9A9'], [0.5, '#00E9A9'], [1, '#00E9A9']],
@@ -84,6 +109,9 @@ export default {
   computed: {
   },
   methods: {
+    lastVal () {
+      return this.data[this.data.length-1].val;
+    },
     xAxisFormatter (val) {
       return filterXAxis(val);
     },
