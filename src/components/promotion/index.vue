@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #f6f6f6;position: absolute;bottom: 0;top: 0;left: 0;right: 0;overflow: auto;">
+  <div style="background-color: #f6f6f6;position: fixed;bottom: 0;top: 0;left: 0;right: 0;overflow: auto;">
     <div v-show="!isSelectChShow" style="height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
       数据更新至 {{ lastUpdateDate }}
       <div class="tbt-pannel_title-rt">
