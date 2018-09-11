@@ -3,7 +3,7 @@
     <div class="tbt-search-bar" :class="{focus: isSearchFocus}">
       <div class="tbt-search">
         <div class="tbt-search-icon"><i class="tbt-icon tbt-icon-search" style="position: relative; top: -7px;"></i></div>
-        <input v-focus @focus="isSearchFocus=true" class="tbt-search-input" v-model="searchKeyword" placeholder="输入城市名搜索"></input>
+        <input autofocus="autofocus" @focus="isSearchFocus=true" class="tbt-search-input" v-model="searchKeyword" placeholder="输入城市名搜索"></input>
         <div class="tbt-clear-icon" v-show="searchKeyword" @click="searchKeyword=''">
           <i class="tbt-icon tbt-icon-delete"></i>
         </div>
