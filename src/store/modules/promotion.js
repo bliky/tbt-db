@@ -105,11 +105,20 @@ const fetchPromotionTrendList = (commit, params) => {
   return fetchPromotionTrend(params).then(data => {
     if (!check(data)) { throw '城市数据无效'; }
 
-    localCache(skey, data.result);
+    // 强制转换数值格式
+    let { day, month } = data.result;
+    let fday = day.map(d => {
+      return { dt:d.dt, val: parseFloat(d.val) };
+    })
+    let fmonth = month.map(d => {
+      return { dt:d.dt, val: parseFloat(d.val) };
+    })
+    let fdata = { day: fday, month: fmonth };
+    localCache(skey, fdata);
 
     setTimeout(commit('updateLoadingStatus', {isLoading: false}, { root: true }), 800);
 
-    return data.result;
+    return fdata;
   })
 }
 

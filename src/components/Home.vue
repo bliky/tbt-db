@@ -7,7 +7,7 @@
 
       <div v-if="accessGroup[0].group.roi" @click="navTo('roi')" class="tbt-nav-grid-item"><img src="../assets/image/roi@2x.png"><p>ROI分析</p></div>
 
-      <div v-if="accessGroup[0].group.roi" @click="navTo('promotion')" class="tbt-nav-grid-item"><img src="../assets/image/promotion@2x.png"><p>推广分析</p></div>
+      <div v-if="accessGroup[0].group.promotion" @click="navTo('promotion')" class="tbt-nav-grid-item"><img src="../assets/image/promotion@2x.png"><p>推广分析</p></div>
     </div>
   </div>
 
@@ -20,12 +20,12 @@
     </div>
   </div>
 
-  <div class="tbt-nav-g">
+<!--   <div class="tbt-nav-g">
     <div class="tbt-nav-t">指标看板(重构模块)</div>
     <div class="tbt-nav-grid">
       <div @click="navTo('indApplyNew')" class="tbt-nav-grid-item"><img src="../assets/image/apply@2x.png"><p>指标申请</p></div>
     </div>
-  </div>
+  </div> -->
 
   <div style="position: absolute; bottom: 30px; left: 0; width: 100%; z-index: 600;">
     <div style="font: 13px/18px PingFangSC-Regular; color: #C1C1C1; letter-spacing: 0; text-align: center; width: 160px; margin: 0 auto;"><divider style="color: #c1c1c1;">土巴兔大数据</divider></div>
@@ -50,7 +50,8 @@ export default {
           title: '专题分析',
           group: {
             funnel: false,
-            roi: false
+            roi: false,
+            promotion: false
           }
         }
       ]
@@ -78,6 +79,14 @@ export default {
         return urlIsAccess({ url });
       }).then(res => {
         g['roi'] = res.result.isAccess.toString() === 'true';
+
+        url = '/bdc-prd-dbd/promotion';
+
+        return urlIsAccess({ url });
+      }).then(res => {
+        console.log('promotion', res);
+        g['promotion'] = res.result.isAccess.toString() === 'true';
+        console.log(this.accessGroup[0].group);
       });
     },
     navTo(name) {
