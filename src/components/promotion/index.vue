@@ -1,5 +1,16 @@
 <template>
-  <div style="background-color: #f6f6f6;">
+  <div style="
+  background-color: #f6f6f6;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;">
     <div v-show="!isSelectChShow" style="height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
       数据更新至 {{ lastUpdateDate }}
       <div class="tbt-pannel_title-rt">
@@ -30,7 +41,7 @@
       </div>
     </div>
 
-    <div class="tbt-pannel" style="padding: 0 0 44px; border-bottom: 1px solid #EEEEEE; margin-bottom: -29px;">
+    <div class="tbt-pannel" style="overflow: hidden; padding: 0 0 44px; border-bottom: 1px solid #EEEEEE; margin-bottom: -29px;">
       <table class="tbt-promotion-table">
         <tr>
           <th style="width: 84px;">指标</th>
