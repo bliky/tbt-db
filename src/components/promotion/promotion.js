@@ -32,6 +32,13 @@ export default {
           { dt: '2018-09', val: 100 }
         ]
       },
+      preChsPicked: {
+        all: false,
+        all_search: false,
+        all_feed: false,
+        search: [],
+        feed: []
+      },
       chsPicked: {
         all: true,
         all_search: false,
@@ -91,27 +98,79 @@ export default {
       this.submit_ch_sel(this.chsPicked);
     },
     pickCh (type, id) {
+      let preChsPicked = this.preChsPicked;
       let chsPicked = this.chsPicked;
+      let idx = -1;
       switch (type) {
         case 'all':
+          if (chsPicked.all) {
+            // 恢复之前选择
+            this.chsPicked = { ...preChsPicked }
+            chsPicked.all = false;
+          } else {
+            // 保存当前选择
+            this.preChsPicked = { ...chsPicked }
+
+            chsPicked.all = true;
+            chsPicked.all_search = false;
+            chsPicked.all_feed = false;
+            chsPicked.search = [];
+            chsPicked.feed = [];
+          }
+          break;
         case 'all_search':
+          chsPicked.all = false;
+          if (chsPicked.all_search) {
+            // 恢复之前选择的搜索渠道
+            chsPicked.search = [].concat(preChsPicked.search);
+
+            chsPicked.all_search = false;
+          } else {
+            // 保存当前选择渠道
+            preChsPicked.search = [].concat(chsPicked.search);
+
+            chsPicked.all_search = true;
+            chsPicked.search = [];
+          }
+          break;
         case 'all_feed':
-          if (chsPicked[type]) chsPicked[type] = false;
-          else chsPicked[type] = true;
+          chsPicked.all = false;
+          if (chsPicked.all_feed) {
+            // 恢复之前选择的搜索渠道
+            chsPicked.feed = [].concat(preChsPicked.feed);
+
+            chsPicked.all_feed = false;
+          } else {
+            // 保存当前选择渠道
+            preChsPicked.feed = [].concat(chsPicked.feed);
+
+            chsPicked.all_feed = true;
+            chsPicked.feed = [];
+          }
           break;
         case 'search':
+          chsPicked.all = false;
+          chsPicked.all_search = false;
+
+          idx = chsPicked[type].indexOf(id);
+          if (idx === -1) chsPicked[type].push(id);
+          else chsPicked[type].splice(idx, 1);
+          break;
         case 'feed':
-          let idx = chsPicked[type].indexOf(id);
+          chsPicked.all = false;
+          chsPicked.all_feed = false;
+
+          idx = chsPicked[type].indexOf(id);
           if (idx === -1) chsPicked[type].push(id);
           else chsPicked[type].splice(idx, 1);
           break;
       }
-      if (chsPicked.all || chsPicked.all_search) {
-        chsPicked.search = [];
-      }
-      if (chsPicked.all || chsPicked.all_feed) {
-        chsPicked.feed = [];
-      }
+      // if (chsPicked.all || chsPicked.all_search) {
+      //   chsPicked.search = [];
+      // }
+      // if (chsPicked.all || chsPicked.all_feed) {
+      //   chsPicked.feed = [];
+      // }
     },
     handleOnClickChSelect () {
       this.tog_sel_ch();
@@ -139,9 +198,6 @@ export default {
     },
     handleOnClickCitySelect () {
       goTo.call(this, 'promotionSelcity');
-    },
-    handleOnClickDate () {
-      this.add_opt({name: '乌鲁木齐'});
     },
     clickTooltipOutside (e) {
       let _class = e.target._prevClass;

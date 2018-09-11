@@ -1,6 +1,6 @@
 <template>
   <div style="background-color: #f6f6f6;position: absolute;bottom: 0;top: 0;left: 0;right: 0;overflow: auto;">
-    <div @click="handleOnClickDate" v-show="!isSelectChShow" style="height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
+    <div v-show="!isSelectChShow" style="height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
       数据更新至 {{ lastUpdateDate }}
       <div class="tbt-pannel_title-rt">
         <div class="tbt-tooltip-wrapper" style="top: 0; right: 15px; width: 30px; height: 30px; line-height: 30px;">
@@ -67,23 +67,23 @@
                 </li>
               </ul>
               <ul v-show="chCate==1" class="v-menu-rt">
-                <li :class="{disabled: chsPicked.all, checked: chsPicked.all_search}" @click="pickCh('all_search', true)">
+                <li :class="{checked: chsPicked.all_search}" @click="pickCh('all_search', true)">
                   全部搜索类
                   <i class="tbt-icon tbt-icon-checked"></i>
                   <i class="tbt-icon tbt-icon-uncheck"></i>
                 </li>
-                <li :class="{disabled: chsPicked.all || chsPicked.all_search, checked: chsPicked.search.indexOf(ch.id)!==-1}" @click="pickCh('search', ch.id)" v-for="ch in chs.search">
+                <li :class="{checked: chsPicked.search.indexOf(ch.id)!==-1}" @click="pickCh('search', ch.id)" v-for="ch in chs.search">
                   {{ ch.name }}
                   <i class="tbt-icon tbt-icon-checked"></i>
                   <i class="tbt-icon tbt-icon-uncheck"></i>
                 </li>
               </ul>
               <ul v-show="chCate==2" class="v-menu-rt">
-                <li :class="{disabled: chsPicked.all, checked: chsPicked.all_feed}" @click="pickCh('all_feed', true)">全部信息流类
+                <li :class="{checked: chsPicked.all_feed}" @click="pickCh('all_feed', true)">全部信息流类
                   <i class="tbt-icon tbt-icon-checked"></i>
                   <i class="tbt-icon tbt-icon-uncheck"></i>
                 </li>
-                <li :class="{disabled: chsPicked.all || chsPicked.all_feed, checked: chsPicked.feed.indexOf(ch.id)!==-1}" @click="pickCh('feed', ch.id)" v-for="ch in chs.feed">
+                <li :class="{checked: chsPicked.feed.indexOf(ch.id)!==-1}" @click="pickCh('feed', ch.id)" v-for="ch in chs.feed">
                   {{ ch.name }}
                   <i class="tbt-icon tbt-icon-checked"></i>
                   <i class="tbt-icon tbt-icon-uncheck"></i>
