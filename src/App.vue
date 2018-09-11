@@ -1,10 +1,12 @@
 <template>
   <div id="app" style="-webkit-overflow-scrolling: touch; height: 100%">
     <view-box ref="viewBox" body-padding-top="0px">
-      <router-view></router-view>
+      <transition name="slide">
+        <router-view></router-view>
+      </transition>
       <!-- <app-footer  slot="bottom"></app-footer> -->
     </view-box>
-    <loading text="数据加载中..." v-model="isLoading"></loading>
+    <loading :text="loadingText" v-model="isLoading"></loading>
   </div>
 </template>
 
@@ -72,9 +74,7 @@ export default {
   mounted () {
   },
   computed: {
-    ...mapState({
-      isLoading: state => state.isLoading
-    })
+    ...mapState(['isLoading', 'loadingText'])
   },
   data () {
     return {

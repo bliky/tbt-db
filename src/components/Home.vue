@@ -6,6 +6,8 @@
       <div v-if="accessGroup[0].group.funnel" @click="navTo('funnel')" class="tbt-nav-grid-item"><img src="../assets/image/funnel@2x.png"><p>转化漏斗</p></div>
 
       <div v-if="accessGroup[0].group.roi" @click="navTo('roi')" class="tbt-nav-grid-item"><img src="../assets/image/roi@2x.png"><p>ROI分析</p></div>
+
+      <div v-if="accessGroup[0].group.roi" @click="navTo('promotion')" class="tbt-nav-grid-item"><img src="../assets/image/promotion@2x.png"><p>推广分析</p></div>
     </div>
   </div>
 
@@ -15,6 +17,13 @@
       <div @click="navTo('indView')" class="tbt-nav-grid-item"><img src="../assets/image/data@2x.png"><p>指标看板</p></div>
       <div @click="navTo('indApply')" class="tbt-nav-grid-item"><img src="../assets/image/apply@2x.png"><p>指标申请</p></div>
       <div @click="navTo('indAnnotation')" class="tbt-nav-grid-item"><img src="../assets/image/explain@2x.png"><p>指标释义</p></div>
+    </div>
+  </div>
+
+  <div class="tbt-nav-g">
+    <div class="tbt-nav-t">指标看板(重构模块)</div>
+    <div class="tbt-nav-grid">
+      <div @click="navTo('indApplyNew')" class="tbt-nav-grid-item"><img src="../assets/image/apply@2x.png"><p>指标申请</p></div>
     </div>
   </div>
 
@@ -62,13 +71,13 @@ export default {
       let g = this.accessGroup[0].group;
 
       urlIsAccess({ url }).then(res => {
-        g['funnel'] = res.data.result.isAccess.toString() === 'true';
+        g['funnel'] = res.result.isAccess.toString() === 'true';
 
         url = '/bdc-prd-dbd/roi';
 
         return urlIsAccess({ url });
       }).then(res => {
-        g['roi'] = res.data.result.isAccess.toString() === 'true';
+        g['roi'] = res.result.isAccess.toString() === 'true';
       });
     },
     navTo(name) {

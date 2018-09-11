@@ -6,8 +6,9 @@ export default {
     ...mapMutations([
       'updateLoadingStatus'
     ]),
-    openLoading () {
-      this.updateLoadingStatus({isLoading: true})
+    openLoading (loadingText) {
+      var loadingText = loadingText || '';
+      this.updateLoadingStatus({isLoading: true, loadingText})
     },
     closeLoading () {
       this.updateLoadingStatus({isLoading: false})

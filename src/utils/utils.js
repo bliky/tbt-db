@@ -46,12 +46,18 @@ const baseUrl = is_dev ? '' : 'https://dbdbigdata.to8to.com';
 const routData = {
   funnel: { url: baseUrl + '/bdc-prd-dbd/dashboard', title:'转化漏斗' },
   roi: { url: baseUrl + '/bdc-prd-dbd/roi', title:'ROI分析' },
+  promotion: { path: '/bdc-prd-dbd/promotion', url: baseUrl + '/bdc-prd-dbd/promotion', title:'推广分析' },
+  promotionSelcity: { path: '/bdc-prd-dbd/promotion-selcity', url: baseUrl + '/bdc-prd-dbd/promotion-selcity', title:'选择城市' },
   indView: { url: baseUrl + '/bdc-prd-dbd/dataBoard', title:'指标看板' },
   indApply: { url: baseUrl + '/bdc-prd-dbd/apply', title:'指标申请' },
   indAnnotation: { url: baseUrl + '/bdc-prd-dbd/MyInds', title:'指标释义' },
   indDesc: { url: baseUrl + '/bdc-prd-dbd/indesc', title:'指标释义' },
   roiCity: id => { return { url: baseUrl + '/bdc-prd-dbd/roi-city/' + id, title:'ROI城市分析详情' } },
-  roiCh: id => { return { url: baseUrl + '/bdc-prd-dbd/roi-ch/' + id, title:'ROI渠道分析详情' } }
+  roiCh: id => { return { url: baseUrl + '/bdc-prd-dbd/roi-ch/' + id, title:'ROI渠道分析详情' } },
+  indApplyNew: { url: baseUrl + '/bdc-prd-dbd/newapply', title:'指标申请' },
+  applySelInd: id => { return { path: '/bdc-prd-dbd/apply-selind/' + id, url: baseUrl + '/bdc-prd-dbd/apply-selind/' + id, title:'选择指标' } },
+  applySelDim: id => { return { path: '/bdc-prd-dbd/apply-seldim/' + id, url: baseUrl + '/bdc-prd-dbd/apply-seldim/' + id, title:'指标维度' } },
+  applySelCity: { path: '/bdc-prd-dbd/apply-selcity', url: baseUrl + '/bdc-prd-dbd/apply-selcity', title:'选择城市' }
 };
 
 export const navTo = is_dev ?
@@ -61,6 +67,12 @@ export const navTo = is_dev ?
 export const navToId = is_dev ?
   function (name, id) { let url = routData[name](id).url; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {url += '?'+urlQuery;} /*console.log('this.$router.push', url);*/ this.$router.push({ path: url }) } :
   function (name, id) { let rout = { ...routData[name](id) }; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {rout.url += '?'+urlQuery;} /*console.log('callNative rount', rout);*/ callNative(1007, rout) };
+
+export const goToId = function (name, id) { let url = routData[name](id).path; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {url += '?'+urlQuery;} /*console.log('goToId:', url);*/ this.$router.push({ path: url }); };
+
+export const goTo = function (name) { let url = routData[name].path; let urlQuery = localDb.get('urlQuery'); if (urlQuery) {url += '?'+urlQuery;} /*console.log('goTo:', url);*/ this.$router.push({ path: url }); };
+
+export const goBack = function () { this.$router.go(-1); };
 
 export const openFile = is_dev ?
   function (path, title='') { window.open(path); } :
