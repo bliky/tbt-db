@@ -17,6 +17,9 @@ import store from './store';
 // import VConsole from 'vconsole'
 // new VConsole();
 
+// 清空 sessionStorage
+window.sessionStorage.clear();
+
 Vue.prototype.$http = http;
 window.axios = axios;
 
