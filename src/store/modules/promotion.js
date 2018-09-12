@@ -111,7 +111,7 @@ const fetchPromotionTrendList = (commit, params, row) => {
     let parse = 'parseFloat';
     let data_type = parseInt(row.data_type) || 0;
 
-    if (data_type) {
+    //if (data_type) {
       if (data_type === 1 ) {
         parse = 'parseInt';
       }
@@ -123,7 +123,7 @@ const fetchPromotionTrendList = (commit, params, row) => {
       })
       retData.day = pday;
       retData.month = pmonth;
-    }
+    //}
 
     localCache(skey, retData);
 

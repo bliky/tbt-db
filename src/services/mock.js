@@ -317,8 +317,8 @@ export default {
                             {
                               class_id: '@increment',
                               class_name: '@ctitle',
-                              no_day: 1,
-                              no_month: 1,
+                              no_day: 0,
+                              no_month: 0,
                               data_type: 3,
                               this_month_value: '@float(10000, 1000000, 2, 2)',
                               last_month_value: '@float(10000, 1000000, 2, 2)',

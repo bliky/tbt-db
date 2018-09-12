@@ -9,8 +9,7 @@
   right: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;">
+  overflow-x: hidden; overflow-y: scroll; -webkit-overflow-scrolling: touch;">
     <div v-show="!isSelectChShow" style="height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
       {{ lastUpdateDate }} 更新
       <div class="tbt-pannel_title-rt">
