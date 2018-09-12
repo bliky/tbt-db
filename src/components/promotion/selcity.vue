@@ -76,7 +76,7 @@
       </div>
     </div>
 
-    <div @click="handleOnClickConfirm" style="z-index: 10;" class="tbt-selind-btn-bot" :class="{active: true}">确认</div>
+    <div @click="handleOnClickConfirm" style="z-index: 10;background: #06C792;" class="tbt-selind-btn-bot" :class="{active: true}">确认</div>
   </div>
 </template>
 
