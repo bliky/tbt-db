@@ -82,7 +82,7 @@ export default {
           position () {
             return ['max', lastVal];
           },
-          content: this.yPercent ? filterYAxis(lastVal, '%') : lastVal
+          content: this.yPercent ? filterYAxis(lastVal, '%') : filterYAxis(lastVal, 'w')
         });
         chart.render();
       });
