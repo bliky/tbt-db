@@ -115,12 +115,15 @@ const fetchPromotionTrendList = (commit, params, row) => {
       if (data_type === 1 ) {
         parse = 'parseInt';
       }
-      let pday = day.map(d => {
+
+      let pday = day && day.length ? day.map(d => {
         return { dt:d.dt, val: eval(parse + '(d.val)') };
-      })
-      let pmonth = month.map(d => {
+      }) : [];
+
+      let pmonth = month && month.length ? month.map(d => {
         return { dt:d.dt, val: eval(parse + '(d.val)') };
-      })
+      }) : [];
+
       retData.day = pday;
       retData.month = pmonth;
     //}
