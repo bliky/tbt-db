@@ -84,7 +84,7 @@ const fetchPromotionList = (commit, params) => {
 
     localCache(skey, data.result);
 
-    setTimeout(commit('updateLoadingStatus', {isLoading: false}, { root: true }), 800);
+    commit('updateLoadingStatus', {isLoading: false}, { root: true });
 
     return data.result;
   })

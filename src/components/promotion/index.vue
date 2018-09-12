@@ -10,7 +10,7 @@
   width: 100%;
   height: 100%;
   overflow-x: hidden; overflow-y: scroll; -webkit-overflow-scrolling: touch;">
-    <div v-show="!isSelectChShow" style="height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
+    <div v-show="lastUpdateDate && !isSelectChShow" style="height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
       {{ lastUpdateDate }} 更新
       <div class="tbt-pannel_title-rt">
         <div class="tbt-tooltip-wrapper" style="top: 0; right: 15px; width: 30px; height: 30px; line-height: 30px;">
