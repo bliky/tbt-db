@@ -1,6 +1,6 @@
 <template>
   <div class="tbt-tabs-btn">
-    <div v-for="(tab, idx) in tabs" class="tbt-tab" :class="{checked: currentValue==idx}" @click.stop="handleOnClick(idx)">{{tab}}</div>
+    <div v-for="(tab, idx) in tabs" v-if="!isHidden[idx]" class="tbt-tab" :class="{checked: currentValue==idx}" @click.stop="handleOnClick(idx)">{{tab}}</div>
   </div>
 </template>
 
