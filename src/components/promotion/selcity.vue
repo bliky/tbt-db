@@ -68,7 +68,7 @@
         </li>
       </ul>
 
-      <div class="tbt-letter-navsider minspace" style="padding-top:0; top: 290px;">
+      <div class="tbt-letter-navsider minspace" style="padding-top:0; top: 130px; bottom: 50px;">
         <ul>
           <li @click="backTop">顶部</li>
           <li @click="handleOnClickNavLetter(cg.letter)" v-for="cg in cities">{{ cg.letter }}</li>
