@@ -21,8 +21,10 @@ export default {
       dialogWidth: winW - 26,
       isTooltipShow: false,
       isTrendDialogShow: false,
-      trendTabIndex: 0,
+      trendTabHidden: [1, 0],
+      trendTabIndex: 1,
       trendTabs: ['日报', '月报'],
+      trendDataType: 0,
       currentTrend: {
         class_name: '',
         day: [
@@ -81,6 +83,17 @@ export default {
         return;
       }
       this.getPromotion();
+    },
+    formatRow (data_type, val) {
+      switch (data_type) {
+        case 1:
+          return filterNumber(val, '0,0');
+        case 2:
+          return filterNumber(val, '0,0.00');
+        case 3:
+          return filterNumber(parseFloat(val)*100, '0,0.00', '', '%');
+      }
+      return filterNumber(val, '0,0.00');
     },
     // 初始重置渠道渠道选择
     resetChSel () {
@@ -190,8 +203,32 @@ export default {
       this.resetChSel();
     },
     handleOnClickRow (row) {
-      this.getPromotionTrend(row.class_id).then(data => {
+      if (parseInt(row.no_day) && parseInt(row.no_month)) {
+        return;
+      }
+      this.trendDataType = parseInt(row.data_type);
+      // 每次打开趋势弹窗 默认显示月趋势
+      this.trendTabIndex = 1;
+      this.getPromotionTrend({class_id: row.class_id, row}).then(data => {
+        let trendTabHidden = [0, 0];
         let { day, month } = data;
+        if (row.no_day) {
+          let no_day = parseInt(row.no_day);
+          trendTabHidden[0] = no_day === 1 ? 1 : 0;
+        }
+        if (row.no_month) {
+          let no_month = parseInt(row.no_month);
+          trendTabHidden[1] = no_month === 1 ? 1 : 0;
+        }
+        if ( trendTabHidden[0] && trendTabHidden[1] ) {
+          // 没有日趋势和月趋势
+          return;
+        }
+        if (trendTabHidden[1]) {
+          // 如果没有月趋势 默认显示日趋势
+          this.trendTabIndex = 0;
+        }
+        this.trendTabHidden = trendTabHidden;
         this.isTrendDialogShow = true;
         this.currentTrend = { class_name: row.class_name,  day, month };
       });

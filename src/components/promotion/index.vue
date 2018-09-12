@@ -1,7 +1,18 @@
 <template>
-  <div style="background-color: #f6f6f6;">
+  <div style="
+  background-color: #f6f6f6;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;">
     <div v-show="!isSelectChShow" style="height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
-      数据更新至 {{ lastUpdateDate }}
+      {{ lastUpdateDate }} 更新
       <div class="tbt-pannel_title-rt">
         <div class="tbt-tooltip-wrapper" style="top: 0; right: 15px; width: 30px; height: 30px; line-height: 30px;">
           <a @click.stop="isTooltipShow=!isTooltipShow" style="position: relative; left: -1px;" class="tbt-icon tbt-icon-info js-fn"></a>
@@ -30,7 +41,7 @@
       </div>
     </div>
 
-    <div class="tbt-pannel" style="padding: 0 0 44px; border-bottom: 1px solid #EEEEEE; margin-bottom: -29px;">
+    <div class="tbt-pannel" style="padding: 0 0 44px; border-bottom: 1px solid #EEEEEE; margin-bottom: 21px;">
       <table class="tbt-promotion-table">
         <tr>
           <th style="width: 84px;">指标</th>
@@ -40,9 +51,9 @@
         </tr>
         <tr v-for="row in tableData" @click="handleOnClickRow(row)">
           <td>{{ row.class_name }}</td>
-          <td>{{ row.this_month_value|filter-number('0,0.00') }}</td>
-          <td>{{ row.last_month_value|filter-number('0,0.00') }}</td>
-          <td>{{ row.last_two_month_value|filter-number('0,0.00') }}</td>
+          <td>{{ formatRow(row.data_type, row.this_month_value) }}</td>
+          <td>{{ formatRow(row.data_type, row.last_month_value) }}</td>
+          <td>{{ formatRow(row.data_type, row.last_two_month_value) }}</td>
         </tr>
       </table>
     </div>
@@ -106,11 +117,17 @@
         <div class="tbt-pro-dialog">
           <div class="tbt-pro-dialog-hd">
             {{ currentTrend.class_name }}
-            <btn-tab :tabs="trendTabs" v-model="trendTabIndex"></btn-tab>
+            <btn-tab :tabs="trendTabs" v-model="trendTabIndex" :hidden="trendTabHidden"></btn-tab>
           </div>
           <div style="margin: 20px -15px 0; background: #f6f6f6; height: 171px; overflow:hidden;">
-            <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.day.length" v-show="trendTabIndex==0" :data="currentTrend.day"></chart-line>
-            <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.month.length" v-show="trendTabIndex==1" :data="currentTrend.month"></chart-line>
+            <div v-show="trendTabIndex==0" >
+              <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.day.length" :data="currentTrend.day" :data-type="trendDataType"></chart-line>
+              <p class="empty-trend" v-else>暂无数据</p>
+            </div>
+            <div v-show="trendTabIndex==1" >
+              <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.month.length" :data="currentTrend.month" :data-type="trendDataType"></chart-line>
+              <p class="empty-trend" v-else>暂无数据</p>
+            </div>
           </div>
         </div>
       </x-dialog>
@@ -126,4 +143,12 @@ export default promotion;
 
 <style lang="less">
 @import './promotion.less';
+
+.empty-trend {
+  text-align: center;
+  font-size: 14px;
+  color: #888;
+  height: 170px;
+  line-height: 170px;
+}
 </style>

@@ -60,7 +60,7 @@ export default {
   computed: {
     isSubjectGroupShow () {
       let g = this.accessGroup[0].group;
-      return g.funnel || g.roi;
+      return g.funnel || g.roi || g.promotion;
     }
   },
   created () {

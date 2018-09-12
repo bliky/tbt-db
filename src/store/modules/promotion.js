@@ -80,7 +80,7 @@ const fetchPromotionList = (commit, params) => {
   commit('updateLoadingStatus', {isLoading: true}, { root: true });
 
   return fetchPromotion(params).then(data => {
-    if (!check(data)) { throw '城市数据无效'; }
+    if (!check(data)) { throw '数据无效'; }
 
     localCache(skey, data.result);
 
@@ -90,7 +90,7 @@ const fetchPromotionList = (commit, params) => {
   })
 }
 
-const fetchPromotionTrendList = (commit, params) => {
+const fetchPromotionTrendList = (commit, params, row) => {
   let skey = {app: 'promotion', type: 'trend', params:JSON.stringify(params)};
 
   let localCacheData = localCache(skey);
@@ -103,22 +103,33 @@ const fetchPromotionTrendList = (commit, params) => {
   commit('updateLoadingStatus', {isLoading: true}, { root: true });
 
   return fetchPromotionTrend(params).then(data => {
-    if (!check(data)) { throw '城市数据无效'; }
+    if (!check(data)) { throw '数据无效'; }
 
     // 强制转换数值格式
-    let { day, month } = data.result;
-    let fday = day.map(d => {
-      return { dt:d.dt, val: parseFloat(d.val) };
-    })
-    let fmonth = month.map(d => {
-      return { dt:d.dt, val: parseFloat(d.val) };
-    })
-    let fdata = { day: fday, month: fmonth };
-    localCache(skey, fdata);
+    let retData = data.result;
+    let { day, month } = retData;
+    let parse = 'parseFloat';
+    let data_type = parseInt(row.data_type) || 0;
+
+    if (data_type) {
+      if (data_type === 1 ) {
+        parse = 'parseInt';
+      }
+      let pday = day.map(d => {
+        return { dt:d.dt, val: eval(parse + '(d.val)') };
+      })
+      let pmonth = month.map(d => {
+        return { dt:d.dt, val: eval(parse + '(d.val)') };
+      })
+      retData.day = pday;
+      retData.month = pmonth;
+    }
+
+    localCache(skey, retData);
 
     setTimeout(commit('updateLoadingStatus', {isLoading: false}, { root: true }), 800);
 
-    return fdata;
+    return retData;
   })
 }
 
@@ -353,10 +364,10 @@ export default {
         });
       });
     },
-    getPromotionTrend ({ commit, state }, class_id) {
+    getPromotionTrend ({ commit, state }, {class_id, row}) {
       let params = buildParams(state, true, class_id);
       return new Promise((resolve, reject) => {
-        fetchPromotionTrendList(commit, params).then(data => {
+        fetchPromotionTrendList(commit, params, row).then(data => {
           commit('PUT_TREND_DATA', { class_id: params.class_id, data });
           resolve(data);
         })

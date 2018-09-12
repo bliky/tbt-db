@@ -317,9 +317,12 @@ export default {
                             {
                               class_id: '@increment',
                               class_name: '@ctitle',
+                              no_day: 1,
+                              no_month: 1,
+                              data_type: 3,
                               this_month_value: '@float(10000, 1000000, 2, 2)',
                               last_month_value: '@float(10000, 1000000, 2, 2)',
-                              last_two_month_value: '@float(10000, 1000000, 2, 2)'
+                              last_two_month_value: '@float(0.1, 0.9, 2, 2)'
                             }
                           ]}).rows
       };
@@ -338,7 +341,7 @@ export default {
         status: 200
       };
       resp.result = {
-        day: genCommonTrendData(params.dt, 'day', 30, 10000, 20000),
+        day: genCommonTrendData(params.dt, 'day', 12, 10000, 20000),
         month: genCommonTrendData(params.dt, 'month', 12, 10000, 20000)
       };
 

@@ -1,7 +1,13 @@
 export default {
   props: {
     value: [String, Number, Array, Object],
-    tabs: Array
+    tabs: Array,
+    hidden: {
+      type: Array,
+      default () {
+        return [0, 0];
+      }
+    }
   },
   watch: {
     value (newValue) {
@@ -9,11 +15,15 @@ export default {
     },
     currentValue (val) {
       this.$emit('input', val)
+    },
+    hidden (h) {
+      this.isHidden = h
     }
   },
   data () {
     return {
-      currentValue: this.value
+      currentValue: this.value,
+      isHidden: this.hidden
     }
   },
   methods: {

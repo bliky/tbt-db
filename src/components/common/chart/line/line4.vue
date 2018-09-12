@@ -30,14 +30,17 @@ export default {
   props: {
     width: Number,
     height: Number,
+    dataType: {
+      type: Number,
+      default: 0
+    },
     data: {
       type: Array,
       default: function () {
         return [0];
       },
       required: true
-    },
-    yPercent: Boolean
+    }
   },
   components: {
     VChart,
@@ -48,7 +51,14 @@ export default {
     VTooltip
   },
   watch: {
-    data (newval) { 
+    dataType (v) {
+      if (v == 3) {
+        this.yPercent = true;
+      } else {
+        this.yPercent = false;
+      }
+    },
+    data (newval) {
       this.chartData = newval;
       this.$nextTick(() => {
         this.$refs.chart.render();
@@ -72,7 +82,7 @@ export default {
           position () {
             return ['max', lastVal];
           },
-          content: lastVal
+          content: this.yPercent ? filterYAxis(lastVal, '%') : lastVal
         });
         chart.render();
       });
@@ -84,6 +94,7 @@ export default {
     let that = this;
     that.data[that.data.length-1];
     return {
+      yPercent: false,
       chartData: this.data,
       colorLine: [[0, '#00E9A9'], [0.5, '#00E9A9'], [1, '#00E9A9']],
       colorArea: [[0.3, '#57FFD6'], [0.3, '#57FFD6'], [0.3, '#57FFD6']],
