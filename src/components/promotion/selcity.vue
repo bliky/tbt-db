@@ -3,7 +3,7 @@
     <div class="tbt-search-bar" :class="{focus: isSearchFocus}">
       <div class="tbt-search">
         <div class="tbt-search-icon"><i class="tbt-icon tbt-icon-search" style="position: relative; top: -7px;"></i></div>
-        <input autofocus="autofocus" @focus="isSearchFocus=true" class="tbt-search-input" v-model="searchKeyword" placeholder="输入城市名搜索"></input>
+        <input @focus="isSearchFocus=true" class="tbt-search-input" v-model="searchKeyword" placeholder="输入城市名搜索"></input>
         <div class="tbt-clear-icon" v-show="searchKeyword" @click="searchKeyword=''">
           <i class="tbt-icon tbt-icon-delete"></i>
         </div>
@@ -20,7 +20,7 @@
         </li>
       </ul>
       <div v-show="!searchResults.length">
-        <div class="search-empty"></div>
+        <div class="search-empty"><img style="width:100%;" src="../../assets/image/search_empty@2x.png" /></div>
         <p style="text-align: center; font: 14px/20px PingFangSC-Regular,sans-serif; color: #C1C1C1;">查询不到城市信息</p>
       </div>
     </div>
@@ -76,7 +76,7 @@
       </div>
     </div>
 
-    <div @click="handleOnClickConfirm" style="z-index: 10;background: #06C792;" class="tbt-selind-btn-bot" :class="{active: true}">确认</div>
+    <div v-show="!isSearchFocus || !searchKeyword || (isSearchFocus && searchResults.length)" @click="handleOnClickConfirm" style="z-index: 10;background: #06C792;" class="tbt-selind-btn-bot" :class="{active: true}">确认</div>
   </div>
 </template>
 

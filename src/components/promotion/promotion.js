@@ -16,7 +16,7 @@ export default {
   data () {
     return {
       chartWidth: winW - 26,
-      chartHeight: 171,
+      chartHeight: 196,
       winW: winW,
       dialogWidth: winW - 26,
       isTooltipShow: false,

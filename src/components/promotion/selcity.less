@@ -21,13 +21,14 @@
 }
 
 .tbt-search-result {
-  position: absolute;
+  position: fixed;
   z-index: 10;
   top: 56px;
   left: 0;
   right: 0;
-  bottom: 50px;
+  bottom: 0px;
   overflow: auto;
+  padding-bottom: 50px;
   background: #f6f6f6;
 }
 
@@ -167,8 +168,10 @@
 }
 
 .search-empty {
-  width: 300px;
-  height: 260px;
+  width: 70%;
   margin: 40px auto 0;
-  background: url(../../assets/image/search_empty@2x.png) center/300px 260px no-repeat;
+}
+
+.tbt-citylist ul li .tbt-icon {
+  right: 35px !important;
 }
