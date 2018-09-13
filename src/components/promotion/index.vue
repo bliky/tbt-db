@@ -18,8 +18,8 @@
           <div v-show="isTooltipShow" v-click-outside="clickTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px; bottom: -10px;`">
             <div class="tbt-tooltip-arrow-up"></div>
             <p>
-              1、每日14点左右更新数据的指标：消费现金、点击成本、新增成本、跟踪可售成本、发布可售成本、ROI、收入；<br>
-              2、其他指标于每日上午10点左右更新数据
+              1、每日16点左右更新数据的指标：消费现金、点击成本、新增成本、跟踪可售成本、发布可售成本、ROI、收入；<br>
+              2、其他指标于每日上午11点左右更新数据
             </p>
           </div>
         </div>
