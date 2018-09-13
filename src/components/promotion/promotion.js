@@ -85,15 +85,24 @@ export default {
       this.getPromotion();
     },
     formatRow (data_type, val) {
+      let fval = parseFloat(val);
+      let suffix = '';
+      if (isNaN(fval)) {
+        return '-';
+      }
+      if (fval >= 10000) {
+        fval /= 10000;
+        suffix = '万';
+      }
       switch (data_type) {
         case 1:
-          return filterNumber(val, '0,0');
+          return suffix ? filterNumber(fval, '0,0.00') + suffix : filterNumber(fval, '0,0') + suffix;
         case 2:
-          return filterNumber(val, '0,0.00');
+          return filterNumber(fval, '0,0.00') + suffix;
         case 3:
-          return filterNumber(parseFloat(val)*100, '0,0.00', '', '%');
+          return filterNumber(fval*100, '0,0.00', '', '%') + suffix;
       }
-      return filterNumber(val, '0,0.00');
+      return filterNumber(fval, '0,0.00') + suffix;
     },
     // 初始重置渠道渠道选择
     resetChSel () {

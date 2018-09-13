@@ -23,7 +23,7 @@ const filterYAxis = (num, suffix, format) => {
   var format = format || (num.toString().lastIndexOf('.') !== -1 ? '0,0.00' : '0,0');
 
   if (suffix === '%') return numeral(num).format(format) + suffix;
-  if (suffix === 'w' && num >= 10000) return  numeral(num/10000).format(format) + '万';
+  if (suffix === 'w' && num >= 10000) return  numeral(num/10000).format('0,0.00') + '万';
 
   return numeral(num).format(format);
 }
