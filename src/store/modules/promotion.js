@@ -84,7 +84,7 @@ const fetchPromotionList = (commit, params) => {
 
     localCache(skey, data.result);
 
-    setTimeout(commit('updateLoadingStatus', {isLoading: false}, { root: true }), 800);
+    commit('updateLoadingStatus', {isLoading: false}, { root: true });
 
     return data.result;
   })
@@ -110,20 +110,27 @@ const fetchPromotionTrendList = (commit, params, row) => {
     let { day, month } = retData;
     let parse = 'parseFloat';
     let data_type = parseInt(row.data_type) || 0;
+    let scale = 1;
 
-    if (data_type) {
+    //if (data_type) {
       if (data_type === 1 ) {
         parse = 'parseInt';
       }
-      let pday = day.map(d => {
-        return { dt:d.dt, val: eval(parse + '(d.val)') };
-      })
-      let pmonth = month.map(d => {
-        return { dt:d.dt, val: eval(parse + '(d.val)') };
-      })
+      if (data_type === 3) {
+        scale = 100;
+      }
+
+      let pday = day && day.length ? day.map(d => {
+        return { dt:d.dt, val: eval(parse + '(d.val)') * scale };
+      }) : [];
+
+      let pmonth = month && month.length ? month.map(d => {
+        return { dt:d.dt, val: eval(parse + '(d.val)') * scale };
+      }) : [];
+
       retData.day = pday;
       retData.month = pmonth;
-    }
+    //}
 
     localCache(skey, retData);
 

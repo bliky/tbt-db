@@ -9,9 +9,8 @@
   right: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;">
-    <div v-show="!isSelectChShow" style="height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
+  overflow-x: hidden; overflow-y: scroll; -webkit-overflow-scrolling: touch;">
+    <div v-show="lastUpdateDate && !isSelectChShow" style="background:#fff; height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
       {{ lastUpdateDate }} 更新
       <div class="tbt-pannel_title-rt">
         <div class="tbt-tooltip-wrapper" style="top: 0; right: 15px; width: 30px; height: 30px; line-height: 30px;">
@@ -19,8 +18,8 @@
           <div v-show="isTooltipShow" v-click-outside="clickTooltipOutside" class="tbt-tooltip-content" :style="`width: ${winW-30}px; bottom: -10px;`">
             <div class="tbt-tooltip-arrow-up"></div>
             <p>
-              1、每日14点左右更新数据的指标：消费现金、点击成本、新增成本、跟踪可售成本、发布可售成本、ROI、收入；<br>
-              2、其他指标于每日上午10点左右更新数据
+              1、每日16点左右更新数据的指标：消费现金、点击成本、新增成本、跟踪可售成本、发布可售成本、ROI、收入；<br>
+              2、其他指标于每日上午11点左右更新数据
             </p>
           </div>
         </div>
@@ -31,7 +30,7 @@
       <div class="tbt-cell_bd">
         <div class="tbt-sel-tag" style="float: left;" @click.stop="handleOnClickChSelect">选择渠道 <i class="tbt-icon tbt-icon-down" style="position: relative; top: 3px;"></i></div>
 
-        <div class="tbt-sel-tag" style="float: left;" @click.stop="handleOnClickCitySelect">选择城市 <i class="tbt-icon tbt-icon-down" style="position: relative; top: 3px;"></i></div>
+        <div class="tbt-sel-tag" style="float: left; margin-left: 15px;" @click.stop="handleOnClickCitySelect">选择城市 <i class="tbt-icon tbt-icon-down" style="position: relative; top: 3px;"></i></div>
       </div>
     </div>
 
@@ -119,7 +118,7 @@
             {{ currentTrend.class_name }}
             <btn-tab :tabs="trendTabs" v-model="trendTabIndex" :hidden="trendTabHidden"></btn-tab>
           </div>
-          <div style="margin: 20px -15px 0; background: #f6f6f6; height: 171px; overflow:hidden;">
+          <div style="margin: 20px -15px 0; background: #f6f6f6; height: 196px; overflow:hidden;">
             <div v-show="trendTabIndex==0" >
               <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.day.length" :data="currentTrend.day" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
