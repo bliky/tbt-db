@@ -5,6 +5,7 @@
     <v-scale y :tick-count="5" :nice="true" :min='0' :formatter="yAxisFormatter" />
     <v-line shape="smooth" :colors="colorLine"/>
     <v-area shape="smooth" :colors="colorArea"/>
+    <v-guide type="line" top :options="lineGuide" />
     <v-tooltip :options="tooltip" />
   </v-chart>
 </div>
@@ -100,6 +101,19 @@ export default {
       chartData: this.data,
       colorLine: [[0, '#00E9A9'], [0.5, '#00E9A9'], [1, '#00E9A9']],
       colorArea: [[0.3, '#57FFD6'], [0.3, '#57FFD6'], [0.3, '#57FFD6']],
+      lineGuide: {
+        start(xScale, yScales) {
+          return ['min', that.average]; // 位置信息
+        },
+        end(xScale, yScales) {
+          return ['max', that.average]; // 位置信息
+        },
+        style: {
+          stroke: '#FFAE22', // 线的颜色
+          lineWidth: 1,
+          lineDash: [5, 5]
+        }
+      },
       tooltip: {
         showItemMarker: false,
         showTooltipMarker: true,
@@ -120,6 +134,17 @@ export default {
     }
   },
   computed: {
+    average() {
+      if (!this.data || !this.data.length) return 0;
+
+      let sum = this.data.map(item => item.val).reduce((total, cur) => {
+        return total + cur;
+      });
+
+      let average = sum/this.data.length;
+
+      return average;
+    }
   },
   methods: {
     lastVal () {
