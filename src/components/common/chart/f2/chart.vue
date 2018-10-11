@@ -371,7 +371,6 @@ export default {
       if (this.guides.length) {
         this.guides.forEach(guide => {
           this.guide = chart.guide()[guide.type](guide.options)
-          console.log('this.guide', this.guide);
         })
       }
 
