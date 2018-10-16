@@ -84,9 +84,7 @@ export default {
 
         return urlIsAccess({ url });
       }).then(res => {
-        console.log('promotion', res);
         g['promotion'] = res.result.isAccess.toString() === 'true';
-        console.log(this.accessGroup[0].group);
       });
     },
     navTo(name) {

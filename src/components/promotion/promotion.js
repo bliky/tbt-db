@@ -45,6 +45,8 @@ export default {
         all: true,
         all_search: false,
         all_feed: false,
+        all_app: false,
+        all_seo: false,
         search: [],
         feed: []
       }
@@ -112,6 +114,8 @@ export default {
       chsPicked.all = ch_type === 1;
       chsPicked.all_search = ch_params.all_search;
       chsPicked.all_feed = ch_params.all_feed;
+      chsPicked.all_app = ch_params.all_app;
+      chsPicked.all_seo = ch_params.all_seo;
       chsPicked.search = [].concat(ch_params.search);
       chsPicked.feed = [].concat(ch_params.feed);
     },
@@ -136,6 +140,8 @@ export default {
             chsPicked.all = true;
             chsPicked.all_search = false;
             chsPicked.all_feed = false;
+            chsPicked.all_app = false;
+            chsPicked.all_seo = false;
             chsPicked.search = [];
             chsPicked.feed = [];
           }
@@ -168,6 +174,22 @@ export default {
 
             chsPicked.all_feed = true;
             chsPicked.feed = [];
+          }
+          break;
+        case 'all_app':
+          chsPicked.all = false;
+          if (chsPicked.all_app) {
+            chsPicked.all_app = false;
+          } else {
+            chsPicked.all_app = true;
+          }
+          break;
+        case 'all_seo':
+          chsPicked.all = false;
+          if (chsPicked.all_seo) {
+            chsPicked.all_seo = false;
+          } else {
+            chsPicked.all_seo = true;
           }
           break;
         case 'search':

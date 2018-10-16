@@ -66,6 +66,8 @@
                 <li :class="{active: chCate==0}" @click="ch_cate(0)">全部渠道</li>
                 <li :class="{active: chCate==1}" @click="ch_cate(1)">搜索类</li>
                 <li :class="{active: chCate==2}" @click="ch_cate(2)">信息流</li>
+                <li :class="{active: chCate==3}" @click="ch_cate(3)">APP</li>
+                <li :class="{active: chCate==4}" @click="ch_cate(4)">SEO</li>
               </ul>
             </div>
             <div class="flex-item tbt-chlist" style="overflow-y: auto;">
@@ -82,7 +84,7 @@
                   <i class="tbt-icon tbt-icon-checked"></i>
                   <i class="tbt-icon tbt-icon-uncheck"></i>
                 </li>
-                <li :class="{checked: chsPicked.search.indexOf(ch.id)!==-1}" @click="pickCh('search', ch.id)" v-for="ch in chs.search">
+                <li :class="{checked: chsPicked.search.indexOf(ch.id)!==-1}" @click="pickCh('search', ch.id)" v-for="ch in chs.search" :key='ch.id'>
                   {{ ch.name }}
                   <i class="tbt-icon tbt-icon-checked"></i>
                   <i class="tbt-icon tbt-icon-uncheck"></i>
@@ -93,8 +95,22 @@
                   <i class="tbt-icon tbt-icon-checked"></i>
                   <i class="tbt-icon tbt-icon-uncheck"></i>
                 </li>
-                <li :class="{checked: chsPicked.feed.indexOf(ch.id)!==-1}" @click="pickCh('feed', ch.id)" v-for="ch in chs.feed">
+                <li :class="{checked: chsPicked.feed.indexOf(ch.id)!==-1}" @click="pickCh('feed', ch.id)" v-for="ch in chs.feed" :key='ch.id'>
                   {{ ch.name }}
+                  <i class="tbt-icon tbt-icon-checked"></i>
+                  <i class="tbt-icon tbt-icon-uncheck"></i>
+                </li>
+              </ul>
+              <ul v-show="chCate==3" class="v-menu-rt">
+                <li :class="{checked: chsPicked.all_app}" @click="pickCh('all_app', true)">
+                  全部APP渠道
+                  <i class="tbt-icon tbt-icon-checked"></i>
+                  <i class="tbt-icon tbt-icon-uncheck"></i>
+                </li>
+              </ul>
+              <ul v-show="chCate==4" class="v-menu-rt">
+                <li :class="{checked: chsPicked.all_seo}" @click="pickCh('all_seo', true)">
+                  全部SEO渠道
                   <i class="tbt-icon tbt-icon-checked"></i>
                   <i class="tbt-icon tbt-icon-uncheck"></i>
                 </li>

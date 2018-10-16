@@ -188,6 +188,12 @@ const getOpts = (state, getters) => {
           opts.push(ch);
         });
       }
+      if ( ch_params.all_app ) {
+        opts.push({name: '全部APP'});
+      }
+      if ( ch_params.all_seo ) {
+        opts.push({name: '全部SEO'});
+      }
       break;
     case 1:
       opts.push({name: '全部渠道'});
@@ -260,7 +266,9 @@ export default {
         search: [],
         feed: [],
         all_search: false,
-        all_feed: false
+        all_feed: false,
+        all_app: false,
+        all_seo: false
       }
     },
     lastUpdateDate: '',
@@ -322,11 +330,13 @@ export default {
     ['SUBMIT_CH_SEL'] (state, chsPicked) {
       let requestParams = state.requestParams;
       let ch_params = requestParams.ch_params;
-      let { all, all_search, all_feed,  search, feed } = chsPicked;
+      let { all, all_search, all_feed,  all_app, all_seo, search, feed } = chsPicked;
 
       requestParams.ch_type = all ? 1 : 0;
       ch_params.all_search = all_search;
       ch_params.all_feed = all_feed;
+      ch_params.all_app = all_app;
+      ch_params.all_seo = all_seo;
       ch_params.search = [].concat(search);
       ch_params.feed = [].concat(feed);
     },
