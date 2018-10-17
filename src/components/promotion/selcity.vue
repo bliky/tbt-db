@@ -13,7 +13,7 @@
 
     <div v-show="searchKeyword && isSearchFocus" class="tbt-search-result">
       <ul class="tbt-searchlist">
-        <li :class="{checked: citiesPicked.city_type===0 && citiesPicked.city_params.indexOf(ci.id) !== -1}" @click="pickCity(0, ci.id)" v-for="ci in searchResults">
+        <li :class="{checked: citiesPicked.city_type===0 && citiesPicked.city_params.indexOf(ci.id) !== -1}" @click="pickCity(0, ci)" v-for="ci in searchResults" :key='ci.id'>
           {{ ci.name }}
           <i class="tbt-icon tbt-icon-checked"></i>
           <i class="tbt-icon tbt-icon-uncheck"></i>
@@ -25,7 +25,19 @@
       </div>
     </div>
 
-    <div style="margin-top:56px; background: #fff; padding-bottom: 6px; padding-top: 15px; border-bottom: 1px solid #eee;">
+    <div style='height: 56px;'></div>
+
+    <div class='tbt-city-pannel' v-show='citiesPicked.city_type === 0'>
+      <div class="tbt-title-cell">
+        已选城市
+      </div>
+
+      <ul class="tbt-sel-tag-list">
+        <li v-for='ci in selectedCities' :key='ci.id' :class="{checked: citiesPicked.city_params.indexOf(ci.id) !== -1}" @click="pickCity(0, ci)">{{ ci.name }}</li>
+      </ul>
+    </div>
+
+    <div class='tbt-city-pannel'>
       <div class="tbt-title-cell">
         落地类型
       </div>
@@ -56,10 +68,10 @@
             </li>
           </ul>
         </li>
-        <li v-for="cg in cities" :ref="'cg' + cg.letter">
+        <li v-for="cg in cities" :ref="'cg' + cg.letter" :key='cg.letter'>
           <h3>{{ cg.letter }}</h3>
           <ul>
-            <li :class="{checked: citiesPicked.city_type===0 && citiesPicked.city_params.indexOf(ci.id) !== -1}" @click="pickCity(0, ci.id)" v-for="ci in cg.list">
+            <li :class="{checked: citiesPicked.city_type===0 && citiesPicked.city_params.indexOf(ci.id) !== -1}" @click="pickCity(0, ci)" v-for="ci in cg.list" :key='ci.id'>
               {{ ci.name }}
               <i class="tbt-icon tbt-icon-checked"></i>
               <i class="tbt-icon tbt-icon-uncheck"></i>
@@ -71,7 +83,7 @@
       <div class="tbt-letter-navsider minspace" style="padding-top:0; top: 130px; bottom: 50px;">
         <ul>
           <li @click="backTop">顶部</li>
-          <li @click="handleOnClickNavLetter(cg.letter)" v-for="cg in cities">{{ cg.letter }}</li>
+          <li @click="handleOnClickNavLetter(cg.letter)" v-for="cg in cities" :key='cg.letter'>{{ cg.letter }}</li>
         </ul>
       </div>
     </div>
@@ -95,7 +107,8 @@ export default {
         pre_city_type: 0,
         city_type: 1,
         city_params: []
-      }
+      },
+      selectedCities: []
     }
   },
   computed: {
@@ -128,6 +141,7 @@ export default {
     ...mapActions('promotion', ['getCities', 'getPromotion']),
     init () {
       this.resetCitySel();
+      this.initCitySelList(); // 已选中城市列表，页面挂载时，根据已选城市初始化，挂载后，元素只添加和实时更新选中状态，但不移除元素
 
       if (this.cities.length) return;
       this.getCities();
@@ -139,13 +153,23 @@ export default {
       citiesPicked.city_type = city_type;
       citiesPicked.city_params = [].concat(city_params);
     },
+    initCitySelList () {
+      let citiesPicked = this.citiesPicked;
+      if (citiesPicked.city_type !== 0) return [];
+      let cities = this.citiesPool;
+      let city_params = citiesPicked.city_params;
+      this.selectedCities = cities.filter(item => {
+        return city_params.indexOf(item.id) !== -1;
+      });
+    },
     // 提交城市选择
     submitCitySel () {
       this.submit_city_sel(this.citiesPicked);
     },
-    pickCity (type, id) {
+    pickCity (type, city) {
       let citiesPicked = this.citiesPicked;
       let { pre_city_type, city_type, city_params } = citiesPicked;
+      let id = typeof city === typeof {} ? city.id : city;
 
       switch (type) {
         case 0:
@@ -169,6 +193,15 @@ export default {
             citiesPicked.city_type = 1;
           }
           break;
+      }
+      if (type === 0) {
+        let selectedCities = this.selectedCities;
+        let findIndex = selectedCities.findIndex(item => {
+          return item.id === id;
+        });
+        if (findIndex === -1) {
+          selectedCities.push(city);
+        }
       }
     },
     backTop () {
