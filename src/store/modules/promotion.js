@@ -274,7 +274,7 @@ export default {
         all_seo: false
       }
     },
-    lastUpdateDate: '',
+    lastUpdateDate: today,
     tableData: [],
     trends: {},
     isSelectChShow: false,
