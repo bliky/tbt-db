@@ -253,11 +253,14 @@ const getOptsWidth = () => {
   return sum + 26;
 }
 
+const yesterday = moment().subtract(1, 'day')
+var today = yesterday.format('YYYY-MM-DD')
+
 export default {
   namespaced: true,
   state: {
-    today: moment().format('YYYY-MM-DD'),
-    months: [moment().format('YYYY-MM'), moment().subtract(1, 'month').format('YYYY-MM'),  moment().subtract(2, 'month').format('YYYY-MM')],
+    today: today,
+    months: [moment(today).format('YYYY-MM'), moment(today).subtract(1, 'month').format('YYYY-MM'),  moment(today).subtract(2, 'month').format('YYYY-MM')],
     requestParams: {
       city_type: 1,
       city_params: [],
