@@ -22,7 +22,12 @@ const apis = {
   promotionCh: 'dsa/dataBoard/promotion/getChannelList',  // 推广渠道
   promotionCity: 'dsa/dataBoard/promotion/getCityList',   // 推广城市
   promotion: 'dsa/dataBoard/promotion/getMainList', // 查询推广专题指标
-  promotionTrend: 'dsa/dataBoard/promotion/getTrendList'                // 查询推广专题趋势数据
+  promotionTrend: 'dsa/dataBoard/promotion/getTrendList', // 查询推广专题趋势数据
+  trackingBudget: 'dsa/dataBoard/advertise/getBudgetList', // 推广效果跟踪: 预算进度接口
+  trackingClue: 'dsa/dataBoard/advertise/getClueList', // 推广效果跟踪: 新增线索接口
+  trackingSale: 'dsa/dataBoard/advertise/getAccurateSaleList', // 推广效果跟踪: 精准可售接口
+  trackingCashCompare: 'dsa/dataBoard/advertise/getCashCompareList', // 推广效果跟踪: 消费对比接口
+  trackingUpdateTime: 'dsa/dataBoard/advertise/getUpdateTime' // 推广效果跟踪: 数据更新时间
 };
 
 // 服务请求
@@ -111,4 +116,29 @@ export const fetchPromotion = params => {
 // 推广分析：获取推广趋势
 export const fetchPromotionTrend = params => {
   return request('promotionTrend', params);
+};
+
+// 推广效果跟踪: 预算进度接口
+export const fetchTrackingBudget = params => {
+  return request('trackingBudget', params);
+};
+
+// 推广效果跟踪: 新增线索接口
+export const fetchTrackingClue = params => {
+  return request('trackingClue', params);
+};
+
+// 推广效果跟踪: 精准可售接口
+export const fetchTrackingSale = params => {
+  return request('trackingSale', params);
+};
+
+// 推广效果跟踪: 消费对比接口
+export const fetchTrackingCashCompare = params => {
+  return request('trackingCashCompare', params);
+};
+
+// 推广效果跟踪: 获取数据更新时间
+export const fetchTrackingUpdateTime = params => {
+  return request('trackingUpdateTime', params);
 };

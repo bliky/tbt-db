@@ -4,10 +4,7 @@
     <div class="tbt-nav-t">专题分析</div>
     <div class="tbt-nav-grid">
       <div v-if="accessGroup[0].group.funnel" @click="navTo('funnel')" class="tbt-nav-grid-item"><img src="../assets/image/funnel@2x.png"><p>转化漏斗</p></div>
-
       <div v-if="accessGroup[0].group.roi" @click="navTo('roi')" class="tbt-nav-grid-item"><img src="../assets/image/roi@2x.png"><p>ROI分析</p></div>
-
-      <div v-if="accessGroup[0].group.promotion" @click="navTo('promotion')" class="tbt-nav-grid-item"><img src="../assets/image/promotion@2x.png"><p>推广分析</p></div>
     </div>
   </div>
 
@@ -20,6 +17,13 @@
     </div>
   </div>
 
+  <div class="tbt-nav-g">
+    <div class="tbt-nav-t">推广专题</div>
+    <div class="tbt-nav-grid">
+      <div v-if="accessGroup[0].group.promotion" @click="navTo('promotion')" class="tbt-nav-grid-item"><img src="../assets/image/promotion@2x.png"><p>推广分析</p></div>
+      <div v-if="accessGroup[0].group.promotion" @click="navTo('promotionTracking')" class="tbt-nav-grid-item"><img src="../assets/image/rate@2x.png"><p>进度跟踪</p></div>
+    </div>
+  </div>
 <!--   <div class="tbt-nav-g">
     <div class="tbt-nav-t">指标看板(重构模块)</div>
     <div class="tbt-nav-grid">

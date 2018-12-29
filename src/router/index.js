@@ -10,6 +10,9 @@ import Dashboard from '../components/dashboard'; // 转化漏斗
 import Roi from '../components/roi';             // ROI分析
 import Promotion from '../components/promotion'; // 推广分析
 import PromotionSelcity from '../components/promotion/selcity'; // 推广分析 选择城市
+import PromotionTracking from '../components/promotion/tracking.vue'; // 推广分析 推广效果跟踪
+import PromotionCompare from '../components/promotion/compare.vue'; // 推广分析 现金消费对比
+import PromotionCompareFilter from '../components/promotion/filter.vue'; // 推广分析 现金消费对比
 import RoiCity from '../components/roi/city';    // ROI城市分析
 import RoiCh from '../components/roi/ch';        // ROI渠道分析
 import DataBoard from '../components/board/DataBoard'; // 指标看板
@@ -93,6 +96,30 @@ const routes = [
     component: PromotionSelcity,
     meta: {
       title: '选择城市'
+    }
+  },
+  // 1.4 二级入口：推广效果跟踪
+  {
+    path: '/bdc-prd-dbd/promotion-tracking',
+    component: PromotionTracking,
+    meta: {
+      title: '推广效果跟踪'
+    }
+  },
+  // 1.4.1 三级入口：推广效果 现金消费对比
+  {
+    path: '/bdc-prd-dbd/promotion-compare',
+    component: PromotionCompare,
+    meta: {
+      title: '现金消费对比'
+    }
+  },
+  // 1.4.2 三级入口：推广效果 选择对比筛选条件
+  {
+    path: '/bdc-prd-dbd/compare-filter',
+    component: PromotionCompareFilter,
+    meta: {
+      title: '修改筛选条件'
     }
   },
   // 2.1 二级入口：指标看板

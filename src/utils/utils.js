@@ -48,6 +48,7 @@ const routData = {
   roi: { url: baseUrl + '/bdc-prd-dbd/roi', title:'ROI分析' },
   promotion: { path: '/bdc-prd-dbd/promotion', url: baseUrl + '/bdc-prd-dbd/promotion', title:'推广分析' },
   promotionSelcity: { path: '/bdc-prd-dbd/promotion-selcity', url: baseUrl + '/bdc-prd-dbd/promotion-selcity', title:'选择城市' },
+  promotionTracking: { path: '/bdc-prd-dbd/promotion-tracking', url: baseUrl + '/bdc-prd-dbd/promotion-tracking', title:'推广效果跟踪' },
   indView: { url: baseUrl + '/bdc-prd-dbd/dataBoard', title:'指标看板' },
   indApply: { url: baseUrl + '/bdc-prd-dbd/apply', title:'指标申请' },
   indAnnotation: { url: baseUrl + '/bdc-prd-dbd/MyInds', title:'指标释义' },

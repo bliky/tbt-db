@@ -122,4 +122,25 @@
   background-size: 16px 16px;
   background-image: url(../../../assets/image/icon_delete@2x.png);
 }
+
+.tbt-icon-money {
+   width: 16px;
+  height: 16px;
+  background-size: 16px 16px;
+  background-image: url(../../../assets/image/money@3x.png);
+}
+
+.tbt-icon-plus {
+   width: 16px;
+  height: 16px;
+  background-size: 16px 16px;
+  background-image: url(../../../assets/image/add.svg);
+}
+
+.compare-icon-vs {
+  display: inline-block;
+  width: 30px;
+  height: 20px;
+  background: url(../../../assets/image/VS@2x.png) no-repeat center/30px 20px;
+}
 </style>
