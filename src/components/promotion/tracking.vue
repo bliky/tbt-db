@@ -36,7 +36,7 @@
         <tr v-for="row in tableData" :key="row.displayNameId">
           <td>{{ row.displayName }}</td>
           <td v-for="ind in showInd" :key="ind.prop">
-            <span v-if="ind.type == 3 && row[ind.prop] > progress" style="color:#FC3142">
+            <span v-if="ind.type == 3 && ((curType === 'budget' && row[ind.prop] > progress) || (curType !== 'budget' && row[ind.prop] < progress))" style="color:#FC3142">
               {{ formatRow(ind.type, row[ind.prop]) }}
             </span>
             <span v-else>
