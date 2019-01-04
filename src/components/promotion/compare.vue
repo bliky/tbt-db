@@ -28,9 +28,15 @@
     <tr v-for="row in compareData" :key="row.displayNameId">
       <td>{{ row.displayName }}</td>
       <td>{{ formatRow(2, row.cost1) }}</td>
-      <td>{{ formatRow(3, row.cost2) }}</td>
-      <td>{{ formatRow(3, row.rate) }}</td>
-      <td></td>
+      <td>{{ formatRow(2, row.cost2) }}</td>
+      <td>
+        <span v-if="row.rate > 0" style="color:#FC3142">
+          {{ formatRow(3, row.rate) }}
+        </span>
+        <span v-else>
+          {{ formatRow(3, row.rate) }}
+        </span>
+      </td>
     </tr>
   </table>
   <div class="compare-botbar">
@@ -62,6 +68,7 @@ export default {
     ...mapState('tracking', ['compareData', 'comPramas'])
   },
   mounted () {
+    document.title = '现金消费对比'
     this.fetch({ params: this.comPramas, type: 'compare' })
   },
   methods: {

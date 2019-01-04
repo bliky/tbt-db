@@ -4,7 +4,7 @@
     <div class="compare-unit-hd">选择落地类型</div>
     <div class="compare-unit-bd">
       <ul class="compare-unit-list">
-        <li :class="{ checked: type.indexOf(0) !== -1 }" @click="selType(0)">非落定城市</li>
+        <li :class="{ checked: type.indexOf(0) !== -1 }" @click="selType(0)">非落地城市</li>
         <li :class="{ checked: type.indexOf(1) !== -1 }" @click="selType(1)">新落地城市</li>
         <li :class="{ checked: type.indexOf(2) !== -1 }" @click="selType(2)">老落地城市</li>
       </ul>
@@ -95,6 +95,27 @@ export default {
       let dto = dttoken.split('.')
       let curdt = this.dateRange[dto[0]][dto[1]]
       let dateRange = this.dateRange
+      // 起始时间
+      let startDate = '2017-01-01'
+      let endDate = yesterday
+      if (dto[0] === 'dt1') {
+        if (dto[1] === 'end') {
+          if (dateRange.dt1.start) {
+            startDate = dateRange.dt1.start
+          }
+        }
+      } else {
+        if (dto[1] === 'start') {
+          if (dateRange.dt1.start) {
+            startDate = dateRange.dt1.start
+          }
+        } else {
+          if (dateRange.dt2.start) {
+            startDate = dateRange.dt2.start
+          }
+        }
+      }
+
       this.$vux.datetime.show({
         value: curdt || yesterday,
         confirmText: '确认',
@@ -102,8 +123,8 @@ export default {
         yearRow: '{value}年',
         monthRow: '{value}月',
         dayRow: '{value}日',
-        startDate: '2017-01-01',
-        endDate: yesterday,
+        startDate: startDate,
+        endDate: endDate,
         onConfirm (value) {
           dateRange[dto[0]][dto[1]] = value
         },

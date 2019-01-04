@@ -12,7 +12,7 @@ export default (data_type, val) => {
   }
   switch (data_type) {
     case 1:
-      return suffix ? filterNumber(fval, '0,0.00') + suffix : filterNumber(fval, '0,0');
+      return suffix ? filterNumber(fval, '0,0.0') + suffix : filterNumber(fval, '0,0');
     case 2:
       return filterNumber(fval, '0,0.0') + suffix;
     case 3:

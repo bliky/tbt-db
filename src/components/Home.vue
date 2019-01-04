@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <div class="tbt-nav-g">
+  <div class="tbt-nav-g" v-if="isPromotionGroupShow">
     <div class="tbt-nav-t">推广专题</div>
     <div class="tbt-nav-grid">
       <div v-if="accessGroup[0].group.promotion" @click="navTo('promotion')" class="tbt-nav-grid-item"><img src="../assets/image/promotion@2x.png"><p>推广分析</p></div>
@@ -65,6 +65,10 @@ export default {
     isSubjectGroupShow () {
       let g = this.accessGroup[0].group;
       return g.funnel || g.roi || g.promotion;
+    },
+    isPromotionGroupShow () {
+      let g = this.accessGroup[0].group;
+      return g.promotion;
     }
   },
   created () {

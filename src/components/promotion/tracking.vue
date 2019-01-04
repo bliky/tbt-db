@@ -13,9 +13,9 @@
       </div>
       <div class="tracking-header_bot">
         <span>当月进度：</span>
-        <span class="tracking-progress-percent">{{ progress }}</span>
+        <span class="tracking-progress-percent">{{ progressPercent }}</span>
         <span class="tracking-pogress-bar">
-          <span class="tracking-pogress-bar_inner" :style="`width: ${progress}`"></span>
+          <span class="tracking-pogress-bar_inner" :style="`width: ${progressPercent}`"></span>
         </span>
       </div>
     </div>
@@ -35,9 +35,14 @@
         </tr>
         <tr v-for="row in tableData" :key="row.displayNameId">
           <td>{{ row.displayName }}</td>
-          <td>{{ formatRow(showInd[0].type || 0, row[showInd[0].prop]) }}</td>
-          <td>{{ formatRow(showInd[1].type || 0, row[showInd[1].prop]) }}</td>
-          <td>{{ formatRow(showInd[2].type || 0, row[showInd[2].prop]) }}</td>
+          <td v-for="ind in showInd" :key="ind.prop">
+            <span v-if="ind.type == 3 && row[ind.prop] > progress" style="color:#FC3142">
+              {{ formatRow(ind.type, row[ind.prop]) }}
+            </span>
+            <span v-else>
+              {{ formatRow(ind.type, row[ind.prop]) }}
+            </span>
+          </td>
           <td></td>
         </tr>
       </table>
@@ -52,12 +57,9 @@
           </div>
           <div class="popup-pannel-body">
             <ul class="tracking-indlist">
-              <li :class="{ checked: hasCheckInd('target') }" @click="selInd('target')">预算</li>
-              <li :class="{ checked: hasCheckInd('cost') }" @click="selInd('cost')">实际花费</li>
-              <li :class="{ checked: hasCheckInd('rate') }" @click="selInd('rate')">花费进度</li>
-              <li :class="{ checked: hasCheckInd('remain_avg_day') }" @click="selInd('remain_avg_day')">剩余日均</li>
-              <li :class="{ checked: hasCheckInd('history_avg_day') }" @click="selInd('history_avg_day')">历史日均</li>
-              <li :class="{ checked: hasCheckInd('roi') }" @click="selInd('roi')">追踪ROI</li>
+              <li v-for="ind in allInd" :key="ind.prop" :class="{ checked: hasCheckInd(ind.prop) }" @click="selInd(ind.prop)">
+                {{ typeof ind.label === 'object' ? ind.label[curType] : ind.label }}
+              </li>
             </ul>
           </div>
           <p class="popup-pannel-footer"><i class="tbt-icon tbt-icon-info"></i> 最多选择三个指标</p>

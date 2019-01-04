@@ -52,7 +52,7 @@ const yesterday = moment().subtract(1, 'days').format('YYYY-MM-DD')
 const getProgess = dt => {
   let curDay = parseFloat(moment(dt).format('DD'))
   let days = parseFloat(moment(dt).endOf('month').format('DD'))
-  return parseInt(curDay * 100/days) + '%'
+  return curDay/days
 }
 
 export default {

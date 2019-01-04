@@ -13,7 +13,7 @@ export default {
   data () {
     return {
       dialogWidth: winW - 26,
-      index: 'budget',
+      index: 0,
       showSetInd: false,
       updateDate: '',
       tableData: [],
@@ -35,28 +35,60 @@ export default {
       }],
       allInd: [
         {
-          type: 2,
-          label: '预算(元)',
+          type: {
+            budget: 2,
+            clue: 1,
+            sale: 1
+          },
+          label: {
+            budget: '预算',
+            clue: '目标',
+            sale: '目标'
+          },
+          unit: {
+            budget: '元',
+            clue: '个',
+            sale: '个'
+          },
           prop: 'target'
         },
         {
-          type: 2,
-          label: '实际花费(元)',
+          type: {
+            budget: 2,
+            clue: 1,
+            sale: 1
+          },
+          label: {
+            budget: '实际花费',
+            clue: '实际完成',
+            sale: '实际完成'
+          },
+          unit: {
+            budget: '元',
+            clue: '个',
+            sale: '个'
+          },
           prop: 'cost'
         },
         {
           type: 3,
-          label: '花费进度',
+          label: {
+            budget: '花费进度',
+            clue: '完成进度',
+            sale: '完成进度'
+          },
           prop: 'rate'
         },
         {
           type: 2,
-          label: '历史日均(元)',
+          label: '历史日均',
+          uint: '元',
           prop: 'history_avg_day'
         },
         {
           type: 2,
-          label: '剩余日均(元)',
+          label: '剩余日均',
+          uint: '元',
           prop: 'remain_avg_day'
         },
         {
@@ -69,7 +101,10 @@ export default {
   },
   computed: {
     ...mapState('tracking', ['curDt', 'curType', 'progress', 'budgetData', 'clueData', 'saleData', 'comPramas']),
-    ...mapGetters('tracking', [])
+    ...mapGetters('tracking', []),
+    progressPercent () {
+      return parseInt(this.progress * 100) + '%'
+    }
   },
   directives: {
     TransferDom
@@ -118,6 +153,7 @@ export default {
     chType (type) {
       this.$store.commit('tracking/CH_TYPE', type)
       this.fetchData()
+      this.changeShowInd()
     },
     onSelDt () {
       let that = this
@@ -154,13 +190,30 @@ export default {
       })
       this.showSetInd = true
     },
-    onConfirmSetInd () {
-      this.showSetInd = false
+    changeShowInd () {
       this.showInd = this.checkedInd.map(ind => {
-        return this.allInd.find(ido => {
+        let indRes = this.allInd.find(ido => {
           return ido.prop == ind
         })
+        let showInd = { ...indRes }
+        if (typeof showInd.label === typeof {}) {
+          showInd.label = showInd.label[this.curType]
+        }
+        if (showInd.unit) {
+          if (typeof showInd.unit === 'object') {
+            showInd.unit = showInd.unit[this.curType]
+          }
+          showInd.label += '(' + showInd.unit + ')'
+        }
+        if (typeof showInd.type === 'object') {
+          showInd.type = showInd.type[this.curType]
+        }
+        return showInd
       })
+    },
+    onConfirmSetInd () {
+      this.showSetInd = false
+      this.changeShowInd()
     }
   }
 }
