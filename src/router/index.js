@@ -111,7 +111,7 @@ const routes = [
     path: '/bdc-prd-dbd/promotion-compare',
     component: PromotionCompare,
     meta: {
-      title: '现金消费对比'
+      title: '消费现金对比'
     }
   },
   // 1.4.2 三级入口：推广效果 选择对比筛选条件

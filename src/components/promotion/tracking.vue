@@ -9,7 +9,7 @@
           <span class="tracking-dt">{{ curDt }}</span>
           <i class="tbt-icon tbt-icon-down" style="position: relative; top: 3px;"></i>
         </div>
-        <div class="cash-compare-btn" @click="onClickCompare"><i class="tbt-icon tbt-icon-money"></i>现金消费对比</div>
+        <div class="cash-compare-btn" @click="onClickCompare"><i class="tbt-icon tbt-icon-money"></i>消费现金对比</div>
       </div>
       <div class="tracking-header_bot">
         <span>当月进度：</span>

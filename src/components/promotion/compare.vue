@@ -1,7 +1,7 @@
 <template>
 <div class="promotion-page">
   <div class="top-hint-text">
-    现金消费对比
+    消费现金对比
   </div>
   <div class="compare-card">
     <div class="compare-row">
