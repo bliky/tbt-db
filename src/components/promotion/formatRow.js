@@ -18,5 +18,5 @@ export default (data_type, val) => {
     case 3:
       return filterNumber(fval*100, '0,0', '', '%') + suffix;
   }
-  return filterNumber(fval, '0,0.00') + suffix;
+  return filterNumber(fval, '0,0.00');
 }

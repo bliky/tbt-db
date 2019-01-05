@@ -92,7 +92,7 @@ export default {
           prop: 'remain_avg_day'
         },
         {
-          type: 2,
+          type: 0,
           label: '追踪ROI',
           prop: 'roi'
         }
@@ -191,7 +191,7 @@ export default {
       this.showSetInd = true
     },
     changeShowInd () {
-      this.showInd = this.checkedInd.map(ind => {
+      let showInds = this.checkedInd.map(ind => {
         let indRes = this.allInd.find(ido => {
           return ido.prop == ind
         })
@@ -210,6 +210,18 @@ export default {
         }
         return showInd
       })
+
+      // if (this.curType !== 'budget') {
+      //   let spliceIdx = showInds.findIndex(item => {
+      //     return item.prop === 'roi'
+      //   })
+
+      //   if (spliceIdx !== -1) {
+      //     showInds.splice(spliceIdx, 1)
+      //   }
+      // }
+
+      this.showInd = showInds
     },
     onConfirmSetInd () {
       this.showSetInd = false

@@ -28,14 +28,12 @@
       <table class="tbt-promotion-table">
         <tr>
           <th style="width: 84px;">渠道</th>
-          <th>{{ showInd[0].label }}</th>
-          <th>{{ showInd[1].label }}</th>
-          <th>{{ showInd[2].label }}</th>
+          <th v-for="ind in showInd" :key="ind.prop" v-if="curType === 'budget' || (curType !== 'budget' && ind.prop !== 'roi')">{{ ind.label }}</th>
           <th class="set-showind" @click="onSetShowind"><i class="tbt-icon tbt-icon-plus"></i></th>
         </tr>
         <tr v-for="row in tableData" :key="row.displayNameId">
           <td>{{ row.displayName }}</td>
-          <td v-for="ind in showInd" :key="ind.prop">
+          <td v-for="ind in showInd" :key="ind.prop" v-if="curType === 'budget' || (curType !== 'budget' && ind.prop !== 'roi')">
             <span v-if="ind.type == 3 && ((curType === 'budget' && row[ind.prop] > progress) || (curType !== 'budget' && row[ind.prop] < progress))" style="color:#FC3142">
               {{ formatRow(ind.type, row[ind.prop]) }}
             </span>
@@ -57,9 +55,8 @@
           </div>
           <div class="popup-pannel-body">
             <ul class="tracking-indlist">
-              <li v-for="ind in allInd" :key="ind.prop" :class="{ checked: hasCheckInd(ind.prop) }" @click="selInd(ind.prop)">
-                {{ typeof ind.label === 'object' ? ind.label[curType] : ind.label }}
-              </li>
+              <li v-for="ind in allInd" v-show="curType === 'budget' || (curType !== 'budget' && ind.prop !== 'roi')" :key="ind.prop" :class="{ checked: hasCheckInd(ind.prop) }" @click="selInd(ind.prop)">
+                {{ typeof ind.label === 'object' ? ind.label[curType] : ind.label }}</li>
             </ul>
           </div>
           <p class="popup-pannel-footer"><i class="tbt-icon tbt-icon-info"></i> 最多选择三个指标</p>
