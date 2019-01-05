@@ -17,22 +17,58 @@ export default {
       showSetInd: false,
       updateDate: '',
       tableData: [],
-      checkedInd: ['target', 'cost', 'rate'],
-      showInd: [{
-        type: 2,
-        label: '预算(元)',
-        prop: 'target'
+      checkedInd: {
+        budget: ['target', 'cost', 'rate'],
+        clue: ['target', 'cost', 'rate'],
+        sale: ['target', 'cost', 'rate']
       },
-      {
-        type: 2,
-        label: '实际花费(元)',
-        prop: 'cost'
+      showInd: {
+        budget: [{
+          type: 2,
+          label: '预算(元)',
+          prop: 'target'
+        },
+        {
+          type: 2,
+          label: '实际花费(元)',
+          prop: 'cost'
+        },
+        {
+          type: 3,
+          label: '花费进度',
+          prop: 'rate'
+        }],
+        clue: [{
+          type: 2,
+          label: '预算(元)',
+          prop: 'target'
+        },
+        {
+          type: 2,
+          label: '实际花费(元)',
+          prop: 'cost'
+        },
+        {
+          type: 3,
+          label: '花费进度',
+          prop: 'rate'
+        }],
+        sale: [{
+          type: 2,
+          label: '预算(元)',
+          prop: 'target'
+        },
+        {
+          type: 2,
+          label: '实际花费(元)',
+          prop: 'cost'
+        },
+        {
+          type: 3,
+          label: '花费进度',
+          prop: 'rate'
+        }]
       },
-      {
-        type: 3,
-        label: '花费进度',
-        prop: 'rate'
-      }],
       allInd: [
         {
           type: {
@@ -124,16 +160,16 @@ export default {
     }),
     ...mapActions('tracking', ['fetch']),
     hasCheckInd (ind) {
-      return this.checkedInd.indexOf(ind) !== -1
+      return this.checkedInd[this.curType].indexOf(ind) !== -1
     },
     selInd (ind) {
-      let idx = this.checkedInd.indexOf(ind)
+      let idx = this.checkedInd[this.curType].indexOf(ind)
       if (idx === -1) {
-        if (this.checkedInd.length < 3) {
-          this.checkedInd.push(ind)
+        if (this.checkedInd[this.curType].length < 3) {
+          this.checkedInd[this.curType].push(ind)
         }
       } else {
-        this.checkedInd.splice(idx, 1)
+        this.checkedInd[this.curType].splice(idx, 1)
       }
     },
     init () {
@@ -185,13 +221,13 @@ export default {
       }
     },
     onSetShowind () {
-      this.checkedInd = this.showInd.map(item => {
+      this.checkedInd[this.curType] = this.showInd[this.curType].map(item => {
         return item.prop
       })
       this.showSetInd = true
     },
     changeShowInd () {
-      let showInds = this.checkedInd.map(ind => {
+      let showInds = this.checkedInd[this.curType].map(ind => {
         let indRes = this.allInd.find(ido => {
           return ido.prop == ind
         })
@@ -221,7 +257,7 @@ export default {
       //   }
       // }
 
-      this.showInd = showInds
+      this.showInd[this.curType] = showInds
     },
     onConfirmSetInd () {
       this.showSetInd = false

@@ -1,6 +1,6 @@
 <template>
   <div class="promotion-page">
-    <div style="height: 30px; padding: 0 11px; font: 13px/30px PingFangSC-Regular,sans-serif; color: #666666; position:relative;">
+    <div class="top-hint-text">
     {{ updateDate }} 更新
     </div>
     <div class="tracking-header">
@@ -28,12 +28,12 @@
       <table class="tbt-promotion-table">
         <tr>
           <th style="width: 84px;">渠道</th>
-          <th v-for="ind in showInd" :key="ind.prop" v-if="curType === 'budget' || (curType !== 'budget' && ind.prop !== 'roi')">{{ ind.label }}</th>
+          <th v-for="ind in showInd[curType]" :key="ind.prop" v-if="curType === 'budget' || (curType !== 'budget' && ind.prop !== 'roi')">{{ ind.label }}</th>
           <th class="set-showind" @click="onSetShowind"><i class="tbt-icon tbt-icon-plus"></i></th>
         </tr>
         <tr v-for="row in tableData" :key="row.displayNameId">
           <td>{{ row.displayName }}</td>
-          <td v-for="ind in showInd" :key="ind.prop" v-if="curType === 'budget' || (curType !== 'budget' && ind.prop !== 'roi')">
+          <td v-for="ind in showInd[curType]" :key="ind.prop" v-if="curType === 'budget' || (curType !== 'budget' && ind.prop !== 'roi')">
             <span v-if="ind.type == 3 && ((curType === 'budget' && row[ind.prop] > progress) || (curType !== 'budget' && row[ind.prop] < progress))" style="color:#FC3142">
               {{ formatRow(ind.type, row[ind.prop]) }}
             </span>

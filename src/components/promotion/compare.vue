@@ -1,5 +1,8 @@
 <template>
 <div class="promotion-page">
+  <div class="top-hint-text">
+    现金消费对比
+  </div>
   <div class="compare-card">
     <div class="compare-row">
       <div class="compare-left">选择落地类型</div>
