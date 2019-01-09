@@ -194,7 +194,7 @@ ul.compare-unit-list {
     border-radius: 22px;
     float: left;
     height: 40px;
-    line-height: 38px;
+    line-height: 40px;
     padding: 0 10px;
     margin-right: 10px;
     margin-bottom: 10px;
@@ -277,6 +277,7 @@ ul.compare-unit-list {
     text-align: center;
     height: 50px;
     line-height: 50px;
+    color: #c1c1c1;
   }
   .compare-unit-date {
     float: left;

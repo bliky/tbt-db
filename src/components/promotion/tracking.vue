@@ -131,7 +131,7 @@ export default tracking;
   padding: 0 10px;
   .tbt-icon {
     position: relative;
-    top: 2px;
+    top: 3px;
     margin-right: 5px;
   }
 }
@@ -161,8 +161,9 @@ export default tracking;
 th.set-showind {
   text-align: center !important;
   width: 30px;
-  padding: 0;
+  padding: 0 !important;
   position: relative;
+  background: #fff !important;
   .tbt-icon {
     top: 2px;
     margin-left: 0;
@@ -173,7 +174,7 @@ th.set-showind {
     position: absolute;
     width: 5px;
     height: 100%;
-    left: 0;
+    left: -3px;
     top: 0;
     background-image: linear-gradient(-90deg, rgba(255,255,255,0.00) 2%, rgba(0,0,0,0.10) 100%);
   }
@@ -209,6 +210,7 @@ th.set-showind {
 ul.tracking-indlist {
   overflow: hidden;
   li {
+    font-family: PingFangSC-Regular;
     border: 1px solid #EEEEEE;
     border-radius: 22px;
     height: 40px;
@@ -221,6 +223,7 @@ ul.tracking-indlist {
     font-size: 15px;
     color: #666666;
     box-sizing: border-box;
+    min-width: 102px;
     &.checked {
       color: #06C792;
       border-color: #06C792;
