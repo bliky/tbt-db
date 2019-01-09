@@ -1,8 +1,5 @@
 <template>
   <div class="promotion-page">
-    <div class="top-hint-text">
-    {{ updateDate }} 更新
-    </div>
     <div class="tracking-header">
       <div class="tracking-header_top">
         <div style="display: inline-block" @click="onSelDt">
@@ -209,6 +206,7 @@ th.set-showind {
 }
 ul.tracking-indlist {
   overflow: hidden;
+  text-align: center;
   li {
     font-family: PingFangSC-Regular;
     border: 1px solid #EEEEEE;
@@ -217,7 +215,7 @@ ul.tracking-indlist {
     line-height: 38px;
     text-align: center;
     padding: 0 20px;
-    float: left;
+    display: inline-block;
     margin-right: 15px;
     margin-bottom: 15px;
     font-size: 15px;

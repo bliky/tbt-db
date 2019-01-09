@@ -70,7 +70,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('tracking', ['comPramas']),
+    ...mapState('tracking', ['comPramas', 'updateDate']),
   },
   mounted () {
     let comPramas = this.comPramas
@@ -95,9 +95,10 @@ export default {
       let dto = dttoken.split('.')
       let curdt = this.dateRange[dto[0]][dto[1]]
       let dateRange = this.dateRange
+      let updateDate = this.updateDate
       // 起始时间
       let startDate = '2017-01-01'
-      let endDate = yesterday
+      let endDate = updateDate || yesterday
       if (dto[0] === 'dt1') {
         if (dto[1] === 'end') {
           if (dateRange.dt1.start) {
@@ -117,7 +118,7 @@ export default {
       }
 
       this.$vux.datetime.show({
-        value: curdt || yesterday,
+        value: curdt || updateDate,
         confirmText: '确认',
         cancelText: '取消',
         yearRow: '{value}年',

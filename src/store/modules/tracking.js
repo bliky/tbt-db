@@ -64,6 +64,7 @@ export default {
     compareData: [],
     curType: 'budget',
     curDt: yesterday,
+    updateDate: yesterday,
     progress: getProgess(yesterday),
     comPramas: {
       type: [],
@@ -75,6 +76,9 @@ export default {
     ['CH_DATE'] (state, dt) {
       state.curDt = dt
       state.progress = getProgess(dt)
+    },
+    ['CH_UPDATE'] (state, dt) {
+      state.updateDate = dt
     },
     ['CH_TYPE'] (state, type) {
       state.curType = type

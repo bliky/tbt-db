@@ -15,7 +15,6 @@ export default {
       dialogWidth: winW - 26,
       index: 0,
       showSetInd: false,
-      updateDate: '',
       tableData: [],
       checkedInd: {
         budget: ['target', 'cost', 'rate'],
@@ -136,7 +135,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('tracking', ['curDt', 'curType', 'progress', 'budgetData', 'clueData', 'saleData', 'comPramas']),
+    ...mapState('tracking', ['curDt', 'updateDate', 'curType', 'progress', 'budgetData', 'clueData', 'saleData', 'comPramas']),
     ...mapGetters('tracking', []),
     progressPercent () {
       return parseInt(this.progress * 100) + '%'
@@ -156,7 +155,8 @@ export default {
   },
   methods: {
     ...mapMutations('tracking', {
-      chDt: 'CH_DATE'
+      chDt: 'CH_DATE',
+      chUpdateDt: 'CH_UPDATE'
     }),
     ...mapActions('tracking', ['fetch']),
     hasCheckInd (ind) {
@@ -173,9 +173,11 @@ export default {
       }
     },
     init () {
-      this.fetchData()
       fetchTrackingUpdateTime().then(res => {
-        this.updateDate = res.result.dt
+        let updateDate = res.result.dt
+        this.chUpdateDt(updateDate)
+        this.chDt(updateDate)
+        this.fetchData()
       })
     },
     fetchData () {
@@ -201,7 +203,7 @@ export default {
         monthRow: '{value}月',
         dayRow: '{value}日',
         startDate: '2018-10-01',
-        endDate: moment().subtract(1, 'days').format('YYYY-MM-DD'),
+        endDate: that.updateDate || moment().subtract(1, 'days').format('YYYY-MM-DD'),
         onConfirm (value) {
           that.chDt(value)
           that.fetchData()
