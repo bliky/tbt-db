@@ -8,13 +8,16 @@ import { buildQuery } from '../common/stringify';
 import Home from '../components/Home';           // 首页
 import Dashboard from '../components/dashboard'; // 转化漏斗
 import Roi from '../components/roi';             // ROI分析
+import RoiCity from '../components/roi/city';    // ROI城市分析
+import RoiCh from '../components/roi/ch';        // ROI渠道分析
 import Promotion from '../components/promotion'; // 推广分析
 import PromotionSelcity from '../components/promotion/selcity'; // 推广分析 选择城市
 import PromotionTracking from '../components/promotion/tracking.vue'; // 推广分析 推广效果跟踪
 import PromotionCompare from '../components/promotion/compare.vue'; // 推广分析 现金消费对比
 import PromotionCompareFilter from '../components/promotion/filter.vue'; // 推广分析 现金消费对比
-import RoiCity from '../components/roi/city';    // ROI城市分析
-import RoiCh from '../components/roi/ch';        // ROI渠道分析
+import BranchCore from '../components/branch/core'; // 分公司专题 核心指标
+import BranchCommon from '../components/branch/common'; // 分公司专题 常用指标
+import BranchGmv from '../components/branch/gmv'; // 分公司专题 实时GMV
 import DataBoard from '../components/board/DataBoard'; // 指标看板
 import Apply from '../components/apply/Apply';         // 指标申请
 import MyInds from '../components/my/MyInds';          // 指标释义
@@ -120,6 +123,30 @@ const routes = [
     component: PromotionCompareFilter,
     meta: {
       title: '修改筛选条件'
+    }
+  },
+  // 1.5 二级入口：分公司专题-核心指标
+  {
+    path: '/bdc-prd-dbd/branch-core',
+    component: BranchCore,
+    meta: {
+      title: '核心指标'
+    }
+  },
+  // 1.6 二级入口：分公司专题-常用指标
+  {
+    path: '/bdc-prd-dbd/branch-common',
+    component: BranchCommon,
+    meta: {
+      title: '常用指标'
+    }
+  },
+  // 1.7 二级入口：分公司专题-实时GMV
+  {
+    path: '/bdc-prd-dbd/branch-gmv',
+    component: BranchGmv,
+    meta: {
+      title: '实时GMV'
     }
   },
   // 2.1 二级入口：指标看板

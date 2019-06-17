@@ -12,6 +12,24 @@
   background-image: url(../../../assets/image/icon_arrow_down.png);
 }
 
+.tbt-icon-triangle_low {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background-size: auto 16px;
+  background-image: url(../../../assets/image/triangle_low.png);
+}
+
+.tbt-icon-left {
+  background-size: auto 10px;
+  background-image: url(../../../assets/image/left.png);
+}
+
+.tbt-icon-right {
+  background-size: auto 10px;
+  background-image: url(../../../assets/image/right.png);
+}
+
 .tbt-icon-in {
   background-image: url(../../../assets/image/icon_up@2x.png);
 }

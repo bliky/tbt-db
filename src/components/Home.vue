@@ -24,6 +24,15 @@
       <div v-if="accessGroup[0].group.promotion" @click="navTo('promotionTracking')" class="tbt-nav-grid-item"><img src="../assets/image/rate@2x.png"><p>进度跟踪</p></div>
     </div>
   </div>
+
+  <div class="tbt-nav-g" v-if="isPromotionGroupShow">
+    <div class="tbt-nav-t">分公司专题</div>
+    <div class="tbt-nav-grid">
+      <div v-if="accessGroup[0].group.promotion" @click="navTo('branchCore')" class="tbt-nav-grid-item"><img src="../assets/image/data2@2x.png"><p>核心指标</p></div>
+      <div v-if="accessGroup[0].group.promotion" @click="navTo('branchCommon')" class="tbt-nav-grid-item"><img src="../assets/image/data_like@2x.png"><p>常用指标</p></div>
+      <div v-if="accessGroup[0].group.promotion" @click="navTo('branchGmv')" class="tbt-nav-grid-item"><img src="../assets/image/GMV@3x.png"><p>实时GMV</p></div>
+    </div>
+  </div>
 <!--   <div class="tbt-nav-g">
     <div class="tbt-nav-t">指标看板(重构模块)</div>
     <div class="tbt-nav-grid">
