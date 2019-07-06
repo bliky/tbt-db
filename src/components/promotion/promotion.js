@@ -1,4 +1,3 @@
-import { fetchPromotionCh, fetchPromotionCity, fetchPromotion, fetchPromotionTrend } from '../../services/api'
 import { filterNumber } from '../../common/filter'
 import clickOutside from '../../directives/clickOutside'
 import '../common/icon'
@@ -270,7 +269,7 @@ export default {
     clickTooltipOutside (e) {
       let _class = e.target._prevClass;
       if (_class !== 'tbt-icon tbt-icon-info js-fn' && this.isTooltipShow) {
-        this.isTooltipShow = false; 
+        this.isTooltipShow = false;
       }
     }
   }

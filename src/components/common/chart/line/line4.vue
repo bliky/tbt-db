@@ -117,7 +117,7 @@ export default {
       tooltip: {
         showItemMarker: false,
         showTooltipMarker: true,
-        offsetY: 0,
+        offsetY: 30,
         showCrosshairs: true,
         onShow: function (ev) {
           let currentData = ev.items[0];
@@ -128,7 +128,12 @@ export default {
           let title = currentData.title;
           let value = currentData.value;
 
-          ev.items[0].value = title + ' ' + value;
+          let tooltipVal =  title + ' ' + value;
+          if (typeof currentData.origin.hb !== 'undefined') {
+            tooltipVal =  filterXAxis(title) + ': ' + filterYAxis(value)
+            tooltipVal += '\n环比: ' + filterYAxis(currentData.origin.hb, '%') + '\n同比: ' + filterYAxis(currentData.origin.tb, '%')
+          }
+          ev.items[0].value = tooltipVal;
         }
       }
     }

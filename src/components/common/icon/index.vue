@@ -8,6 +8,14 @@
   background-position: center;
 }
 
+.tbt-arrow {
+  display: inline-block;
+  border-top: 7px solid #444;
+  border-bottom: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+
 .tbt-icon-down {
   background-image: url(../../../assets/image/icon_arrow_down.png);
 }

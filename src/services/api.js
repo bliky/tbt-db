@@ -1,8 +1,6 @@
 import axios from 'axios';
 import http from '../utils/http.js';
 import Cookie from 'js-cookie';
-import {toast} from '../common/notify';
-import Vue from 'vue';
 
 const force_production = false;  // 强制使用生产模式: 本地开发时，调用测试接口时打开，提交代码前设置为false
 const is_dev = !force_production && process.env.NODE_ENV !== 'production';
@@ -27,7 +25,49 @@ const apis = {
   trackingClue: 'dsa/dataBoard/advertise/getClueList', // 推广效果跟踪: 新增线索接口
   trackingSale: 'dsa/dataBoard/advertise/getAccurateSaleList', // 推广效果跟踪: 精准可售接口
   trackingCashCompare: 'dsa/dataBoard/advertise/getCashCompareList', // 推广效果跟踪: 消费对比接口
-  trackingUpdateTime: 'dsa/dataBoard/advertise/getUpdateTime' // 推广效果跟踪: 数据更新时间
+  trackingUpdateTime: 'dsa/dataBoard/advertise/getUpdateTime', // 推广效果跟踪: 数据更新时间
+  branchOfficeUpdateTime: 'dsa/dataBoard/branchOffice/updateTime', // 分公司专题：获取数据更新时间
+  branchOfficeGetCityList: 'dsa/dataBoard/branchOffice/getCityList', // 分公司专题：获取区/城市数据
+  branchOfficeGetCoreIndicator: 'dsa/dataBoard/branchOffice/getCoreIndicator', // 分公司专题：获取核心指标数据
+  branchOfficeGetIndicatorTendency: 'dsa/dataBoard/branchOffice/getIndicatorTendency', // 分公司专题：获取指标趋势数据
+  branchOfficeGetOftenIndicator: 'dsa/dataBoard/branchOffice/getOftenIndicator', // 分公司专题：获取常用指标数据
+  branchOfficeUrlIsAccessErp: 'dsa/dataBoard/branchOffice/urlIsAccessErp', // 分公司专题：ERP权限认证
+  branchOfficeGetRealtimeGmv: 'dsa/dataBoard/branchOffice/getRealtimeGmv' // 分公司专题：获取实时gmv数据
+};
+
+// 分公司专题：ERP权限认证
+export const branchOfficeUrlIsAccessErp = params => {
+  return request('branchOfficeUrlIsAccessErp', params);
+};
+
+// 分公司专题：获取数据更新时间
+export const branchOfficeUpdateTime = params => {
+  return request('branchOfficeUpdateTime', params);
+};
+
+// 分公司专题：获取区/城市数据
+export const branchOfficeGetCityList = params => {
+  return request('branchOfficeGetCityList', params);
+};
+
+// 分公司专题：获取核心指标数据
+export const branchOfficeGetCoreIndicator = params => {
+  return request('branchOfficeGetCoreIndicator', params);
+};
+
+// 分公司专题：获取指标趋势数据
+export const branchOfficeGetIndicatorTendency = params => {
+  return request('branchOfficeGetIndicatorTendency', params);
+};
+
+// 分公司专题：获取常用指标数据
+export const branchOfficeGetOftenIndicator = params => {
+  return request('branchOfficeGetOftenIndicator', params);
+};
+
+// 分公司专题：获取实时gmv数据
+export const branchOfficeGetRealtimeGmv = params => {
+  return request('branchOfficeGetRealtimeGmv', params);
 };
 
 // 服务请求
@@ -142,3 +182,5 @@ export const fetchTrackingCashCompare = params => {
 export const fetchTrackingUpdateTime = params => {
   return request('trackingUpdateTime', params);
 };
+
+

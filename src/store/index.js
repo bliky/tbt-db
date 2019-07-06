@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import apply from './modules/apply';
 import promotion from './modules/promotion';
 import tracking from './modules/tracking';
+import branch from './modules/branch';
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ const store = new Vuex.Store({
   modules: {
     apply,
     promotion,
-    tracking
+    tracking,
+    branch
   }
 });
 

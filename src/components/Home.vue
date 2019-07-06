@@ -3,8 +3,8 @@
   <div class="tbt-nav-g" v-if="isSubjectGroupShow">
     <div class="tbt-nav-t">专题分析</div>
     <div class="tbt-nav-grid">
-      <div v-if="accessGroup[0].group.funnel" @click="navTo('funnel')" class="tbt-nav-grid-item"><img src="../assets/image/funnel@2x.png"><p>转化漏斗</p></div>
-      <div v-if="accessGroup[0].group.roi" @click="navTo('roi')" class="tbt-nav-grid-item"><img src="../assets/image/roi@2x.png"><p>ROI分析</p></div>
+      <div v-if="url_ids.indexOf(1) !== -1" @click="navTo('funnel')" class="tbt-nav-grid-item"><img src="../assets/image/funnel@2x.png"><p>转化漏斗</p></div>
+      <div v-if="url_ids.indexOf(2) !== -1" @click="navTo('roi')" class="tbt-nav-grid-item"><img src="../assets/image/roi@2x.png"><p>ROI分析</p></div>
     </div>
   </div>
 
@@ -20,17 +20,17 @@
   <div class="tbt-nav-g" v-if="isPromotionGroupShow">
     <div class="tbt-nav-t">推广专题</div>
     <div class="tbt-nav-grid">
-      <div v-if="accessGroup[0].group.promotion" @click="navTo('promotion')" class="tbt-nav-grid-item"><img src="../assets/image/promotion@2x.png"><p>推广分析</p></div>
-      <div v-if="accessGroup[0].group.promotion" @click="navTo('promotionTracking')" class="tbt-nav-grid-item"><img src="../assets/image/rate@2x.png"><p>进度跟踪</p></div>
+      <div v-if="url_ids.indexOf(3) !== -1" @click="navTo('promotion')" class="tbt-nav-grid-item"><img src="../assets/image/promotion@2x.png"><p>推广分析</p></div>
+      <div v-if="url_ids.indexOf(4) !== -1" @click="navTo('promotionTracking')" class="tbt-nav-grid-item"><img src="../assets/image/rate@2x.png"><p>进度跟踪</p></div>
     </div>
   </div>
 
-  <div class="tbt-nav-g" v-if="isPromotionGroupShow">
+  <div class="tbt-nav-g" v-if="isBranchGroupShow">
     <div class="tbt-nav-t">分公司专题</div>
     <div class="tbt-nav-grid">
-      <div v-if="accessGroup[0].group.promotion" @click="navTo('branchCore')" class="tbt-nav-grid-item"><img src="../assets/image/data2@2x.png"><p>核心指标</p></div>
-      <div v-if="accessGroup[0].group.promotion" @click="navTo('branchCommon')" class="tbt-nav-grid-item"><img src="../assets/image/data_like@2x.png"><p>常用指标</p></div>
-      <div v-if="accessGroup[0].group.promotion" @click="navTo('branchGmv')" class="tbt-nav-grid-item"><img src="../assets/image/GMV@3x.png"><p>实时GMV</p></div>
+      <div v-if="url_ids.indexOf(5) !== -1" @click="navTo('branchCore')" class="tbt-nav-grid-item"><img src="../assets/image/data2@2x.png"><p>核心指标</p></div>
+      <div v-if="url_ids.indexOf(12) !== -1" @click="navTo('branchCommon')" class="tbt-nav-grid-item"><img src="../assets/image/data_like@2x.png"><p>常用指标</p></div>
+      <div v-if="url_ids.indexOf(13) !== -1" @click="navTo('branchGmv')" class="tbt-nav-grid-item"><img src="../assets/image/GMV@3x.png"><p>实时GMV</p></div>
     </div>
   </div>
 <!--   <div class="tbt-nav-g">
@@ -40,7 +40,7 @@
     </div>
   </div> -->
 
-  <div style="position: absolute; bottom: 30px; left: 0; width: 100%; z-index: 600;">
+  <div style="position: absolute; bottom: 10px; left: 0; width: 100%; z-index: 600;">
     <div style="font: 13px/18px PingFangSC-Regular; color: #C1C1C1; letter-spacing: 0; text-align: center; width: 160px; margin: 0 auto;"><divider style="color: #c1c1c1;">土巴兔大数据</divider></div>
   </div>
 </div>
@@ -48,7 +48,7 @@
 
 <script>
 import Cookie from 'js-cookie';
-import { urlIsAccess } from '../services/api';
+import { urlIsAccess, branchOfficeUrlIsAccessErp } from '../services/api';
 import { Divider } from 'vux';
 import { navTo } from '../utils/utils'
 
@@ -58,6 +58,8 @@ export default {
   },
   data() {
     return {
+      url_ids: [],
+      privs: null,
       accessGroup: [
         {
           title: '专题分析',
@@ -72,16 +74,20 @@ export default {
   },
   computed: {
     isSubjectGroupShow () {
-      let g = this.accessGroup[0].group;
-      return g.funnel || g.roi || g.promotion;
+      let privs = this.privs
+      return privs && privs[0] && privs[0].child.length
     },
     isPromotionGroupShow () {
-      let g = this.accessGroup[0].group;
-      return g.promotion;
+      let privs = this.privs
+      return privs && privs[1] && privs[1].child.length
+    },
+    isBranchGroupShow () {
+      let privs = this.privs
+      return privs && privs[2] && privs[2].child.length
     }
   },
   created () {
-    this.checkAccess();
+    this.checkAccessErp();
   },
   methods: {
     checkAccess () {
@@ -104,6 +110,20 @@ export default {
         g['promotion'] = res.result.isAccess.toString() === 'true';
       });
     },
+    checkAccessErp () {
+      let url_ids = this.url_ids
+      branchOfficeUrlIsAccessErp({
+        pid: 0
+      }).then(res => {
+        res.result.urlList.forEach(item => {
+          item.child.forEach(item => {
+            url_ids.push(item.url_id)
+          })
+        })
+        this.privs = res.result.urlList
+        console.log(res.result.urlList, url_ids)
+      })
+    },
     navTo(name) {
       navTo.call(this, name);
     }
@@ -124,7 +144,8 @@ export default {
 .tbt-nav-g {
   overflow: hidden;
   background: #ffffff;
-  margin-top: 10px;
+  margin: 15px;
+  border-radius: 10px;
 }
 
 .tbt-nav-t {
