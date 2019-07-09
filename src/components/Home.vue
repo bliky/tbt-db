@@ -1,5 +1,5 @@
 <template>
-<div class="tbt-page">
+<div class="tbt-page" style="overflow-y: auto;">
   <div class="tbt-nav-g" v-if="isSubjectGroupShow">
     <div class="tbt-nav-t">专题分析</div>
     <div class="tbt-nav-grid">
@@ -40,8 +40,8 @@
     </div>
   </div> -->
 
-  <div style="position: absolute; bottom: 10px; left: 0; width: 100%; z-index: 600;">
-    <div style="font: 13px/18px PingFangSC-Regular; color: #C1C1C1; letter-spacing: 0; text-align: center; width: 160px; margin: 0 auto;"><divider style="color: #c1c1c1;">土巴兔大数据</divider></div>
+  <div :class="{'foot-fixed': !pageScroll}">
+    <div style="font: 13px/18px PingFangSC-Regular; color: #C1C1C1; letter-spacing: 0; text-align: center; width: 160px; margin: 10px auto;"><divider style="color: #c1c1c1;">土巴兔大数据</divider></div>
   </div>
 </div>
 </template>
@@ -60,6 +60,7 @@ export default {
     return {
       url_ids: [],
       privs: null,
+      pageScroll: false,
       accessGroup: [
         {
           title: '专题分析',
@@ -121,7 +122,10 @@ export default {
           })
         })
         this.privs = res.result.urlList
-        console.log(res.result.urlList, url_ids)
+        this.$nextTick(_ => {
+          let $page = document.getElementsByClassName('tbt-page')[0]
+          this.pageScroll = ($page.scrollHeight + 63) > $page.offsetHeight
+        })
       })
     },
     navTo(name) {
@@ -173,5 +177,9 @@ export default {
     color: #999999;
     font: 13px/18px PingFangSC-Regular;
   }
+}
+
+.foot-fixed {
+  position: absolute; bottom: 15px; left: 0; width: 100%; z-index: 600;
 }
 </style>
