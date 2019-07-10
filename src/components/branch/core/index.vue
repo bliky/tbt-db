@@ -39,15 +39,15 @@
             <btn-tab :tabs="trendTabs" v-model="trendTabIndex" :hidden="trendTabHidden"></btn-tab>
           </div>
           <div style="margin: 20px -15px 0; background: #f6f6f6; height: 196px; overflow:hidden;">
-            <div v-show="trendTabIndex==0" >
+            <div v-show="trendTabIndex==0">
               <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.day.length" :data="currentTrend.day" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
-            <div v-show="trendTabIndex==1" >
+            <div v-show="trendTabIndex==1">
               <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.week.length" :data="currentTrend.week" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
-            <div v-show="trendTabIndex==2" >
+            <div v-show="trendTabIndex==2">
               <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.month.length" :data="currentTrend.month" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
@@ -196,6 +196,10 @@ export default {
       } else {
         this.$refs.filter.show()
       }
+    },
+    onClickOutside () {
+      console.log('click outsite')
+      this.$refs.filter.hide()
     },
     checkParams () {
       let params = this.queryParams

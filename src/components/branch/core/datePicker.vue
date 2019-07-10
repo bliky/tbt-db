@@ -10,7 +10,7 @@
       </div>
       <div style="flex: 1; text-align: center; margin: auto 0;">
         <h2 style="font-size: 17px; color: #333333;">{{ store.currentText }}</h2>
-        <p style="font-size: 12px; color: #999999;">更新时间：{{ updateTime[dateType] }}</p>
+        <p style="font-size: 12px; color: #999999;">更新时间：{{ updateTime[dateType].updateDt }}</p>
       </div>
       <div @click="onNext" class="branch-date-next" :class="{disabled: picker.eqMax()}">
         <span style="width: 19px; line-height: 13px; font-size: 12px;color: #666666;text-align: center;">{{ store.nextText }}</span>
@@ -44,10 +44,10 @@ export default {
       tabs: ['日', '周', '月', '年'],
       dateType: 'day',
       updateTime: {
-        day: '',
-        week: '',
-        month: '',
-        year: ''
+        day: {},
+        week: {},
+        month: {},
+        year: {}
       }
     }
   },
@@ -58,7 +58,7 @@ export default {
     async getUpdateTime (ty) {
       let updateTime = this.updateTime
       this.dateType = ty
-      if (updateTime[ty]) return updateTime[ty]
+      if (updateTime[ty] && updateTime[ty].dataDt) return updateTime[ty].dataDt
       return await branchOfficeUpdateTime({
         class_type: 1,
         type: ty === 'day' ? 1 :
@@ -68,9 +68,10 @@ export default {
       }).then(res => {
         try {
           if (parseInt(res.status) === 200) {
-            updateTime[ty] = res.result.dt
-            this.picker.set(updateTime[ty], 'YYYY-MM-DD HH:mm:ss')
-            let max = moment(this.picker.setMax(updateTime[ty], 'YYYY-MM-DD HH:mm:ss'))
+            updateTime[ty].updateDt = res.result.updateDt
+            updateTime[ty].dataDt = res.result.dataDt
+            this.picker.set(updateTime[ty].dataDt, 'YYYY-MM-DD HH:mm:ss')
+            let max = moment(this.picker.setMax(updateTime[ty].dataDt, 'YYYY-MM-DD HH:mm:ss'))
             switch (ty) {
               case 'day':
                 this.picker.setMin(max.subtract(30, 'days').format('YYYYMMDD'))

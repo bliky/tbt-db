@@ -1,78 +1,70 @@
 <template>
-  <div v-show="isShow" class="pop-pannel" style="top: 34px; z-index: 200; border-top: 1px solid #F6F6F6;" @click="hide">
-    <div class="pop-pannel-bd branch" @click.stop=''>
-      <div class="flex-container" style="height: 315px;">
-        <div style="width: 126px;background: #F7F9FD; border-right: 1px solid #eee; box-sizing: border-box;">
-          <ul class="v-menu-lt">
-            <li :class="{active: cate==0}" @click="set_cate(0)">全部(默认)</li>
-            <li :class="{active: cate==1}" @click="set_cate(1)">五大城市<span class="branch-badge" v-show="picked.sub1.length">{{ picked.sub1.length }}</span></li>
-            <li :class="{active: cate==2}" @click="set_cate(2)">六大区域<span class="branch-badge" v-show="picked.sub2.length">{{ picked.sub2.length }}</span></li>
-            <li :class="{active: cate==3}" @click="set_cate(3)">非落地城市<span class="branch-badge" v-show="picked.sub3.length">{{ picked.sub3.length }}</span></li>
-          </ul>
-        </div>
-        <div class="flex-item tbt-chlist" style="overflow-y: auto; height: 100%;">
-          <ul v-show="cate==0" class="v-menu-rt">
-            <li :class="{checked: picked.all}" @click="pick('all', true)">
-              全部
-              <i class="tbt-icon tbt-icon-checked"></i>
-              <i class="tbt-icon tbt-icon-uncheck"></i>
-            </li>
-          </ul>
-          <ul v-show="cate==1" class="v-menu-rt">
-            <li :class="{checked: picked.all1}" @click="pick('all1', true)">
-              全部
-              <i class="tbt-icon tbt-icon-checked"></i>
-              <i class="tbt-icon tbt-icon-uncheck"></i>
-            </li>
-            <li :class="{checked: picked.sub1.indexOf(opt)!==-1}" @click="pick('sub1', opt)" v-for="opt in opts.sub1" :key='opt.id'>
-              {{ opt.city_name }}
-              <i class="tbt-icon tbt-icon-checked"></i>
-              <i class="tbt-icon tbt-icon-uncheck"></i>
-            </li>
-          </ul>
-          <div style="display: flex; height: 100%;" v-show="cate==2">
-            <ul class="v-menu-rt" style="border-right: 1px solid #eee;">
-              <li :class="{checked: picked.all2}" @click="pick('all2', true)">
-                全部
-                <i class="tbt-icon tbt-icon-checked"></i>
-                <i class="tbt-icon tbt-icon-uncheck"></i>
-              </li>
-              <li :class="{checked: curRegion === opt}" @click="pick('region', opt)" v-for="opt in opts.region" :key='opt.id'>
-                {{ opt.city_name }}
-                <span class="branch-badge" v-show="regionCount(opt.child)">{{ regionCount(opt.child) }}</span>
-              </li>
-            </ul>
-            <ul class="v-menu-rt" v-show="opts.sub2.length" style="overflow-y: auto">
-              <li :class="{checked: picked.all_region.indexOf(curRegion) !== -1}" @click="pick('all2', curRegion)">
-                全部
-                <i class="tbt-icon tbt-icon-checked"></i>
-                <i class="tbt-icon tbt-icon-uncheck"></i>
-              </li>
-              <li :class="{checked: picked.sub2.indexOf(opt)!==-1}" @click="pick('sub2', opt)" v-for="opt in opts.sub2" :key='opt.id'>
-                {{ opt.city_name }}
-                <i class="tbt-icon tbt-icon-checked"></i>
-                <i class="tbt-icon tbt-icon-uncheck"></i>
-              </li>
-            </ul>
-          </div>
-          <ul v-show="cate==3" class="v-menu-rt">
-            <li :class="{checked: picked.all3}" @click="pick('all3', true)">
-              全部
-              <i class="tbt-icon tbt-icon-checked"></i>
-              <i class="tbt-icon tbt-icon-uncheck"></i>
-            </li>
-            <li :class="{checked: picked.sub3.indexOf(opt)!==-1}" @click="pick('sub3', opt)" v-for="opt in opts.sub3" :key='opt.id'>
-              {{ opt.city_name }}
-              <i class="tbt-icon tbt-icon-checked"></i>
-              <i class="tbt-icon tbt-icon-uncheck"></i>
-            </li>
-          </ul>
-        </div>
+  <div class="flex-container" style="height: 315px;">
+    <div style="width: 126px;background: #F7F9FD; border-right: 1px solid #eee; box-sizing: border-box;">
+      <ul class="v-menu-lt">
+        <li :class="{active: cate==0}" @click="set_cate(0)">全部(默认)</li>
+        <li :class="{active: cate==1}" @click="set_cate(1)">五大城市<span class="branch-badge" v-show="picked.sub1.length">{{ picked.sub1.length }}</span></li>
+        <li :class="{active: cate==2}" @click="set_cate(2)">六大区域<span class="branch-badge" v-show="picked.sub2.length">{{ picked.sub2.length }}</span></li>
+        <li :class="{active: cate==3}" @click="set_cate(3)">非落地城市<span class="branch-badge" v-show="picked.sub3.length">{{ picked.sub3.length }}</span></li>
+      </ul>
+    </div>
+    <div class="flex-item tbt-chlist" style="overflow-y: auto; height: 100%;">
+      <ul v-show="cate==0" class="v-menu-rt">
+        <li :class="{checked: picked.all}" @click="pick('all', true)">
+          全部
+          <i class="tbt-icon tbt-icon-checked"></i>
+          <i class="tbt-icon tbt-icon-uncheck"></i>
+        </li>
+      </ul>
+      <ul v-show="cate==1" class="v-menu-rt">
+        <li :class="{checked: picked.all1}" @click="pick('all1', true)">
+          全部
+          <i class="tbt-icon tbt-icon-checked"></i>
+          <i class="tbt-icon tbt-icon-uncheck"></i>
+        </li>
+        <li :class="{checked: picked.sub1.indexOf(opt)!==-1}" @click="pick('sub1', opt)" v-for="opt in opts.sub1" :key='opt.id'>
+          {{ opt.city_name }}
+          <i class="tbt-icon tbt-icon-checked"></i>
+          <i class="tbt-icon tbt-icon-uncheck"></i>
+        </li>
+      </ul>
+      <div style="display: flex; height: 100%;" v-show="cate==2">
+        <ul class="v-menu-rt" style="border-right: 1px solid #eee;">
+          <li :class="{checked: picked.all2}" @click="pick('all2', true)">
+            全部
+            <i class="tbt-icon tbt-icon-checked"></i>
+            <i class="tbt-icon tbt-icon-uncheck"></i>
+          </li>
+          <li :class="{checked: curRegion === opt}" @click="pick('region', opt)" v-for="opt in opts.region" :key='opt.id'>
+            {{ opt.city_name }}
+            <span class="branch-badge" v-show="regionCount(opt.child)">{{ regionCount(opt.child) }}</span>
+          </li>
+        </ul>
+        <ul class="v-menu-rt" v-show="opts.sub2.length" style="overflow-y: auto">
+          <li :class="{checked: picked.all_region.indexOf(curRegion) !== -1}" @click="pick('all2', curRegion)">
+            全部
+            <i class="tbt-icon tbt-icon-checked"></i>
+            <i class="tbt-icon tbt-icon-uncheck"></i>
+          </li>
+          <li :class="{checked: picked.sub2.indexOf(opt)!==-1}" @click="pick('sub2', opt)" v-for="opt in opts.sub2" :key='opt.id'>
+            {{ opt.city_name }}
+            <i class="tbt-icon tbt-icon-checked"></i>
+            <i class="tbt-icon tbt-icon-uncheck"></i>
+          </li>
+        </ul>
       </div>
-      <div style="display: flex">
-        <div @click="onReset" style="border-top: 1px solid #eee; font: 17px/50px PingFangSC-Regular,sans-serif; color:#06C792; text-align:center; width: 126px;">重置</div>
-        <div @click="onConfirm" style="font: 17px/50px PingFangSC-Regular,sans-serif; background: #06C792; color:#fff; text-align:center; flex:1;">确定</div>
-      </div>
+      <ul v-show="cate==3" class="v-menu-rt">
+        <li :class="{checked: picked.all3}" @click="pick('all3', true)">
+          全部
+          <i class="tbt-icon tbt-icon-checked"></i>
+          <i class="tbt-icon tbt-icon-uncheck"></i>
+        </li>
+        <li :class="{checked: picked.sub3.indexOf(opt)!==-1}" @click="pick('sub3', opt)" v-for="opt in opts.sub3" :key='opt.id'>
+          {{ opt.city_name }}
+          <i class="tbt-icon tbt-icon-checked"></i>
+          <i class="tbt-icon tbt-icon-uncheck"></i>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -90,7 +82,6 @@ export default {
   },
   data () {
     return {
-      isShow: this.visible,
       cate: 0,
       opts: {
         sub1: [],
@@ -294,7 +285,7 @@ export default {
           break
       }
     },
-    onReset () {
+    reset () {
       // this.all(true)
       this.cate = 0
       this.opts.sub2 = []
@@ -309,21 +300,22 @@ export default {
         sub2: [],
         sub3: []
       }
-      this.hide()
     },
     getParams () {
       let cityIds = this.picked.sub1.map(item => item.id)
       let regionIds = this.picked.sub2.map(item => item.id)
       let luodiIds = this.picked.sub3.map(item => item.id)
       return {
-        cityIds,
-        regionIds,
-        luodiIds,
-        isArea: false
+          citys: {
+            cityIds,
+            regionIds,
+            luodiIds,
+            isArea: false
+          }
       }
     },
     emit () {
-      this.$emit('confirm', this.getParams())
+      this.$emit('change', this.getParams())
     },
     onConfirm () {
       this.emit()

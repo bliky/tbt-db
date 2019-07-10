@@ -124,7 +124,7 @@ export default {
         this.privs = res.result.urlList
         this.$nextTick(_ => {
           let $page = document.getElementsByClassName('tbt-page')[0]
-          this.pageScroll = ($page.scrollHeight + 63) > $page.offsetHeight
+          this.pageScroll = ($page.scrollHeight+53) > $page.offsetHeight
         })
       })
     },

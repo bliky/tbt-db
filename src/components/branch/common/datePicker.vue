@@ -5,7 +5,7 @@
     </div>
     <div style="text-align: center;">
       <h2 style="font-size: 17px; color: #333333;">{{ currentText }}</h2>
-      <p style="font-size: 12px; color: #999999;">更新时间：{{ classType && updateTime[classType] && updateTime[classType][dateType] }}</p>
+      <p style="font-size: 12px; color: #999999;">更新时间：{{ classType && updateTime[classType] && updateTime[classType][dateType].updateDt }}</p>
     </div>
   </div>
 </template>
@@ -61,14 +61,14 @@ export default {
   
       if (!updateTime[classType]) {
         updateTime[classType] = {
-          day: '',
-          week: '',
-          month: '',
-          year: ''
+          day: {},
+          week: {},
+          month: {},
+          year: {}
         }
       }
-      if (updateTime[classType] && updateTime[classType][dateType]) {
-        return this.currentText = moment(updateTime[classType][dateType], 'YYYY-MM-DD HH:mm:ss').format('MM月DD日')
+      if (updateTime[classType] && updateTime[classType][dateType] && updateTime[classType][dateType].dataDt) {
+        return this.currentText = moment(updateTime[classType][dateType].dataDt, 'YYYY-MM-DD HH:mm:ss').format('MM月DD日')
       }
       if (!classType) {
         return console.log('classType', classType)
@@ -82,8 +82,9 @@ export default {
       }).then(res => {
         try {
           if (parseInt(res.status) === 200) {
-            updateTime[classType][dateType] = res.result.dt
-            this.currentText = moment(res.result.dt, 'YYYY-MM-DD HH:mm:ss').format('MM月DD日')
+            updateTime[classType][dateType].dataDt = res.result.dataDt
+            updateTime[classType][dateType].updateDt = res.result.updateDt
+            this.currentText = moment(res.result.dataDt, 'YYYY-MM-DD HH:mm:ss').format('MM月DD日')
           } else {
             this.currentText = ''
           }
@@ -103,7 +104,7 @@ export default {
               ty === 'week' ? 2 :
               ty === 'month' ? 3 :
               ty === 'year' ? 4 : 1,
-        dt: this.classType && this.updateTime[this.classType] && moment(this.updateTime[this.classType][this.dateType], 'YYYY-MM-DD HH:mm:ss').format('YYYYMMDD')
+        dt: this.classType && this.updateTime[this.classType] && this.updateTime[this.classType][ty].dataDt && moment(this.updateTime[this.classType][ty].dataDt, 'YYYY-MM-DD HH:mm:ss').format('YYYYMMDD')
       })
     },
     onChangeTab (tabIndex) {

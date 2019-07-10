@@ -1,41 +1,42 @@
 <template>
   <div>
     <tab :line-width="2"  v-model="tabIndex" active-color="#06C792">
-      <tab-item :selected="tabIndex == idx" @click.native="tabIndex = idx" v-for="(item, idx) in tabs" :key="idx">{{ item.name }}</tab-item>
+      <tab-item :selected="tabIndex == idx" @click.native="onClickTab(idx)" v-for="(item, idx) in tabs" :key="idx">{{ item.name }}</tab-item>
     </tab>
     <div>
       <div class="tbt-cell" style="box-sizing: border-box; padding: 15px 0; background-color: #fff;">
         <div class="tbt-cell_bd" style="text-align: center">
-          <div class="tbt-sel-tag branch-com" style="width: 75px" :class="{checked: fTab == 1}" @click.stop="handleOnClickAreaSelect">区域
+          <div class="tbt-sel-tag branch-com" style="width: 75px" :class="{checked: fTab == 1}" @click.stop="handleOnClickAreaSelect">
+            {{ tabIndex === 0 ? '区域' : '城市' }}
             <i class="tbt-arrow" style="position: relative; left: 3px; bottom: 2px;"></i>
           </div>
 
-          <div class="tbt-sel-tag branch-com" style="width: 90px; margin-left: 10px;" :class="{checked: fTab == 2}" @click.stop="handleOnClickYezhuSelect">业主类型
+          <div v-show="tabIndex === 0" class="tbt-sel-tag branch-com" style="width: 90px; margin-left: 10px;" :class="{checked: fTab == 2}" @click.stop="handleOnClickYezhuSelect">业主类型
             <i class="tbt-arrow" style="position: relative; left: 3px; bottom: 2px;"></i>
           </div>
           
-          <div class="tbt-sel-tag branch-com" style="width: 75px; margin-left: 10px;" :class="{checked: fTab == 3}" @click.stop="handleOnClickChSelect">渠道
+          <div v-show="tabIndex === 0" class="tbt-sel-tag branch-com" style="width: 75px; margin-left: 10px;" :class="{checked: fTab == 3}" @click.stop="handleOnClickChSelect">渠道
             <i class="tbt-arrow" style="position: relative; left: 3px; bottom: 2px;"></i>
           </div>
         </div>
       </div>
     </div>
-    <query-filter :visible.sync="showFilter" @confirm="onFilter" :tab.sync="fTab" ref="filter"></query-filter>
+    <query-filter :visible.sync="showFilter" @confirm="onFilter" :tab.sync="fTab" ref="filter" @onhide="fTab = 0"></query-filter>
     <date-picker @change="onUpdateDate" ref="datepicker"></date-picker>
 
     <div class="tbt-pannel" style="margin-top: 15px; padding: 0 0 44px; border-bottom: 1px solid #EEEEEE; margin-bottom: 21px;">
       <table class="tbt-promotion-table">
         <tr>
-          <th style="width: 84px;">指标</th>
-          <th>{{ gras[0] }}</th>
-          <th>{{ gras[1] }}</th>
-          <th>{{ gras[2] }}</th>
+          <th style="width: 84px;">{{ tableHeader.name }}</th>
+          <th>{{ tableHeader.number }}</th>
+          <th>{{ tableHeader.hb }}</th>
+          <th>{{ tableHeader.tb }}</th>
         </tr>
         <tr v-for="row in tableData" :key="row.class_name" @click="handleOnClickRow(row)">
           <td>{{ row.name }}</td>
-          <td>{{ formatRow(1, row.number) }}</td>
-          <td>{{ formatRow(3, row.hb) }}</td>
-          <td>{{ formatRow(3, row.tb) }}</td>
+          <td>{{ formatRow(row.type, row.number) }}</td>
+          <td>{{ formatRow(row.type, row.hb) }}</td>
+          <td>{{ formatRow(row.type, row.tb) }}</td>
         </tr>
       </table>
     </div>
@@ -99,6 +100,7 @@ export default {
     return {
       tabIndex: 0,
       fTab: 0,
+      preFTab: 0,
       chartWidth: winW - 26,
       chartHeight: 196,
       winW: winW,
@@ -111,16 +113,8 @@ export default {
       currentTrend: {
         class_name: '',
         day: [
-          { dt: '2018-09-01', val: 200 },
-          { dt: '2018-09-02', val: 400 },
-          { dt: '2018-09-03', val: 300 },
-          { dt: '2018-09-04', val: 100 }
         ],
         month: [
-          { dt: '2018-09', val: 100 },
-          { dt: '2018-10', val: 200 },
-          { dt: '2018-11', val: 300 },
-          { dt: '2018-12', val: 200 }
         ]
       },
       class_type: '2',
@@ -142,52 +136,15 @@ export default {
         }
       ],
       showFilter: false,
-      gras: ['当前', '环比', '同比'],
       queryParams: {},
-      tableData: [
-        {
-          name: '浪费率',
-          data_type: 1,
-          number: 123472692,
-          hb: 123472692,
-          tb: 123472692
-        },
-        {
-          name: '派单量房率',
-          data_type: 1,
-          number: 123472692,
-          hb: 123472692,
-          tb: 123472692
-        },
-        {
-          name: '量房数',
-          data_type: 1,
-          number: 123472692,
-          hb: 123472692,
-          tb: 123472692
-        },
-        {
-          name: '扣费率',
-          data_type: 1,
-          number: 123472692,
-          hb: 123472692,
-          tb: 123472692
-        },
-        {
-          name: '扣签率',
-          data_type: 1,
-          number: 123472692,
-          hb: 123472692,
-          tb: 123472692
-        },
-        {
-          name: '装修签约GMV',
-          data_type: 1,
-          number: 123472692,
-          hb: 123472692,
-          tb: 123472692
-        }
-      ]
+      dateParams: {},
+      tableHeader: {
+        name: '指标',
+        number: '',
+        hb: '',
+        tb: ''
+      },
+      tableData: []
     }
   },
   mounted () {
@@ -195,16 +152,30 @@ export default {
   },
   methods: {
     ...mapActions('branch', ['getCommonInd', 'getIndTrend']),
+    onClickTab(idx) {
+      this.tabIndex = idx
+      if (idx !== 0) {
+        if (this.fTab !== 1 && this.fTab !== 0) {
+          this.preFTab = this.fTab
+          this.fTab = 1
+        }
+        this.$refs.filter.more(false)
+      } else {
+        if (this.fTab !== 0 && this.preFTab !== 0) {
+          this.fTab = this.preFTab
+        }
+        this.$refs.filter.more(true)
+      }
+    },
     handleOnClickRow (ind) {
       let { dt, citys, owner_type, channel } = this.queryParams
       let params = { dt, citys }
       params.id = ind.id
-      console.log('getIndTrend params', params)
+
       this.getIndTrend(params).then(res => {
         if (!res) {
 
         }
-        console.log('getIndTrend response', res)
         let { name, day, week, month } = res
         this.currentTrend.class_name = name
         this.currentTrend.day = day
@@ -239,20 +210,20 @@ export default {
       //   this.$refs.filter.show(3)
       // }
     },
-    checkParams () {
-      let params = this.queryParams
+    checkParams (params) {
       return params.dt &&
              params.citys
     },
-    loadData () {
-      if (this.checkParams()) {
-        this.queryParams.class_type = this.class_type
-        console.log('loadData', this.queryParams)
-        this.getCommonInd(this.queryParams).then(data => {
+    loadData (params) {
+      if (this.checkParams(params)) {
+        params.class_type = this.class_type
+        console.log('loadData', params)
+        this.getCommonInd(params).then(data => {
           if (!data) {
             this.tableData = []
             return
           }
+          this.tableHeader = data.shift()
           this.tableData = data.map(item => {
             return {
               id: item.id,
@@ -260,19 +231,20 @@ export default {
               number: item.number,
               hb: item.hb,
               tb: item.tb,
-              data_type: 1
+              type: item.type
             }
           })
         })
       }
     },
     onUpdateDate (params) {
+      this.dateParams = params
       this.queryParams = Object.assign(this.queryParams, params)
-      this.loadData()
+      this.loadData(this.queryParams)
     },
     onFilter (params) {
-      this.queryParams = Object.assign(this.queryParams, params)
-      this.loadData()
+      this.queryParams = Object.assign({}, this.dateParams, params)
+      this.loadData(this.queryParams)
     },
     formatRow (data_type, val) {
       let fval = parseFloat(val);
@@ -284,16 +256,20 @@ export default {
         fval /= 10000;
         suffix = '万';
       }
+
       switch (data_type) {
-        case 1:
+        case 0:
           return suffix ? filterNumber(fval, '0,0.00') + suffix : filterNumber(fval, '0,0') + suffix;
+        case 1:
+          if (suffix) {
+            return filterNumber(fval, '0,0.00') + suffix;
+          }
+          return filterNumber(fval, '0,0');
         case 2:
-          return filterNumber(fval, '0,0.00') + suffix;
-        case 3:
-          return filterNumber(fval*100, '0,0.00', '', '%') + suffix;
+          return filterNumber(fval*100, '0,0.00', '', '%');
       }
       return filterNumber(fval, '0,0.00') + suffix;
-    },
+    }
   }
 }
 </script>

@@ -10,7 +10,7 @@
     <div style="position: absolute; top: 68px; left: 25px; opacity: 0.8; font-family: PingFangSC-Semibold; font-size: 26px; color: #FFFFFF; letter-spacing: 0; line-height: 22px;">
       {{ today }}</div>
     <div style="position: absolute; right: 25px; top: 64px;">
-      <btn-tab class="gmv-tab" :tabs="tabs" v-model="tabIndex" :hidden="tabHidden"></btn-tab>
+      <btn-tab class="gmv-tab" :tabs="tabs" v-model="tabIndex" :hidden="tabHidden" @change="onChangeTab"></btn-tab>
     </div>
     <div style="position: absolute; left: 50%; top: 50%;">
       <div style="position: absolute; left: -180px; top: -180px; width: 360px; height: 360px;">
@@ -19,13 +19,13 @@
       <div style="position: absolute; left: -180px; top: -180px; width: 360px; height: 360px; display: flex;">
         <div style="margin: auto; text-align: center;">
           <div style="opacity: 0.5; font-family: PingFangSC-Light; font-size: 12px; color: #FFFFFF; letter-spacing: 1px;">今日实时GMV (万)</div>
-          <div style="opacity: 0.9; font-family: PingFangSC-Semibold; font-size: 45px; color: #FFFFFF;">{{ gmv }}</div>
+          <div style="opacity: 0.9; font-family: PingFangSC-Semibold; font-size: 45px; color: #FFFFFF;">{{ gmv|filter-number }}</div>
           <div style="opacity: 0.5; font-family: PingFangSC-Regular; font-size: 12px; color: #FFFFFF; letter-spacing: 1px;">北京时间 {{ realtime }}</div>
         </div>
       </div>
     </div>
     <div style="position: absolute; bottom: 40px; left: 25px; color: #FFFFFF; opacity: 0.3; font-size: 12px;">
-      数据每分钟更新一次
+      数据每十分钟更新一次
       <div style="margin: 5px 0; height: 1px; opacity: 0.1; background: #FFFFFF; border-radius: 0.5px;"></div>
       土巴兔大数据
     </div>
@@ -36,10 +36,11 @@
 <script>
 import { btnTab } from '../../common/tab'
 import Ring from '../../common/ring'
-import QueryFilter from '../core/filter.vue'
+import QueryFilter from './filter'
 import moment from 'moment'
 import { setInterval } from 'timers'
 import { branchOfficeGetRealtimeGmv } from '../../../services/api'
+import { filterNumber } from '../../../common/filter'
 
 export default {
   components: {
@@ -47,11 +48,16 @@ export default {
     btnTab,
     QueryFilter
   },
+  filters: {
+    filterNumber (val) {
+      return filterNumber(val/10000, '0,0.00')
+    }
+  },
   data () {
     return {
       today: moment().format('YYYY.MM.DD'),
       realtime: moment().format('HH:mm:ss'),
-      gmv: 192.45,
+      gmv: 0,
       showFilter: false,
       tabIndex: 0,
       tabHidden: [0, 0],
@@ -75,7 +81,7 @@ export default {
     updateGMV () {
       setInterval(_ => {
         this.loadData()
-      }, 60000)
+      }, 3000)
     },
     onClickSelArea () {
       if (this.showFilter) {
@@ -84,13 +90,18 @@ export default {
         this.$refs.filter.show()
       }
     },
+    onChangeTab (idx) {
+      this.gmv = 0
+      this.queryParams.type = idx + 1
+      this.loadData()
+    },
     loadData () {
       branchOfficeGetRealtimeGmv(this.queryParams).then(res => {
         this.gmv = res.result.gmv || 0
       })
     },
     onFilter (params) {
-      this.queryParams.citys = params
+      this.queryParams.citys = params.citys
       this.loadData()
     }
   }
