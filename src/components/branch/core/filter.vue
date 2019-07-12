@@ -43,7 +43,7 @@
               </li>
             </ul>
             <ul class="v-menu-rt" v-show="opts.sub2.length" style="overflow-y: auto">
-              <li :class="{checked: picked.all_region.indexOf(curRegion) !== -1}" @click="pick('all2', curRegion)">
+              <li :class="{checked: picked.all2_}" @click="pick('all2', curRegion)">
                 全部
                 <i class="tbt-icon tbt-icon-checked"></i>
                 <i class="tbt-icon tbt-icon-uncheck"></i>
@@ -70,8 +70,8 @@
         </div>
       </div>
       <div style="display: flex">
-        <div @click="onReset" style="border-top: 1px solid #eee; font: 17px/50px PingFangSC-Regular,sans-serif; color:#06C792; text-align:center; width: 126px;">重置</div>
-        <div @click="onConfirm" style="font: 17px/50px PingFangSC-Regular,sans-serif; background: #06C792; color:#fff; text-align:center; flex:1;">确定</div>
+        <div @click="onReset" class="filter-btn-reset">重置</div>
+        <div @click="onConfirm" class="filter-btn-submit" :class="{disabled: disbleConfirm}">确定</div>
       </div>
     </div>
   </div>
@@ -93,6 +93,7 @@ export default {
       isShow: this.visible,
       cate: 0,
       opts: {
+        region: [],
         sub1: [],
         sub2: [],
         sub3: []
@@ -108,7 +109,8 @@ export default {
         sub1: [],
         sub2: [],
         sub3: []
-      }
+      },
+      disbleConfirm: false
     }
   },
   mounted () {
@@ -125,6 +127,7 @@ export default {
         this.curRegion = this.opts.region[0]
         this.opts.sub2 = this.curRegion.child
         this.all()
+        this.picked.all2_ = true
         this.emit()
         this.isLoaded = true
       })
@@ -211,10 +214,14 @@ export default {
         region.child.forEach(item => {
           remove(sub2, item)
         })
+        this.picked.all2_ = false
+        this.picked.all2 = false
       } else {
         region.child.forEach(item => {
           push(sub2, item)
         })
+        this.picked.all2_ = true
+        this.updateAll2_()
       }
     },
     all3 (isall) {
@@ -238,6 +245,26 @@ export default {
         })
       }
     },
+    updateAll1() {
+      this.picked.all1 = this.picked.sub1.length === this.opts.sub1.length
+    },
+    updateAll2() {
+      let pickedNum = this.regionCount(this.curRegion.child)
+      let total = this.opts.sub2.length
+      this.picked.all2_ = pickedNum === total
+      this.updateAll2_()
+    },
+    updateAll2_() {
+      let pickedNum = this.picked.sub2.length
+      let total = this.opts.region.reduce((total, region) => {
+        let sum = region.child.length
+        return sum + total
+      }, 0)
+      this.picked.all2 = pickedNum === total
+    },
+    updateAll3() {
+      this.picked.all3 = this.picked.sub3.length === this.opts.sub3.length
+    },
     pick (opt, data) {
       let idx
       switch (opt) {
@@ -245,6 +272,7 @@ export default {
           idx = this.picked.sub1.indexOf(data)
           if (idx === -1) {
             this.picked.sub1.push(data)
+            this.updateAll1()
           } else {
             this.picked.sub1.splice(idx, 1)
             this.picked.all = false
@@ -255,17 +283,20 @@ export default {
           idx = this.picked.sub2.indexOf(data)
           if (idx === -1) {
             this.picked.sub2.push(data)
+            this.updateAll2()
           } else {
             this.picked.sub2.splice(idx, 1)
             remove(this.picked.all_region, this.curRegion)
             this.picked.all = false
             this.picked.all2 = false
+            this.picked.all2_ = false
           }
           break
         case 'sub3':
           idx = this.picked.sub3.indexOf(data)
           if (idx === -1) {
             this.picked.sub3.push(data)
+            this.updateAll3()
           } else {
             this.picked.sub3.splice(idx, 1)
             this.picked.all = false
@@ -293,6 +324,8 @@ export default {
           this.all3()
           break
       }
+      let picked = this.picked
+      this.disbleConfirm = !(picked.sub1.length || picked.sub2.length || picked.sub3.length)
     },
     onReset () {
       // this.all(true)
@@ -309,7 +342,9 @@ export default {
         sub2: [],
         sub3: []
       }
-      this.hide()
+      // this.hide()
+      let picked = this.picked
+      this.disbleConfirm = !(picked.sub1.length || picked.sub2.length || picked.sub3.length)
     },
     getParams () {
       let cityIds = this.picked.sub1.map(item => item.id)
@@ -326,6 +361,9 @@ export default {
       this.$emit('confirm', this.getParams())
     },
     onConfirm () {
+      if (this.disbleConfirm) {
+        return
+      }
       this.emit()
       this.hide()
     },

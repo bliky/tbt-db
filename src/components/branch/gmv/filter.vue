@@ -1,10 +1,10 @@
 <template>
   <div v-show="isShow" class="pop-pannel" style="top: 34px; z-index: 200; border-top: 1px solid #F6F6F6;" @click="hide">
     <div class="pop-pannel-bd branch" @click.stop=''>
-      <area-filter ref="areaFilter" @change="onAreaChange"></area-filter>
+      <area-filter ref="areaFilter" @change="onAreaChange" @pick="onPick"></area-filter>
       <div style="display: flex">
-        <div @click="onReset" style="border-top: 1px solid #eee; font: 17px/50px PingFangSC-Regular,sans-serif; color:#06C792; text-align:center; width: 126px;">重置</div>
-        <div @click="onConfirm" style="font: 17px/50px PingFangSC-Regular,sans-serif; background: #06C792; color:#fff; text-align:center; flex:1;">确定</div>
+        <div @click="onReset" class="filter-btn-reset">重置</div>
+        <div @click="onConfirm" class="filter-btn-submit" :class="{disabled: disbleConfirm}">确定</div>
       </div>
     </div>
   </div>
@@ -27,12 +27,16 @@ export default {
   },
   data () {
     return {
-      isShow: this.visible
+      isShow: this.visible,
+      disbleConfirm: false
     }
   },
   methods: {
+    onPick (picked) {
+      this.disbleConfirm = !(picked.sub1.length || picked.sub2.length || picked.sub3.length)
+    },
     onReset () {
-      this.hide()
+      // this.hide()
       this.$refs.areaFilter.reset()
       this.$emit('confirm', this.getParams())
     },
@@ -55,6 +59,9 @@ export default {
       this.emit()
     },
     onConfirm () {
+      if (this.disbleConfirm) {
+        return
+      }
       this.emit()
       this.hide()
     }

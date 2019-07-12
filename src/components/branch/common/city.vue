@@ -41,7 +41,7 @@
           </li>
         </ul>
         <ul class="v-menu-rt" v-show="opts.sub2.length" style="overflow-y: auto">
-          <li :class="{checked: picked.all_region.indexOf(curRegion) !== -1}" @click="pick('all2', curRegion)">
+          <li :class="{checked: picked.all2_}" @click="pick('all2', curRegion)">
             全部
             <i class="tbt-icon tbt-icon-checked"></i>
             <i class="tbt-icon tbt-icon-uncheck"></i>
@@ -84,6 +84,7 @@ export default {
     return {
       cate: 0,
       opts: {
+        region: [],
         sub1: [],
         sub2: [],
         sub3: []
@@ -94,6 +95,7 @@ export default {
         all: false,
         all1: false,
         all2: false,
+        all2_: false,
         all_region: [],
         all3: false,
         sub1: [],
@@ -116,6 +118,7 @@ export default {
         this.curRegion = this.opts.region[0]
         this.opts.sub2 = this.curRegion.child
         this.all()
+        this.picked.all2_ = true
         this.emit()
         this.isLoaded = true
       })
@@ -202,10 +205,14 @@ export default {
         region.child.forEach(item => {
           remove(sub2, item)
         })
+        this.picked.all2_ = false
+        this.picked.all2 = false
       } else {
         region.child.forEach(item => {
           push(sub2, item)
         })
+        this.picked.all2_ = true
+        this.updateAll2_()
       }
     },
     all3 (isall) {
@@ -229,6 +236,26 @@ export default {
         })
       }
     },
+    updateAll1() {
+      this.picked.all1 = this.picked.sub1.length === this.opts.sub1.length
+    },
+    updateAll2() {
+      let pickedNum = this.regionCount(this.curRegion.child)
+      let total = this.opts.sub2.length
+      this.picked.all2_ = pickedNum === total
+      this.updateAll2_()
+    },
+    updateAll2_() {
+      let pickedNum = this.picked.sub2.length
+      let total = this.opts.region.reduce((total, region) => {
+        let sum = region.child.length
+        return sum + total
+      }, 0)
+      this.picked.all2 = pickedNum === total
+    },
+    updateAll3() {
+      this.picked.all3 = this.picked.sub3.length === this.opts.sub3.length
+    },
     pick (opt, data) {
       let idx
       switch (opt) {
@@ -236,6 +263,7 @@ export default {
           idx = this.picked.sub1.indexOf(data)
           if (idx === -1) {
             this.picked.sub1.push(data)
+            this.updateAll1()
           } else {
             this.picked.sub1.splice(idx, 1)
             this.picked.all = false
@@ -246,17 +274,20 @@ export default {
           idx = this.picked.sub2.indexOf(data)
           if (idx === -1) {
             this.picked.sub2.push(data)
+            this.updateAll2()
           } else {
             this.picked.sub2.splice(idx, 1)
             remove(this.picked.all_region, this.curRegion)
             this.picked.all = false
             this.picked.all2 = false
+            this.picked.all2_ = false
           }
           break
         case 'sub3':
           idx = this.picked.sub3.indexOf(data)
           if (idx === -1) {
             this.picked.sub3.push(data)
+            this.updateAll3()
           } else {
             this.picked.sub3.splice(idx, 1)
             this.picked.all = false
@@ -284,12 +315,13 @@ export default {
           this.all3()
           break
       }
+      this.$emit('pick', this.picked)
     },
     reset () {
       // this.all(true)
       this.cate = 0
-      this.opts.sub2 = []
-      this.curRegion = null
+      // this.opts.sub2 = []
+      // this.curRegion = null
       this.picked = {
         all: false,
         all1: false,
@@ -300,6 +332,7 @@ export default {
         sub2: [],
         sub3: []
       }
+      this.emit()
     },
     getParams () {
       let cityIds = this.picked.sub1.map(item => item.id)
@@ -316,6 +349,7 @@ export default {
     },
     emit () {
       this.$emit('change', this.getParams())
+      this.$emit('pick', this.picked)
     },
     onConfirm () {
       this.emit()

@@ -96,8 +96,10 @@ export default {
       this.loadData()
     },
     loadData () {
+      this.$store.commit('updateLoadingStatus', {isLoading: true}, { root: true })
       branchOfficeGetRealtimeGmv(this.queryParams).then(res => {
         this.gmv = res.result.gmv || 0
+        this.$store.commit('updateLoadingStatus', {isLoading: false}, { root: true })
       })
     },
     onFilter (params) {

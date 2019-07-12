@@ -163,9 +163,10 @@ export default {
   },
   methods: {
     ...mapActions('branch', ['getCities']),
-    regionCount (region) {
-       let total = region.reduce((total, city) => {
-         let sum = city.child.filter(area => this.picked.sub2.indexOf(area) !== -1).length
+    regionCount (region, picked) {
+      var picked = picked || this.picked.sub2
+      let total = region.reduce((total, city) => {
+         let sum = city.child.filter(area => picked.indexOf(area) !== -1).length
          return total + sum
        }, 0)
       return total
@@ -176,10 +177,10 @@ export default {
     reset () {
       this.cate = 0
 
-      this.curRegion = null
-      this.sub1_pcur = null
-      this.sub2_pcur = null
-      this.sub3_pcur = null
+      // this.curRegion = null
+      // this.sub1_pcur = null
+      // this.sub2_pcur = null
+      // this.sub3_pcur = null
 
       this.picked = {
         all: false,
@@ -194,9 +195,11 @@ export default {
         sub2: [],
         sub3: []
       }
+      this.emit()
     },
     emit () {
       this.$emit('change', this.getParams())
+      this.$emit('pick', this.picked)
     },
     getParams () {
       let cityIds = this.picked.sub1.map(item => item.id)
@@ -213,6 +216,38 @@ export default {
     },
     set_cate (cate) {
       this.cate = cate
+    },
+    updateAll1() {
+      this.picked.all1 = this.picked.sub1.length === this.opts.sub1_p.reduce((total, city) => {
+        let sum = city.child.length
+         return total + sum
+      }, 0)
+    },
+    updateAll2() {
+      let total = this.curRegion.child.reduce((total, city) => {
+         let sum = city.child.length
+         return total + sum
+       }, 0)
+       let pickedNum = this.regionCount(this.curRegion.child)
+       this.picked.all2 =  total === pickedNum
+    },
+    updateAll3() {
+      this.picked.all3 = this.picked.sub3.length === this.opts.sub3_p.reduce((total, city) => {
+        let sum = city.child.length
+        return total + sum
+      }, 0)
+    },
+    updateAll1_() {
+      this.picked.all1_ = this.sub1_pcur.child.length === this.cityCount(this.sub1_pcur, this.picked.sub1)
+      this.updateAll1()
+    },
+    updateAll2_() {
+      this.picked.all2_ = this.sub2_pcur.child.length === this.cityCount(this.sub2_pcur, this.picked.sub2)
+      this.updateAll2()
+    },
+    updateAll3_() {
+      this.picked.all3_ = this.sub3_pcur.child.length === this.cityCount(this.sub3_pcur, this.picked.sub3)
+      this.updateAll3()
     },
     loadData () {
       if (this.isLoaded) return
@@ -231,7 +266,7 @@ export default {
         this.opts.sub2 = this.sub2_pcur.child
         this.opts.sub3 = this.sub3_pcur.child
 
-        this.all()
+        this.all(true)
         this.emit()
         this.isLoaded = true
       })
@@ -247,8 +282,9 @@ export default {
 
       isall = this.picked.all
       this.all1(isall)
-      this.all2(isall)
+      // this.all2(isall)
       this.allRegin(isall)
+      this.picked.all2 = true
       this.all3(isall)
     },
     allRegin (isall) {
@@ -289,6 +325,8 @@ export default {
           push(sub1, opt)
         })
       } else {
+        this.picked.all1 = false
+        this.picked.all = false
         opts.forEach(opt => {
           remove(sub1, opt)
         })
@@ -325,6 +363,8 @@ export default {
           push(sub2, opt)
         })
       } else {
+        this.picked.all2 = false
+        this.picked.all = false
         opts.forEach(opt => {
           remove(sub2, opt)
         })
@@ -361,6 +401,8 @@ export default {
           push(sub3, opt)
         })
       } else {
+        this.picked.all3 = false
+        this.picked.all = false
         opts.forEach(opt => {
           remove(sub3, opt)
         })
@@ -408,6 +450,7 @@ export default {
           this.opts.sub2_p = data.child
           this.sub2_pcur = data.child[0]
           this.opts.sub2 = this.sub2_pcur.child
+          this.updateAll2_()
           break
         case 'all':
           this.all()
@@ -417,57 +460,76 @@ export default {
           break
         case 'all1_':
           this.all1_()
+          this.updateAll1()
           break
         case 'all2':
           this.all2()
           break
         case 'all2_':
           this.all2_()
+          this.updateAll2()
           break
         case 'all3':
           this.all3()
           break
         case 'all3_':
           this.all3_()
+          this.updateAll3()
           break
         case 'sub1_p':
           this.sub1_pcur = data
           this.opts.sub1 = data.child
+          this.updateAll1_()
           break
         case 'sub2_p':
           this.sub2_pcur = data
           this.opts.sub2 = data.child
+          this.updateAll2_()
           break
         case 'sub3_p':
           this.sub3_pcur = data
           this.opts.sub3 = data.child
+          this.updateAll3_()
           break
         case 'sub1':
           idx = this.picked.sub1.indexOf(data)
           if (idx === -1) {
             this.picked.sub1.push(data)
+            this.updateAll1_()
           } else {
             this.picked.sub1.splice(idx, 1)
+            this.picked.all = false
+            this.picked.all1 = false
+            this.picked.all1_ = false
           }
           break
         case 'sub2':
           idx = this.picked.sub2.indexOf(data)
           if (idx === -1) {
             this.picked.sub2.push(data)
+            this.updateAll2_()
           } else {
             this.picked.sub2.splice(idx, 1)
+            this.picked.all = false
+            this.picked.all2 = false
+            this.picked.all2_ = false
           }
           break
         case 'sub3':
           idx = this.picked.sub3.indexOf(data)
           if (idx === -1) {
             this.picked.sub3.push(data)
+            this.updateAll3_()
           } else {
             this.picked.sub3.splice(idx, 1)
+            this.picked.all = false
+            this.picked.all3 = false
+            this.picked.all3_ = false
           }
           break
       }
-    },
+      this.$emit('pick', this.picked)
+    }
   }
 }
 </script>

@@ -36,7 +36,7 @@
         <div class="tbt-pro-dialog">
           <div class="tbt-pro-dialog-hd">
             {{ currentTrend.class_name }}
-            <btn-tab :tabs="trendTabs" v-model="trendTabIndex" :hidden="trendTabHidden"></btn-tab>
+            <btn-tab :tabs="trendTabs" v-model="trendTabIndex" :hidden="trendTabHidden" style="background: #fff;"></btn-tab>
           </div>
           <div style="margin: 20px -15px 0; background: #f6f6f6; height: 196px; overflow:hidden;">
             <div v-show="trendTabIndex==0">
