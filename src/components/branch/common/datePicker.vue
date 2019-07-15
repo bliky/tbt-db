@@ -21,7 +21,7 @@ export default {
   },
   data () {
     return {
-      classType: '1',
+      classType: '2',
       tabIndex: 0,
       tabHidden: [0, 0, 0, 1],
       tabs: ['日', '周', '月', '年'],
@@ -30,8 +30,26 @@ export default {
       currentText: '',
       preTabIndex: 0,
       preDateType: 'day',
-      preClassType: '1'
+      preClassType: '2'
     }
+  },
+  mounted () {
+    this.getUpdateTime('4', 'month').then(_ =>
+      this.getUpdateTime('2', 'week').then(_ =>
+        this.getUpdateTime('2', 'month').then(_ =>
+          this.getUpdateTime('3', 'day').then(_ =>
+            this.getUpdateTime('3', 'week').then(_ =>
+              this.getUpdateTime('3', 'month').then(_ =>
+                this.getUpdateTime('2', 'day').then(res => {
+                  this.currentText = moment(res.result.dataDt, 'YYYY-MM-DD HH:mm:ss').format('MM月DD日')
+                  this.emit()
+                })
+              )
+            )
+          )
+        )
+      )
+    )
   },
   methods: {
     setClassType (classType) {
@@ -42,17 +60,14 @@ export default {
         this.tabIndex = 2
         this.dateType = 'month'
         this.tabHidden = [1, 1, 0, 1]
-        return this.$nextTick(_ => {
-          this.classType = classType
-          this.getUpdateTime(this.classType, this.dateType).then(_ => this.emit())
-        })
+        return this.getUpdateTime(this.classType, this.dateType)
       } else if (this.preClassType == 4) {
         this.tabHidden = [0, 0, 0, 1]
         this.tabIndex = this.preTabIndex
         this.dateType = this.preDateType
       }
       this.classType = classType
-      this.getUpdateTime(this.classType, this.dateType).then(_ => this.emit())
+      return this.getUpdateTime(this.classType, this.dateType)
     },
     async getUpdateTime (classType, dateType) {
       if (!classType || !dateType) return
@@ -71,7 +86,7 @@ export default {
         return this.currentText = moment(updateTime[classType][dateType].dataDt, 'YYYY-MM-DD HH:mm:ss').format('MM月DD日')
       }
       if (!classType) {
-        return console.log('classType', classType)
+        return classType
       }
       return await branchOfficeUpdateTime({
         class_type: classType,
@@ -84,7 +99,6 @@ export default {
           if (parseInt(res.status) === 200) {
             updateTime[classType][dateType].dataDt = res.result.dataDt
             updateTime[classType][dateType].updateDt = res.result.updateDt
-            this.currentText = moment(res.result.dataDt, 'YYYY-MM-DD HH:mm:ss').format('MM月DD日')
           } else {
             this.currentText = ''
           }
@@ -92,20 +106,24 @@ export default {
           this.currentText = ''
           console.log(error)
         }
+        return res
       }).catch(error => {
         console.log(error)
         this.currentText = ''
       })
     },
     emit () {
+      this.$emit('change', this.getParams())
+    },
+    getParams () {
       let ty = this.dateType
-      this.$emit('change', {
+      return {
         type: ty === 'day' ? 1 :
               ty === 'week' ? 2 :
               ty === 'month' ? 3 :
               ty === 'year' ? 4 : 1,
         dt: this.classType && this.updateTime[this.classType] && this.updateTime[this.classType][ty].dataDt && moment(this.updateTime[this.classType][ty].dataDt, 'YYYY-MM-DD HH:mm:ss').format('YYYYMMDD')
-      })
+      }
     },
     onChangeTab (tabIndex) {
       switch (tabIndex) {

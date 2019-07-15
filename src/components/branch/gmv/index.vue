@@ -93,18 +93,24 @@ export default {
     onChangeTab (idx) {
       this.gmv = 0
       this.queryParams.type = idx + 1
-      this.loadData()
+      this.$store.commit('updateLoadingStatus', {isLoading: true}, { root: true })
+      this.loadData().then(_ => {
+        this.$store.commit('updateLoadingStatus', {isLoading: false}, { root: true })
+      })
     },
     loadData () {
-      this.$store.commit('updateLoadingStatus', {isLoading: true}, { root: true })
-      branchOfficeGetRealtimeGmv(this.queryParams).then(res => {
+      //this.$store.commit('updateLoadingStatus', {isLoading: true}, { root: true })
+      return branchOfficeGetRealtimeGmv(this.queryParams).then(res => {
         this.gmv = res.result.gmv || 0
-        this.$store.commit('updateLoadingStatus', {isLoading: false}, { root: true })
+        //this.$store.commit('updateLoadingStatus', {isLoading: false}, { root: true })
       })
     },
     onFilter (params) {
       this.queryParams.citys = params.citys
-      this.loadData()
+      this.$store.commit('updateLoadingStatus', {isLoading: true}, { root: true })
+      this.loadData().then(_ => {
+        this.$store.commit('updateLoadingStatus', {isLoading: false}, { root: true })
+      })
     }
   }
 }

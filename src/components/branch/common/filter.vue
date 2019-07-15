@@ -78,6 +78,7 @@ export default {
       } else {
         this.onPick(this.$refs.cityFilter.picked)
       }
+      this.emit()
     },
     show (tab) {
       if (tab !== this.tabIdx) {
@@ -172,6 +173,7 @@ export default {
       } else {
         this.$emit('confirm', this.getCityParams())
       }
+      console.log('filter emit')
     },
     onConfirm () {
       if (this.disbleConfirm) {

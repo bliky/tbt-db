@@ -3,9 +3,9 @@
     <div style="width: 126px;background: #F7F9FD; border-right: 1px solid #eee; box-sizing: border-box;">
       <ul class="v-menu-lt">
         <li :class="{active: cate==0}" @click="set_cate(0)">全部(默认)</li>
-        <li :class="{active: cate==1}" @click="set_cate(1)">五大城市<span class="branch-badge" v-show="picked.sub1.length">{{ picked.sub1.length }}</span></li>
-        <li :class="{active: cate==2}" @click="set_cate(2)">六大区域<span class="branch-badge" v-show="picked.sub2.length">{{ picked.sub2.length }}</span></li>
-        <li :class="{active: cate==3}" @click="set_cate(3)">非落地城市<span class="branch-badge" v-show="picked.sub3.length">{{ picked.sub3.length }}</span></li>
+        <li v-if="opts.sub1.length" :class="{active: cate==1}" @click="set_cate(1)">五大城市<span class="branch-badge" v-show="picked.sub1.length">{{ picked.sub1.length }}</span></li>
+        <li v-if="opts.region.length" :class="{active: cate==2}" @click="set_cate(2)">六大区域<span class="branch-badge" v-show="picked.sub2.length">{{ picked.sub2.length }}</span></li>
+        <li v-if="opts.sub3.length" :class="{active: cate==3}" @click="set_cate(3)">非落地城市<span class="branch-badge" v-show="picked.sub3.length">{{ picked.sub3.length }}</span></li>
       </ul>
     </div>
     <div class="flex-item tbt-chlist" style="overflow-y: auto; height: 100%;">
@@ -115,8 +115,10 @@ export default {
         this.opts.sub1 = res['specialCity'].child
         this.opts.region = res['region'].child
         this.opts.sub3 = res['noLuodi'].child
-        this.curRegion = this.opts.region[0]
-        this.opts.sub2 = this.curRegion.child
+        if (this.opts.region && this.opts.region.length) {
+          this.curRegion = this.opts.region[0]
+          this.opts.sub2 = this.curRegion.child
+        }
         this.all()
         this.picked.all2_ = true
         this.emit()

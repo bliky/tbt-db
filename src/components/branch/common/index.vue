@@ -1,6 +1,6 @@
 <template>
   <div>
-    <tab :line-width="2"  v-model="tabIndex" active-color="#06C792">
+    <tab :line-width="2"  active-color="#06C792">
       <tab-item :selected="tabIndex == idx" @click.native="onClickTab(idx)" v-for="(item, idx) in tabs" :key="idx">{{ item.name }}</tab-item>
     </tab>
     <div>
@@ -49,11 +49,11 @@
             <btn-tab :tabs="trendTabs" v-model="trendTabIndex" :hidden="trendTabHidden" style="background: #fff;"></btn-tab>
           </div>
           <div style="margin: 20px -15px 0; background: #f6f6f6; height: 196px; overflow:hidden;">
-            <div v-show="trendTabIndex==0" >
+            <div v-show="class_type != '4' && trendTabIndex==0" >
               <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.day.length" :data="currentTrend.day" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
-            <div v-show="trendTabIndex==1" >
+            <div v-show="trendTabIndex==1">
               <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.month.length" :data="currentTrend.month" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
@@ -89,12 +89,6 @@ export default {
   directives: {
     clickOutside,
     TransferDom
-  },
-  watch: {
-    tabIndex (newVal) {
-      this.class_type = this.tabs[newVal].id
-      this.$refs.datepicker.setClassType(this.class_type)
-    }
   },
   data () {
     return {
@@ -148,12 +142,15 @@ export default {
     }
   },
   mounted () {
-    this.$refs.datepicker.setClassType(this.class_type)
+    // his.$refs.datepicker.setClassType(this.class_type)
   },
   methods: {
     ...mapActions('branch', ['getCommonInd', 'getIndTrend']),
     onClickTab(idx) {
       this.tabIndex = idx
+      this.class_type = this.tabs[idx].id
+      this.$refs.datepicker.setClassType(this.class_type).then(res => {
+      })
       if (idx !== 0) {
         if (this.fTab !== 1 && this.fTab !== 0) {
           this.preFTab = this.fTab
@@ -176,11 +173,17 @@ export default {
         if (!res) {
 
         }
-        let { name, day, week, month } = res
-        this.currentTrend.class_name = name
-        this.currentTrend.day = day
-        this.currentTrend.week = week
-        this.currentTrend.month = month
+        if (res.day) {
+          this.currentTrend.day = res.day
+          this.trendTabHidden = [0]
+        } else {
+          this.trendTabIndex = 1
+          this.trendTabHidden = [1, 0]
+        }
+        if (res.month) {
+          this.currentTrend.month = res.month
+        }
+        this.currentTrend.class_name = res.name
         this.isTrendDialogShow = true
       }).catch(error => {
         console.log(error)
@@ -217,7 +220,18 @@ export default {
     loadData (params) {
       if (this.checkParams(params)) {
         params.class_type = this.class_type
-        console.log('loadData', params)
+        if (params.class_type === '4' && params.type !== 3) {
+          return
+        }
+        if (params.class_type === '2') {
+          if (!params.citys.isArea) {
+            return
+          }
+        } else {
+          if (params.citys.isArea) {
+            return
+          }
+        }
         this.getCommonInd(params).then(data => {
           if (!data) {
             this.tableData = []
@@ -243,7 +257,7 @@ export default {
       this.loadData(this.queryParams)
     },
     onFilter (params) {
-      this.queryParams = Object.assign({}, this.dateParams, params)
+      this.queryParams = Object.assign({}, this.$refs.datepicker.getParams(), params)
       this.loadData(this.queryParams)
     },
     formatRow (data_type, val) {

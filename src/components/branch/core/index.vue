@@ -12,7 +12,7 @@
       <div class="index-board-grid" v-for="item in indexList" :key="item.name" @click="handleOnClickIndCard(item)">
         <div class="index-card">
           <div class=index-name>{{ item.name }}</div>
-          <div class="index-value">{{ item.value|num-formater(2) }}</div>
+          <div class="index-value">{{ item.value|num-formater(item.type) }}</div>
           <div class="index-stat">
             <p>环比 <span :class="{positive: item.mom > 0, negtive: item.mom < 0}">{{ item.mom|stat-formater }}</span></p>
             <p>同比 <span :class="{positive: item.yoy > 0, negtive: item.yoy < 0}">{{ item.yoy|stat-formater }}</span></p>
@@ -219,7 +219,8 @@ export default {
               name: item.name,
               value: item.data,
               mom: item.hb,
-              yoy: item.tb
+              yoy: item.tb,
+              type: item.type
             }
           })
         })

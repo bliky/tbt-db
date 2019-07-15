@@ -131,7 +131,7 @@ export default {
           let tooltipVal =  title + ' ' + value;
           if (typeof currentData.origin.hb !== 'undefined') {
             tooltipVal =  filterXAxis(title) + ': ' + filterYAxis(value)
-            tooltipVal += '\n环比: ' + filterYAxis(currentData.origin.hb, '%') + '\n同比: ' + filterYAxis(currentData.origin.tb, '%')
+            tooltipVal += '\n环比: ' + filterYAxis(currentData.origin.hb*100, '%') + '\n同比: ' + filterYAxis(currentData.origin.tb*100, '%')
           }
           ev.items[0].value = tooltipVal;
         }
