@@ -8,15 +8,6 @@
     </div>
   </div>
 
-  <div class="tbt-nav-g">
-    <div class="tbt-nav-t">指标看板</div>
-    <div class="tbt-nav-grid">
-      <div @click="navTo('indView')" class="tbt-nav-grid-item"><img src="../assets/image/data@2x.png"><p>指标看板</p></div>
-      <div @click="navTo('indApply')" class="tbt-nav-grid-item"><img src="../assets/image/apply@2x.png"><p>指标申请</p></div>
-      <div @click="navTo('indAnnotation')" class="tbt-nav-grid-item"><img src="../assets/image/explain@2x.png"><p>指标释义</p></div>
-    </div>
-  </div>
-
   <div class="tbt-nav-g" v-if="isPromotionGroupShow">
     <div class="tbt-nav-t">推广专题</div>
     <div class="tbt-nav-grid">
@@ -33,12 +24,6 @@
       <div v-if="url_ids.indexOf(13) !== -1" @click="navTo('branchGmv')" class="tbt-nav-grid-item"><img src="../assets/image/GMV@3x.png"><p>实时GMV</p></div>
     </div>
   </div>
-<!--   <div class="tbt-nav-g">
-    <div class="tbt-nav-t">指标看板(重构模块)</div>
-    <div class="tbt-nav-grid">
-      <div @click="navTo('indApplyNew')" class="tbt-nav-grid-item"><img src="../assets/image/apply@2x.png"><p>指标申请</p></div>
-    </div>
-  </div> -->
 
   <div :class="{'foot-fixed': !pageScroll}">
     <div style="font: 13px/18px PingFangSC-Regular; color: #C1C1C1; letter-spacing: 0; text-align: center; width: 160px; margin: 10px auto;"><divider style="color: #c1c1c1;">土巴兔大数据</divider></div>
@@ -75,16 +60,13 @@ export default {
   },
   computed: {
     isSubjectGroupShow () {
-      let privs = this.privs
-      return privs && privs[0] && privs[0].child.length
+      return (this.url_ids.indexOf(1) !== -1) || (this.url_ids.indexOf(2) !== -1)
     },
     isPromotionGroupShow () {
-      let privs = this.privs
-      return privs && privs[1] && privs[1].child.length
+      return (this.url_ids.indexOf(3) !== -1) || (this.url_ids.indexOf(4) !== -1)
     },
     isBranchGroupShow () {
-      let privs = this.privs
-      return privs && privs[2] && privs[2].child.length
+      return (this.url_ids.indexOf(5) !== -1) || (this.url_ids.indexOf(12) !== -1) || (this.url_ids.indexOf(13) !== -1)
     }
   },
   created () {
@@ -124,7 +106,7 @@ export default {
         this.privs = res.result.urlList
         this.$nextTick(_ => {
           let $page = document.getElementsByClassName('tbt-page')[0]
-          this.pageScroll = ($page.scrollHeight+53) > $page.offsetHeight
+          this.pageScroll = ($page.scrollHeight) > $page.offsetHeight
         })
       })
     },

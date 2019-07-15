@@ -18,22 +18,6 @@ import PromotionCompareFilter from '../components/promotion/filter.vue'; // 推�
 import BranchCore from '../components/branch/core'; // 分公司专题 核心指标
 import BranchCommon from '../components/branch/common'; // 分公司专题 常用指标
 import BranchGmv from '../components/branch/gmv'; // 分公司专题 实时GMV
-import DataBoard from '../components/board/DataBoard'; // 指标看板
-import Apply from '../components/apply/Apply';         // 指标申请
-import MyInds from '../components/my/MyInds';          // 指标释义
-import NewApply from '../components/newApply';         // 重构指标申请
-import ApplySelInd from '../components/newApply/selInd';       // 重构指标申请: 选择指标
-import ApplySelDim from '../components/newApply/selDim';       // 重构指标申请: 指标维度
-import ApplySelCity from '../components/newApply/selCity';     // 重构指标申请: 选择城市
-// 子页面
-import EditInd from '../components/board/EditInd';
-import Indesc from '../components/my/Indesc';
-import NounDesc from '../components/my/NounDesc';
-import selInd from '../components/apply/selInd';
-import selDim from '../components/apply/selDim';
-import Ind from '../components/apply/Ind';
-// 测试页面（开发用，不发布到生产环境）
-import test from '../components/test';
 
 // 控制路由
 const routes = [
@@ -148,93 +132,6 @@ const routes = [
     meta: {
       title: '实时GMV'
     }
-  },
-  // 2.1 二级入口：指标看板
-  {
-    path: '/bdc-prd-dbd/dataBoard',
-    component: DataBoard,
-    meta: {
-      title: '指标看板'
-    }
-  },
-  // 2.2 二级入口：指标申请
-  {
-    path: '/bdc-prd-dbd/apply',
-    component: Apply,
-    meta: {
-      title: '指标申请'
-    }
-  },
-  // 2.3 二级入口：指标释义
-  {
-    path: '/bdc-prd-dbd/myinds',
-    component: MyInds,
-    meta: {
-      title: '指标释义'
-    }
-  },
-  // 2.4 二级入口：重构指标申请
-  {
-    path: '/bdc-prd-dbd/newapply',
-    component: NewApply,
-    meta: {
-      title: '指标申请'
-    }
-  },
-  // 2.4.1 三级入口：重构指标申请/选择指标
-  {
-    path: '/bdc-prd-dbd/apply-selind/:id',
-    component: ApplySelInd,
-    meta: {
-      title: '选择指标'
-    }
-  },
-  // 2.4.2 三级入口：重构指标申请/指标维度
-  {
-    path: '/bdc-prd-dbd/apply-seldim/:id',
-    component: ApplySelDim,
-    meta: {
-      title: '指标维度'
-    }
-  },
-  // 2.4.3 三级入口：重构指标申请/指标维度
-  {
-    path: '/bdc-prd-dbd/apply-selcity',
-    component: ApplySelCity,
-    meta: {
-      title: '选择城市'
-    }
-  },
-  // 老模块 待重构
-  {
-    path: '/bdc-prd-dbd/editInd',
-    component: EditInd
-  },
-  {
-    path: '/bdc-prd-dbd/apply/ind',
-    component: Ind
-  },
-  // 指标释义
-  {
-    path: '/bdc-prd-dbd/indesc',
-    component: Indesc
-  },
-  // 名词释义
-  {
-    path: '/bdc-prd-dbd/nounDesc',
-    component: NounDesc
-  },
-  {
-    path: '/bdc-prd-dbd/selInd',
-    component: selInd
-  },
-  {
-    path: '/bdc-prd-dbd/selDim',
-    component: selDim
-  },
-  {
-    path: '/test',
-    component: test
   }
 ];
 

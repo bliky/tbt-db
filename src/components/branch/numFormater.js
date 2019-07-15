@@ -6,7 +6,6 @@ export default (val, data_type) => {
   if (isNaN(fval)) {
     return '-';
   }
-  console.log(data_type)
   switch (data_type) {
     case 3:
       return filterNumber(fval, '0,0');
