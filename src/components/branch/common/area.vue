@@ -3,9 +3,9 @@
     <div style="width: 125px; border-right: 1px solid #eee;">
       <ul class="v-menu-lt with-sub">
         <li :class="{active: cate==0}" @click="set_cate(0)">全部(默认)</li>
-        <li :class="{active: cate==1}" @click="set_cate(1)">五大城市<span class="branch-badge" v-show="picked.sub1.length">{{ picked.sub1.length }}</span></li>
-        <li :class="{active: cate==2}" @click="set_cate(2)">六大区域<span class="branch-badge" v-show="picked.sub2.length">{{ picked.sub2.length }}</span></li>
-        <li class="v-menu-sub" v-show="cate==2">
+        <li v-if="opts.sub1_p.length" :class="{active: cate==1}" @click="set_cate(1)">五大城市<span class="branch-badge" v-show="picked.sub1.length">{{ picked.sub1.length }}</span></li>
+        <li v-if="opts.sub2_p.length" :class="{active: cate==2}" @click="set_cate(2)">六大区域<span class="branch-badge" v-show="picked.sub2.length">{{ picked.sub2.length }}</span></li>
+        <li v-if="opts.sub2_p.length" class="v-menu-sub" v-show="cate==2">
           <ul>
             <li :class="{checked: curRegion === opt}" @click="pick('region', opt)" v-for="opt in opts.region" :key='opt.id'>
               {{ opt.city_name }}
@@ -13,7 +13,7 @@
             </li>
           </ul>
         </li>
-        <li :class="{active: cate==3}" @click="set_cate(3)">非落地城市<span class="branch-badge" v-show="picked.sub3.length">{{ picked.sub3.length }}</span></li>
+        <li v-if="opts.sub3_p.length" :class="{active: cate==3}" @click="set_cate(3)">非落地城市<span class="branch-badge" v-show="picked.sub3.length">{{ picked.sub3.length }}</span></li>
       </ul>
     </div>
     <div v-show="cate==0" class="branch-menu-child flex-container flex-item">
@@ -252,20 +252,23 @@ export default {
     loadData () {
       if (this.isLoaded) return
       this.getCities().then(res => {
-        this.opts.sub1_p = res['specialCity'].child
-        this.opts.region = res['region'].child
-        this.opts.sub3_p = res['noLuodi'].child
-        this.curRegion = this.opts.region[0]
-        this.opts.sub2_p = this.curRegion.child
-
-        this.sub1_pcur = this.opts.sub1_p[0]
-        this.sub2_pcur = this.opts.sub2_p[0]
-        this.sub3_pcur = this.opts.sub3_p[0]
-
-        this.opts.sub1 = this.sub1_pcur.child
-        this.opts.sub2 = this.sub2_pcur.child
-        this.opts.sub3 = this.sub3_pcur.child
-
+        if (res['specialCity'].child && res['specialCity'].child.length) {
+          this.opts.sub1_p = res['specialCity'].child
+          this.sub1_pcur = this.opts.sub1_p[0]
+          this.opts.sub1 = this.sub1_pcur.child
+        }
+        if (res['region'].child && res['region'].child.length) {
+          this.opts.region = res['region'].child
+          this.curRegion = this.opts.region[0]
+          this.opts.sub2_p = this.curRegion.child
+          this.sub2_pcur = this.opts.sub2_p[0]
+          this.opts.sub2 = this.sub2_pcur.child
+        }
+        if (res['noLuodi'].child && res['noLuodi'].child.length) {
+          this.opts.sub3_p = res['noLuodi'].child
+          this.sub3_pcur = this.opts.sub3_p[0]
+          this.opts.sub3 = this.sub3_pcur.child
+        }
         this.all(true)
         this.emit()
         this.isLoaded = true

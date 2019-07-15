@@ -76,7 +76,7 @@ export default {
     updateRealTime () {
       setInterval(_ => {
         this.realtime = moment().format('HH:mm:ss')
-      }, 1000)
+      }, 5000)
     },
     updateGMV () {
       setInterval(_ => {
@@ -102,7 +102,7 @@ export default {
       //this.$store.commit('updateLoadingStatus', {isLoading: true}, { root: true })
       return branchOfficeGetRealtimeGmv(this.queryParams).then(res => {
         this.gmv = res.result.gmv || 0
-        //this.$store.commit('updateLoadingStatus', {isLoading: false}, { root: true })
+        this.$store.commit('updateLoadingStatus', {isLoading: false}, { root: true })
       })
     },
     onFilter (params) {
