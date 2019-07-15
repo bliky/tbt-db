@@ -2,7 +2,7 @@ import axios from 'axios';
 import http from '../utils/http.js';
 import Cookie from 'js-cookie';
 
-const force_production = true;  // 强制使用生产模式: 本地开发时，调用测试接口时打开，提交代码前设置为false
+const force_production = false;  // 强制使用生产模式: 本地开发时，调用测试接口时打开，提交代码前设置为false
 const is_dev = !force_production && process.env.NODE_ENV !== 'production';
 
 // API注册

@@ -107,6 +107,9 @@ export default {
     },
     onFilter (params) {
       this.queryParams.citys = params.citys
+      if (!(params.citys.cityIds.length || params.citys.regionIds.length || params.citys.luodiIds.length)) {
+        return
+      }
       this.$store.commit('updateLoadingStatus', {isLoading: true}, { root: true })
       this.loadData().then(_ => {
         this.$store.commit('updateLoadingStatus', {isLoading: false}, { root: true })

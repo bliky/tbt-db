@@ -14,7 +14,7 @@
           <div v-show="tabIndex === 0" class="tbt-sel-tag branch-com" style="width: 90px; margin-left: 10px;" :class="{checked: fTab == 2}" @click.stop="handleOnClickYezhuSelect">业主类型
             <i class="tbt-arrow" style="position: relative; left: 3px; bottom: 2px;"></i>
           </div>
-          
+
           <div v-show="tabIndex === 0" class="tbt-sel-tag branch-com" style="width: 75px; margin-left: 10px;" :class="{checked: fTab == 3}" @click.stop="handleOnClickChSelect">渠道
             <i class="tbt-arrow" style="position: relative; left: 3px; bottom: 2px;"></i>
           </div>
@@ -53,7 +53,11 @@
               <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.day.length" :data="currentTrend.day" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
-            <div v-show="trendTabIndex==1">
+            <div  v-show="class_type != '4' && trendTabIndex==1">
+              <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.week.length" :data="currentTrend.week" :data-type="trendDataType"></chart-line>
+              <p class="empty-trend" v-else>暂无数据</p>
+            </div>
+            <div v-show="trendTabIndex==2">
               <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.month.length" :data="currentTrend.month" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
@@ -101,12 +105,14 @@ export default {
       dialogWidth: winW - 26,
       isTrendDialogShow: false,
       trendTabHidden: [],
-      trendTabIndex: 1,
-      trendTabs: ['日报', '月报'],
+      trendTabIndex: 2,
+      trendTabs: ['日报', '周报', '月报'],
       trendDataType: 0,
       currentTrend: {
         class_name: '',
         day: [
+        ],
+        week: [
         ],
         month: [
         ]
@@ -177,8 +183,15 @@ export default {
           this.currentTrend.day = res.day
           this.trendTabHidden = [0]
         } else {
-          this.trendTabIndex = 1
-          this.trendTabHidden = [1, 0]
+          this.trendTabIndex = 2
+          this.trendTabHidden = [1, 1, 0]
+        }
+        if (res.week) {
+          this.currentTrend.week = res.week
+          this.trendTabHidden = [0]
+        } else {
+          this.trendTabIndex = 2
+          this.trendTabHidden = [1, 1, 0]
         }
         if (res.month) {
           this.currentTrend.month = res.month
@@ -231,6 +244,10 @@ export default {
           if (params.citys.isArea) {
             return
           }
+        }
+
+        if (!(params.citys.cityIds.length || params.citys.regionIds.length || params.citys.luodiIds.length)) {
+          return
         }
         this.getCommonInd(params).then(data => {
           if (!data) {

@@ -27,7 +27,7 @@
       <city-filter ref="cityFilter" v-show="!showMore" @change="onCityChange" @pick="onPick"></city-filter>
 
       <div style="display: flex">
-        <div @click="onReset" class="filter-btn-reset">重置</div>
+        <div @click="onReset" class="filter-btn-reset" v-show="tabIdx == 1">重置</div>
         <div @click="onConfirm" class="filter-btn-submit" :class="{disabled: disbleConfirm}">确定</div>
       </div>
     </div>
