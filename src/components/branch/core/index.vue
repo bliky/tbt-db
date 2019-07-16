@@ -110,64 +110,14 @@ export default {
       currentTrend: {
         class_name: '',
         day: [
-          { dt: '2018-09-01', val: 200 },
-          { dt: '2018-09-02', val: 400 },
-          { dt: '2018-09-03', val: 300 },
-          { dt: '2018-09-04', val: 100 }
         ],
         week: [
-          { dt: '2018-09-01', val: 100 },
-          { dt: '2018-09-02', val: 200 },
-          { dt: '2018-09-03', val: 360 },
-          { dt: '2018-09-04', val: 500 },
-          { dt: '2018-09-05', val: 400 }
         ],
         month: [
-          { dt: '2018-09', val: 100 },
-          { dt: '2018-10', val: 200 },
-          { dt: '2018-11', val: 300 },
-          { dt: '2018-12', val: 200 }
         ]
       },
       showFilter: false,
-      indexList: [
-        {
-          name: '土巴兔APP的DAU',
-          value: '1,372.3万',
-          mom: -0.13,
-          yoy: 0.25
-        },
-        {
-          name: '浪费率',
-          value: '1,372.3万',
-          mom: -0.13,
-          yoy: 0.25
-        },
-        {
-          name: '量房数',
-          value: '1,372.3万',
-          mom: -0.13,
-          yoy: 0.25
-        },
-        {
-          name: '线上装修成交GMV',
-          value: '1,372.3万',
-          mom: -0.13,
-          yoy: 0.25
-        },
-        {
-          name: '材料成交GMV',
-          value: '1,372.3万',
-          mom: -0.13,
-          yoy: 0.25
-        },
-        {
-          name: '转介绍激活量',
-          value: '1,372.3万',
-          mom: -0.13,
-          yoy: 0.25
-        }
-      ],
+      indexList: [],
       queryParams: {}
     }
   },
@@ -198,7 +148,6 @@ export default {
       }
     },
     onClickOutside () {
-      console.log('click outsite')
       this.$refs.filter.hide()
     },
     checkParams () {
