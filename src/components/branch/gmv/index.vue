@@ -76,12 +76,12 @@ export default {
     updateRealTime () {
       setInterval(_ => {
         this.realtime = moment().format('HH:mm:ss')
-      }, 5000)
+      }, 1000)
     },
     updateGMV () {
       setInterval(_ => {
         this.loadData()
-      }, 3000)
+      }, 30000)
     },
     onClickSelArea () {
       if (this.showFilter) {
