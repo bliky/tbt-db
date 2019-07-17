@@ -89,7 +89,7 @@ export default {
       if (isNaN(fval)) {
         return '-'
       }
-      let num = Math.round(fval * 1000) / 10
+      let num = Math.round(fval * 10000) / 100
       if (val > 0) {
         return '+' + num + '%'
       }
