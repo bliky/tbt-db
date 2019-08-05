@@ -81,6 +81,20 @@
 import { mapActions } from 'vuex'
 import {push, remove} from '../util'
 
+const copyPicked = p => {
+    let tp = {
+        all: p.all,
+        all1: p.all1,
+        all2: p.all2,
+        all3: p.all3,
+        all_region: [...p.all_region],
+        sub1: [...p.sub1],
+        sub2: [...p.sub2],
+        sub3: [...p.sub3]
+    }
+    return tp
+}
+
 export default {
   props: {
     visible: {
@@ -110,6 +124,16 @@ export default {
         sub2: [],
         sub3: []
       },
+      confirmPicked: {
+        all: false,
+        all1: false,
+        all2: false,
+        all_region: [],
+        all3: false,
+        sub1: [],
+        sub2: [],
+        sub3: []
+      },
       disbleConfirm: false
     }
   },
@@ -118,6 +142,9 @@ export default {
   },
   methods: {
     ...mapActions('branch', ['getCities']),
+    refresh () {
+      this.picked = copyPicked(this.confirmPicked)
+    },
     loadData () {
       if (this.isLoaded) return
       this.getCities().then(res => {
@@ -140,6 +167,7 @@ export default {
     show () {
       this.isShow = true
       this.$emit('update:visible', true)
+      this.refresh()
     },
     hide () {
       this.isShow = false
@@ -349,6 +377,7 @@ export default {
       this.disbleConfirm = !(picked.sub1.length || picked.sub2.length || picked.sub3.length)
     },
     getParams () {
+      this.confirmPicked = copyPicked(this.picked)
       let cityIds = this.picked.sub1.map(item => item.id)
       let regionIds = this.picked.sub2.map(item => item.id)
       let luodiIds = this.picked.sub3.map(item => item.id)

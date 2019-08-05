@@ -35,20 +35,20 @@
       <x-dialog v-model="isTrendDialogShow" :hide-on-blur="true" :dialog-style="{maxWidth: dialogWidth + 'px', width: dialogWidth + 'px', height: '255px', borderRadius: '3px'}">
         <div class="tbt-pro-dialog">
           <div class="tbt-pro-dialog-hd">
-            {{ currentTrend.class_name }}
+            <span style="font-size: 14px; line-height: 25px">{{ currentTrend.class_name }}</span>
             <btn-tab :tabs="trendTabs" v-model="trendTabIndex" :hidden="trendTabHidden" style="background: #fff;"></btn-tab>
           </div>
           <div style="margin: 20px -15px 0; background: #f6f6f6; height: 196px; overflow:hidden;">
             <div v-show="trendTabIndex==0">
-              <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.day.length" :data="currentTrend.day" :data-type="trendDataType"></chart-line>
+              <chart-line ref="chartDay" :width="chartWidth"  :height="chartHeight" v-if="currentTrend.day.length" :data="currentTrend.day" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
             <div v-show="trendTabIndex==1">
-              <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.week.length" :data="currentTrend.week" :data-type="trendDataType"></chart-line>
+              <chart-line ref="chartWeek" :width="chartWidth"  :height="chartHeight" v-if="currentTrend.week.length" :data="currentTrend.week" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
             <div v-show="trendTabIndex==2">
-              <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.month.length" :data="currentTrend.month" :data-type="trendDataType"></chart-line>
+              <chart-line ref="chartMonth" :width="chartWidth"  :height="chartHeight" v-if="currentTrend.month.length" :data="currentTrend.month" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
           </div>
@@ -64,7 +64,7 @@ import QueryFilter from './filter.vue'
 import DatePicker from './datePicker.vue'
 import { XDialog, TransferDomDirective as TransferDom } from 'vux'
 import clickOutside from '../../../directives/clickOutside'
-import { Line4 as ChartLine } from '../../common/chart'
+import { Line5 as ChartLine } from '../../common/chart'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import numFormater from '../numFormater'
 
@@ -138,6 +138,19 @@ export default {
         this.currentTrend.week = week
         this.currentTrend.month = month
         this.isTrendDialogShow = true
+        this.$nextTick(_ => {
+          if (ind.type == 2) {
+            this.$refs.chartDay && this.$refs.chartDay.chDatatype(3)
+            this.$refs.chartWeek && this.$refs.chartWeek.chDatatype(3)
+            this.$refs.chartMonth && this.$refs.chartMonth.chDatatype(3)
+            this.trendDataType = 3
+          } else {
+            this.$refs.chartDay && this.$refs.chartDay.chDatatype(0)
+            this.$refs.chartWeek && this.$refs.chartWeek.chDatatype(0)
+            this.$refs.chartMonth && this.$refs.chartMonth.chDatatype(0)
+            this.trendDataType = 0
+          }
+        })
       })
     },
     onClickSelArea () {

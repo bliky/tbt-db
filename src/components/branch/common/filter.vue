@@ -39,6 +39,25 @@ import AreaFilter from './area'
 import CityFilter from './city'
 import {push, remove} from '../util'
 
+const cloneParams = params => {
+  let clonep = {}
+  if (params.owner_type) {
+    clonep.owner_type = params.owner_type.map(item => item)
+  }
+  if (params.channel) {
+    clonep.channel = params.channel.map(item => item)
+  }
+  if (params.citys) {
+    let { cityIds, regionIds, luodiIds, isArea } = params.citys
+    clonep.citys = {}
+    clonep.citys.cityIds = cityIds.map(item => item)
+    clonep.citys.regionIds = regionIds.map(item => item)
+    clonep.citys.luodiIds = luodiIds.map(item => item)
+    clonep.citys.isArea = isArea
+  }
+  return clonep
+}
+
 export default {
   props: {
     visible: {
@@ -64,7 +83,8 @@ export default {
       owner_type: [0],
       channel: [0],
       params: {},
-      disbleConfirm: false
+      disbleConfirm: false,
+      needUpdateParams: false
     }
   },
   methods: {
@@ -80,7 +100,7 @@ export default {
       }
       this.emit()
     },
-    show (tab) {
+    show (tab, params) {
       if (tab !== this.tabIdx) {
         this.tabIdx = tab
         this.$emit('update:tab', tab)
@@ -91,6 +111,20 @@ export default {
         this.isShow = true
         this.$emit('update:visible', true)
       }
+      if (this.needUpdateParams) {
+        this.needUpdateParams = false
+        let cloneP = cloneParams(params)
+        if (cloneP.owner_type) {
+            this.owner_type = cloneP.owner_type
+        }
+        if (cloneP.channel) {
+            this.channel = cloneP.channel
+        }
+        if (cloneP.citys) {
+            this.$refs.areaFilter.refresh()
+            this.$refs.cityFilter.refresh()
+        }
+      }
     },
     hide () {
       this.isShow = false
@@ -98,6 +132,7 @@ export default {
       this.$emit('update:tab', 0)
       this.$emit('update:visible', false)
       this.$emit('onhide')
+      this.needUpdateParams = true
     },
     pick (opt, data) {
       let idx
@@ -142,8 +177,8 @@ export default {
       // this.hide()
 
       if (this.showMore) {
-        this.owner_type = []
-        this.channel = []
+        // this.owner_type = []
+        // this.channel = []
         this.$refs.areaFilter.reset()
       } else {
         this.$refs.cityFilter.reset()
@@ -154,12 +189,12 @@ export default {
       params.owner_type = this.owner_type
       params.channel = this.channel
       this.params = params
-      return params
+      return cloneParams(params)
     },
     getCityParams () {
       let params = this.$refs.cityFilter.getParams()
       this.params = params
-      return params
+      return cloneParams(params)
     },
     onCityChange () {
       this.emit()
@@ -173,7 +208,6 @@ export default {
       } else {
         this.$emit('confirm', this.getCityParams())
       }
-      console.log('filter emit')
     },
     onConfirm () {
       if (this.disbleConfirm) {
@@ -181,6 +215,7 @@ export default {
       }
       this.emit()
       this.hide()
+      this.needUpdateParams = false
     }
   }
 }

@@ -124,6 +124,23 @@
 import { mapActions } from 'vuex'
 import {push, remove} from '../util'
 
+const copyPicked = p => {
+    let tp = {
+        all: p.all,
+        all_region: [...p.all_region],
+        all1: p.all1,
+        all2: p.all2,
+        all3: p.all3,
+        all1_: p.all1_,
+        all2_: p.all2_,
+        all3_: p.all3_,
+        sub1: [...p.sub1],
+        sub2: [...p.sub2],
+        sub3: [...p.sub3]
+    }
+    return tp
+}
+
 export default {
   data () {
     return {
@@ -155,6 +172,19 @@ export default {
         sub1: [],
         sub2: [],
         sub3: []
+      },
+      confirmPicked: {
+        all: false,
+        all_region: [],
+        all1: false,
+        all2: false,
+        all3: false,
+        all1_: false,
+        all2_: false,
+        all3_: false,
+        sub1: [],
+        sub2: [],
+        sub3: []
       }
     }
   },
@@ -163,6 +193,9 @@ export default {
   },
   methods: {
     ...mapActions('branch', ['getCities']),
+    refresh () {
+      this.picked = copyPicked(this.confirmPicked)
+    },
     regionCount (region, picked) {
       var picked = picked || this.picked.sub2
       let total = region.reduce((total, city) => {
@@ -202,6 +235,7 @@ export default {
       this.$emit('pick', this.picked)
     },
     getParams () {
+      this.confirmPicked = copyPicked(this.picked)
       let cityIds = this.picked.sub1.map(item => item.id)
       let regionIds = this.picked.sub2.map(item => item.id)
       let luodiIds = this.picked.sub3.map(item => item.id)
@@ -407,7 +441,7 @@ export default {
         this.picked.all3 = false
         this.picked.all = false
         opts.forEach(opt => {
-          remove(sub3, opt)
+            remove(sub3, opt)
         })
       }
     },

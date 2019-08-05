@@ -43,6 +43,7 @@ export default {
     show (tab) {
       this.isShow = true
       this.$emit('update:visible', true)
+      this.$refs.areaFilter.refresh()
     },
     hide () {
       this.isShow = false

@@ -45,20 +45,20 @@
       <x-dialog v-model="isTrendDialogShow" :hide-on-blur="true" :dialog-style="{maxWidth: dialogWidth + 'px', width: dialogWidth + 'px', height: '255px', borderRadius: '3px'}">
         <div class="tbt-pro-dialog">
           <div class="tbt-pro-dialog-hd">
-            {{ currentTrend.class_name }}
+            <span style="font-size: 14px; line-height: 25px">{{ currentTrend.class_name }}</span>
             <btn-tab :tabs="trendTabs" v-model="trendTabIndex" :hidden="trendTabHidden" style="background: #fff;"></btn-tab>
           </div>
           <div style="margin: 20px -15px 0; background: #f6f6f6; height: 196px; overflow:hidden;">
             <div v-show="class_type != '4' && trendTabIndex==0" >
-              <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.day.length" :data="currentTrend.day" :data-type="trendDataType"></chart-line>
+              <chart-line ref="chartDay" :width="chartWidth"  :height="chartHeight" v-if="currentTrend.day.length" :data="currentTrend.day" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
             <div  v-show="class_type != '4' && trendTabIndex==1">
-              <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.week.length" :data="currentTrend.week" :data-type="trendDataType"></chart-line>
+              <chart-line ref="chartWeek" :width="chartWidth"  :height="chartHeight" v-if="currentTrend.week.length" :data="currentTrend.week" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
             <div v-show="trendTabIndex==2">
-              <chart-line :width="chartWidth"  :height="chartHeight" v-if="currentTrend.month.length" :data="currentTrend.month" :data-type="trendDataType"></chart-line>
+              <chart-line ref="chartMonth" :width="chartWidth"  :height="chartHeight" v-if="currentTrend.month.length" :data="currentTrend.month" :data-type="trendDataType"></chart-line>
               <p class="empty-trend" v-else>暂无数据</p>
             </div>
           </div>
@@ -70,7 +70,7 @@
 
 <script>
 import { btnTab } from '../../common/tab'
-import { Line4 as ChartLine } from '../../common/chart'
+import { Line5 as ChartLine } from '../../common/chart'
 import { Tab, TabItem, XDialog, TransferDomDirective as TransferDom } from 'vux'
 import { filterNumber } from '../../../common/filter'
 import QueryFilter from './filter.vue'
@@ -148,7 +148,7 @@ export default {
     }
   },
   mounted () {
-    // his.$refs.datepicker.setClassType(this.class_type)
+    // this.$refs.datepicker.setClassType(this.class_type)
   },
   methods: {
     ...mapActions('branch', ['getCommonInd', 'getIndTrend']),
@@ -172,7 +172,7 @@ export default {
     },
     handleOnClickRow (ind) {
       let { dt, citys, owner_type, channel } = this.queryParams
-      let params = { dt, citys }
+      let params = { dt, citys, owner_type, channel }
       params.id = ind.id
 
       this.getIndTrend(params).then(res => {
@@ -198,12 +198,26 @@ export default {
         }
         this.currentTrend.class_name = res.name
         this.isTrendDialogShow = true
+
+        this.$nextTick(_ => {
+          if (ind.type == 2) {
+            this.$refs.chartDay && this.$refs.chartDay.chDatatype(3)
+            this.$refs.chartWeek && this.$refs.chartWeek.chDatatype(3)
+            this.$refs.chartMonth && this.$refs.chartMonth.chDatatype(3)
+            this.trendDataType = 3
+          } else {
+            this.$refs.chartDay && this.$refs.chartDay.chDatatype(0)
+            this.$refs.chartWeek && this.$refs.chartWeek.chDatatype(0)
+            this.$refs.chartMonth && this.$refs.chartMonth.chDatatype(0)
+            this.trendDataType = 0
+          }
+        })
       }).catch(error => {
         console.log(error)
       })
     },
     handleOnClickAreaSelect () {
-      this.$refs.filter.show(1)
+      this.$refs.filter.show(1, this.queryParams)
       // if (this.showFilter) {
       //   this.$refs.filter.hide()
       // } else {
@@ -211,7 +225,7 @@ export default {
       // }
     },
     handleOnClickYezhuSelect () {
-      this.$refs.filter.show(2)
+      this.$refs.filter.show(2, this.queryParams)
       // if (this.showFilter) {
       //   this.$refs.filter.hide()
       // } else {
@@ -219,7 +233,7 @@ export default {
       // }
     },
     handleOnClickChSelect () {
-      this.$refs.filter.show(3)
+      this.$refs.filter.show(3, this.queryParams)
       // if (this.showFilter) {
       //   this.$refs.filter.hide()
       // } else {
@@ -271,6 +285,7 @@ export default {
     onUpdateDate (params) {
       this.dateParams = params
       this.queryParams = Object.assign(this.queryParams, params)
+      this.trendTabIndex = params.type - 1
       this.loadData(this.queryParams)
     },
     onFilter (params) {
