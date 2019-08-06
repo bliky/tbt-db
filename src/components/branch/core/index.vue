@@ -34,9 +34,9 @@
     <div v-transfer-dom>
       <x-dialog v-model="isTrendDialogShow" :hide-on-blur="true" :dialog-style="{maxWidth: dialogWidth + 'px', width: dialogWidth + 'px', height: '255px', borderRadius: '3px'}">
         <div class="tbt-pro-dialog">
-          <div class="tbt-pro-dialog-hd">
-            <span style="font-size: 14px; line-height: 25px">{{ currentTrend.class_name }}</span>
-            <btn-tab :tabs="trendTabs" v-model="trendTabIndex" :hidden="trendTabHidden" style="background: #fff;"></btn-tab>
+          <div class="tbt-pro-dialog-hd tbt-pro-dialog-hd-flex">
+            <div class="tbt-pro-dialog-hd-flex-1" style="font-size: 14px; line-height: 25px">{{ currentTrend.class_name }}</div>
+            <div style="width: 178px"><btn-tab :tabs="trendTabs" v-model="trendTabIndex" :hidden="trendTabHidden" style="background: #fff;"></btn-tab></div>
           </div>
           <div style="margin: 20px -15px 0; background: #f6f6f6; height: 196px; overflow:hidden;">
             <div v-show="trendTabIndex==0">
@@ -201,6 +201,14 @@ export default {
 </script>
 
 <style lang="less">
+.tbt-pro-dialog-hd-flex {
+  display: flex;
+}
+
+.tbt-pro-dialog-hd-flex-1 {
+  flex: 1;
+}
+
 .index-board {
   overflow: hidden;
   margin: 30px 5px 30px 20px;
