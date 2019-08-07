@@ -38,7 +38,6 @@ export default {
     onReset () {
       // this.hide()
       this.$refs.areaFilter.reset()
-      this.$emit('confirm', this.getParams())
     },
     show (tab) {
       this.isShow = true

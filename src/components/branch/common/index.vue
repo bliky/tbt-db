@@ -105,6 +105,7 @@ export default {
       dialogWidth: winW - 26,
       isTrendDialogShow: false,
       trendTabHidden: [],
+      trendTabIndexDate: 2,
       trendTabIndex: 2,
       trendTabs: ['日报', '周报', '月报'],
       trendDataType: 0,
@@ -198,7 +199,7 @@ export default {
         }
         this.currentTrend.class_name = res.name
         this.isTrendDialogShow = true
-
+        this.trendTabIndex = this.trendTabIndexDate
         this.$nextTick(_ => {
           if (ind.type == 2) {
             this.$refs.chartDay && this.$refs.chartDay.chDatatype(3)
@@ -285,7 +286,7 @@ export default {
     onUpdateDate (params) {
       this.dateParams = params
       this.queryParams = Object.assign(this.queryParams, params)
-      this.trendTabIndex = params.type - 1
+      this.trendTabIndexDate = params.type - 1
       this.loadData(this.queryParams)
     },
     onFilter (params) {

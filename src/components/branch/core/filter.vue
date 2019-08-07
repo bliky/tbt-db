@@ -144,6 +144,8 @@ export default {
     ...mapActions('branch', ['getCities']),
     refresh () {
       this.picked = copyPicked(this.confirmPicked)
+      let picked = this.picked
+      this.disbleConfirm = !(picked.sub1.length || picked.sub2.length || picked.sub3.length)
     },
     loadData () {
       if (this.isLoaded) return

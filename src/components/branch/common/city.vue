@@ -137,6 +137,7 @@ export default {
     ...mapActions('branch', ['getCities']),
     refresh () {
       this.picked = copyPicked(this.confirmPicked)
+      this.$emit('pick', this.picked)
     },
     loadData () {
       if (this.isLoaded) return
@@ -349,6 +350,7 @@ export default {
       this.$emit('pick', this.picked)
     },
     reset () {
+      this.confirmPicked = copyPicked(this.picked)
       // this.all(true)
       this.cate = 0
       // this.opts.sub2 = []
@@ -363,7 +365,7 @@ export default {
         sub2: [],
         sub3: []
       }
-      this.emit()
+      this.$emit('pick', this.picked)
     },
     getParams () {
       this.confirmPicked = copyPicked(this.picked)

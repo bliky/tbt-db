@@ -195,6 +195,7 @@ export default {
     ...mapActions('branch', ['getCities']),
     refresh () {
       this.picked = copyPicked(this.confirmPicked)
+      this.$emit('pick', this.picked)
     },
     regionCount (region, picked) {
       var picked = picked || this.picked.sub2
@@ -208,6 +209,7 @@ export default {
       return city.child.filter(area => pick.indexOf(area) !== -1).length
     },
     reset () {
+      this.confirmPicked = copyPicked(this.picked)
       this.cate = 0
 
       // this.curRegion = null
@@ -228,7 +230,7 @@ export default {
         sub2: [],
         sub3: []
       }
-      this.emit()
+      this.$emit('pick', this.picked)
     },
     emit () {
       this.$emit('change', this.getParams())
